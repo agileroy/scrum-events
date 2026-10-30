@@ -128,11 +128,26 @@ export function createGrid(container, { onSelect = () => {}, mode = 'play' } = {
       refreshDisabled();
     },
 
-    /** Case active sous un point de l'écran (glisser-déposer), en-têtes de colonne compris, ou null. */
+    /**
+     * Cible d'un dépôt sous un point de l'écran : la zone Piège, ou une colonne. La colonne se lit à la position
+     * horizontale du pointeur, n'importe où dans la hauteur de la grille (cases, espaces entre les cases, en-têtes) :
+     * on renvoie la case exacte sous le pointeur si elle existe, sinon la première case active de la colonne.
+     * Renvoie null hors de la grille.
+     */
     cellAt(x, y) {
-      const target = document.elementFromPoint(x, y)?.closest?.('[data-cell], [data-drop-cell]');
-      if (!target || !root.contains(target)) return null;
-      return target.dataset.cell ?? target.dataset.dropCell ?? null;
+      const trapRect = trap.getBoundingClientRect();
+      if (x >= trapRect.left && x <= trapRect.right && y >= trapRect.top && y <= trapRect.bottom) return TRAP;
+      const tableRect = table.getBoundingClientRect();
+      if (x < tableRect.left || x > tableRect.right || y < tableRect.top || y > tableRect.bottom) return null;
+      const exact = document.elementFromPoint(x, y)?.closest?.('[data-cell]');
+      if (exact && root.contains(exact) && exact.dataset.cell !== TRAP) return exact.dataset.cell;
+      const heads_ = Object.values(heads);
+      const gap = heads_.length > 1 ? Math.max(0, heads_[1].getBoundingClientRect().left - heads_[0].getBoundingClientRect().right) : 0;
+      for (const head of heads_) {
+        const rect = head.getBoundingClientRect();
+        if (x >= rect.left - gap / 2 - 1 && x <= rect.right + gap / 2 + 1) return head.dataset.dropCell;
+      }
+      return null;   // colonne des libellés de ligne
     },
 
     /** Mise en évidence de la colonne survolée pendant un glisser-déposer. */

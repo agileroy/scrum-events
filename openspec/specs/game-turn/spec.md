@@ -27,12 +27,17 @@ Avant la pioche, tous les écrans SHALL montrer une carte face cachée. Le joueu
 - **THEN** rien ne se passe, et la carte indique « Julie va retourner la carte »
 
 ### Requirement: Placement dans la grille
-Le joueur actif SHALL placer sa carte dans une colonne (voir `card-deck`) ou dans la zone Piège, soit en faisant glisser la carte retournée (souris, stylet ou doigt) puis en la lâchant, soit en touchant une case (ou au clavier) puis en appuyant sur « Valider ». Pendant le glisser, la colonne survolée SHALL être mise en évidence et sélectionnée, visible en direct sur l'écran projeté et chez les autres participants ; lâcher la carte sur une case, sur un en-tête de colonne ou sur la zone Piège SHALL valider le placement immédiatement, sans bouton ; la lâcher ailleurs SHALL annuler le geste. À la fin du geste, quel qu'il soit, le curseur et l'affichage SHALL revenir à leur état normal. Au toucher, la colonne choisie SHALL être mise en évidence et son nom affiché sous la carte (« Votre choix : Sprint Review »), et le joueur SHALL pouvoir changer d'avis jusqu'à « Valider ». Chaque case SHALL offrir une zone tactile d'au moins 44 × 44 px sur un écran de 360 px de large. Le placement validé MUST être définitif. Seul le joueur actif MUST pouvoir placer la carte, y compris du point de vue des règles de sécurité de la base, et seulement dans une case active ou dans la zone Piège.
+Le joueur actif SHALL placer sa carte dans une colonne (voir `card-deck`) ou dans la zone Piège, soit en faisant glisser la carte retournée (souris, stylet ou doigt) puis en la lâchant, soit en touchant une case (ou au clavier) puis en appuyant sur « Valider ». Pendant le glisser, la colonne survolée SHALL être mise en évidence et sélectionnée, visible en direct sur l'écran projeté et chez les autres participants ; lâcher la carte n'importe où dans la hauteur d'une colonne (sur une case, dans l'espace entre deux cases ou sur l'en-tête), ou sur la zone Piège, SHALL valider le placement immédiatement, sans bouton ; la colonne se lit à la position horizontale du pointeur. La lâcher hors de la grille et de la zone Piège SHALL annuler le geste. À la fin du geste, quel qu'il soit, le curseur et l'affichage SHALL revenir à leur état normal. Au toucher, la colonne choisie SHALL être mise en évidence et son nom affiché sous la carte (« Votre choix : Sprint Review »), et le joueur SHALL pouvoir changer d'avis jusqu'à « Valider ». Chaque case SHALL offrir une zone tactile d'au moins 44 × 44 px sur un écran de 360 px de large. Le placement validé MUST être définitif. Seul le joueur actif MUST pouvoir placer la carte, y compris du point de vue des règles de sécurité de la base, et seulement dans une case active ou dans la zone Piège.
 
 #### Scenario: Glisser-déposer
 - **GIVEN** Julie, joueuse active sur un ordinateur, avec sa carte retournée
 - **WHEN** elle fait glisser la carte au-dessus de la colonne Sprint Review puis la lâche dans la colonne Daily Scrum
 - **THEN** l'écran projeté a montré la colonne Sprint Review puis la colonne Daily Scrum en cours de sélection, la carte est placée sans appui sur « Valider », et le curseur redevient normal
+
+#### Scenario: Lâcher entre deux cases
+- **GIVEN** Julie qui fait glisser sa carte dans la colonne Sprint Review
+- **WHEN** elle la lâche dans l'espace entre deux cases de cette colonne
+- **THEN** la carte est placée dans la colonne Sprint Review, sans appui sur « Valider »
 
 #### Scenario: Toucher puis valider
 - **GIVEN** Julie qui a touché une case de la colonne Sprint Review sans valider
