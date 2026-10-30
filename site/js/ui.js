@@ -659,8 +659,11 @@ export async function startApp(gameStore, { deck, cards }) {
 
   function onDragEnd(event) {
     if (!drag || (event.pointerId !== undefined && event.pointerId !== drag.id)) return;
+    // Ce qui est en surbrillance au moment du lâcher est retenu : la colonne sous le pointeur, à défaut la dernière
+    // colonne survolée (le navigateur peut terminer le geste par une annulation, ou sans position exploitable).
     const dragged = Boolean(drag.ghost);
-    const cell = dragged && event.type === 'pointerup' ? grid.cellAt(event.clientX, event.clientY) : null;
+    const under = event.type === 'pointerup' && Number.isFinite(event.clientX) ? grid.cellAt(event.clientX, event.clientY) : null;
+    const cell = dragged ? under ?? drag.cell : null;
     endDrag();
     if (cell && draggable) dropOn(cell);
   }
@@ -672,6 +675,8 @@ export async function startApp(gameStore, { deck, cards }) {
     window.removeEventListener('pointermove', onDragMove);
     window.removeEventListener('pointerup', onDragEnd);
     window.removeEventListener('pointercancel', onDragEnd);
+    window.removeEventListener('mouseup', onDragEnd);
+    window.removeEventListener('touchend', onDragEnd);
     drag = null;
   }
 
@@ -682,6 +687,8 @@ export async function startApp(gameStore, { deck, cards }) {
     window.addEventListener('pointermove', onDragMove, { passive: false });
     window.addEventListener('pointerup', onDragEnd);
     window.addEventListener('pointercancel', onDragEnd);
+    window.addEventListener('mouseup', onDragEnd);
+    window.addEventListener('touchend', onDragEnd);
   });
   window.addEventListener('blur', endDrag);
   // Pas de glisser-déposer natif du navigateur sur la carte (il interromprait les événements Pointer).
