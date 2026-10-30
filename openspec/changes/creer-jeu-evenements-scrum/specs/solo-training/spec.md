@@ -9,9 +9,9 @@ La page d'accueil SHALL proposer une carte « S'entraîner seul », à côté de
 - **THEN** le nombre de cartes vaut 10
 
 #### Scenario: Nombre hors bornes
-- **GIVEN** un paquet de 56 exemplaires
+- **GIVEN** un paquet de 60 exemplaires
 - **WHEN** l'utilisateur saisit 200 puis clique sur « Commencer »
-- **THEN** un entraînement de 56 cartes commence
+- **THEN** un entraînement de 60 cartes commence
 
 ### Requirement: Tirage des cartes
 Les cartes d'un entraînement SHALL être tirées au hasard parmi tous les exemplaires du paquet, toutes différentes, dans un ordre aléatoire. Chaque entraînement MUST contenir au moins 1 piège ; si le tirage n'en contient aucun, une carte tirée au hasard SHALL être remplacée par un piège tiré au hasard.

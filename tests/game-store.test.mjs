@@ -64,7 +64,7 @@ test('réglages : 5 par défaut et ajusté à l\'arrivée d\'un participant', as
   assert.equal(effectiveCardsPerPlayer(t.room(code), deckStats(cards)), 5);
   await host.setCardsPerPlayer(code, 7);
   await t.make('p7').join(code, 'P7');
-  // 56 exemplaires dont 14 pièges : 7 au plus pour 7 participants, 6 pour 8.
+  // 60 exemplaires dont 15 pièges : 7 au plus pour 7 participants, 6 pour 8.
   assert.equal(effectiveCardsPerPlayer(t.room(code), deckStats(cards)), 6);
 });
 

@@ -5,8 +5,10 @@
     {
       "id": "sp-duree",
       "text": "Une durée fixe d'un mois ou moins",
-      "answers": ["sprint-timebox"],
-      "explanation": "Les Sprints sont des événements d'une durée fixe, d'un mois ou moins, pour créer de la régularité. Un nouveau Sprint commence immédiatement après la fin du précédent.",
+      "answers": [
+        "sprint-timebox"
+      ],
+      "explanation": "Les Sprints sont des événements d'une durée fixe, d'un mois ou moins, pour créer une cohérence. Un nouveau Sprint commence immédiatement après la fin du précédent.",
       "reference": "Sprint",
       "errors": {
         "planning-timebox": "Le Sprint Planning dure au plus 8 heures pour un Sprint d'un mois : c'est le Sprint lui-même qui dure un mois ou moins.",
@@ -16,7 +18,9 @@
     {
       "id": "sp-valeur",
       "text": "Transformer les idées en valeur",
-      "answers": ["sprint-goal"],
+      "answers": [
+        "sprint-goal"
+      ],
       "explanation": "Les Sprints sont au cœur de Scrum : c'est là que les idées sont transformées en valeur. Tout le travail nécessaire pour atteindre le Product Goal se fait dans le cadre des Sprints.",
       "reference": "Sprint",
       "errors": {
@@ -26,8 +30,10 @@
     },
     {
       "id": "sp-predictible",
-      "text": "Rendre le travail prévisible grâce à une inspection au moins une fois par mois",
-      "answers": ["sprint-goal"],
+      "text": "Rendre le travail prévisible, mois après mois",
+      "answers": [
+        "sprint-goal"
+      ],
       "explanation": "Les Sprints permettent la prédictibilité en assurant l'inspection et l'adaptation de la progression vers le Product Goal, au moins une fois par mois calendaire. Des Sprints plus courts raccourcissent le cycle d'apprentissage et limitent les risques.",
       "reference": "Sprint",
       "errors": {
@@ -38,7 +44,9 @@
     {
       "id": "pl-8h",
       "text": "8 heures maximum pour un Sprint d'un mois",
-      "answers": ["planning-timebox"],
+      "answers": [
+        "planning-timebox"
+      ],
       "explanation": "Le Sprint Planning est limité à un maximum de huit heures pour un Sprint d'un mois. Pour les Sprints plus courts, l'événement est généralement plus court.",
       "reference": "Sprint Planning",
       "errors": {
@@ -49,18 +57,26 @@
     {
       "id": "mx-court",
       "text": "Généralement plus court pour un Sprint plus court",
-      "answers": ["planning-timebox", "review-timebox", "retro-timebox"],
+      "answers": [
+        "planning-timebox",
+        "review-timebox",
+        "retro-timebox"
+      ],
       "explanation": "Pour le Sprint Planning, la Sprint Review et la Sprint Retrospective, le guide donne une durée maximale pour un Sprint d'un mois et précise que l'événement est généralement plus court pour un Sprint plus court. Cette carte existe en trois exemplaires, un par événement.",
       "reference": "Sprint Planning, Sprint Review, Sprint Retrospective",
       "errors": {
-        "daily-timebox": "Le Daily Scrum dure 15 minutes, quelle que soit la durée du Sprint.",
+        "daily-timebox": "Le guide fixe le Daily Scrum à 15 minutes, sans le réduire pour un Sprint plus court.",
         "sprint-timebox": "Le Sprint a une durée fixe d'un mois ou moins ; cette mention concerne les événements qu'il contient : Sprint Planning, Sprint Review et Sprint Retrospective."
       }
     },
     {
       "id": "mx-equipe",
       "text": "Toute la Scrum Team",
-      "answers": ["planning-people", "review-people", "retro-people"],
+      "answers": [
+        "planning-people",
+        "review-people",
+        "retro-people"
+      ],
       "explanation": "Le plan du Sprint Planning est créé par le travail collaboratif de toute la Scrum Team ; à la Sprint Review, la Scrum Team présente les résultats de son travail ; à la Sprint Retrospective, la Scrum Team inspecte le déroulement du Sprint. Cette carte existe en trois exemplaires, un par événement.",
       "reference": "Sprint Planning, Sprint Review, Sprint Retrospective",
       "errors": {
@@ -69,8 +85,10 @@
     },
     {
       "id": "pl-lancer",
-      "text": "Lancer le Sprint en définissant le travail à effectuer",
-      "answers": ["planning-goal"],
+      "text": "Lancer le Sprint en définissant le travail",
+      "answers": [
+        "planning-goal"
+      ],
       "explanation": "Le Sprint Planning lance le Sprint en présentant le travail à effectuer durant le Sprint. Le plan qui en résulte est créé par le travail collaboratif de toute la Scrum Team.",
       "reference": "Sprint Planning",
       "errors": {
@@ -80,8 +98,10 @@
     },
     {
       "id": "pl-themes",
-      "text": "Répondre à trois questions : pourquoi ce Sprint, quoi faire, comment le faire",
-      "answers": ["planning-goal"],
+      "text": "Traiter trois thèmes : pourquoi, quoi, comment",
+      "answers": [
+        "planning-goal"
+      ],
       "explanation": "Le Sprint Planning aborde trois thèmes : pourquoi ce Sprint est important (le Sprint Goal), ce qui peut être fait durant ce Sprint, et comment le travail choisi sera réalisé.",
       "reference": "Sprint Planning",
       "errors": {
@@ -91,7 +111,9 @@
     {
       "id": "pl-pbi",
       "text": "Les éléments les plus importants du Product Backlog",
-      "answers": ["planning-inputs"],
+      "answers": [
+        "planning-inputs"
+      ],
       "explanation": "Le Product Owner veille à ce que les participants soient prêts à discuter des éléments les plus importants du Product Backlog et de leur lien avec le Product Goal. Les Developers y sélectionnent ensuite les éléments à inclure dans le Sprint.",
       "reference": "Sprint Planning",
       "errors": {
@@ -102,18 +124,24 @@
     {
       "id": "pl-pgoal",
       "text": "Le Product Goal",
-      "answers": ["planning-inputs"],
-      "explanation": "Au Sprint Planning, la Scrum Team discute de la façon dont les éléments les plus importants du Product Backlog servent le Product Goal ; le Sprint Goal est défini dans ce cadre.",
-      "reference": "Sprint Planning",
+      "answers": [
+        "planning-inputs",
+        "review-inputs"
+      ],
+      "explanation": "Au Sprint Planning, la Scrum Team discute de la façon dont les éléments les plus importants du Product Backlog servent le Product Goal ; à la Sprint Review, les progrès vers le Product Goal sont discutés. Cette carte existe en deux exemplaires.",
+      "reference": "Sprint Planning, Sprint Review",
       "errors": {
         "planning-outputs": "Le Sprint Planning produit le Sprint Goal ; le Product Goal, objectif à long terme, existe avant lui et se trouve dans le Product Backlog.",
-        "review-outputs": "La Sprint Review discute de la progression vers le Product Goal, mais elle ne le produit pas : le Product Goal est l'objectif à long terme, formulé par le Product Owner."
+        "review-outputs": "La Sprint Review discute de la progression vers le Product Goal, mais elle ne le produit pas : le Product Goal est l'objectif à long terme, formulé par le Product Owner.",
+        "sprint-goal": "Le Sprint sert le Product Goal, objectif à long terme, mais son but propre est le Sprint Goal."
       }
     },
     {
       "id": "pl-capacite",
-      "text": "Les performances passées et la capacité à venir des Developers",
-      "answers": ["planning-inputs"],
+      "text": "Performances passées et capacité à venir des Developers",
+      "answers": [
+        "planning-inputs"
+      ],
       "explanation": "Plus les Developers connaissent leurs performances passées, leur capacité à venir et leur Definition of Done, mieux ils sont à même de prévoir ce qu'ils peuvent accomplir durant le Sprint.",
       "reference": "Sprint Planning",
       "errors": {
@@ -123,30 +151,41 @@
     {
       "id": "mx-dod",
       "text": "La Definition of Done",
-      "answers": ["planning-inputs", "retro-inputs"],
+      "answers": [
+        "planning-inputs",
+        "retro-inputs"
+      ],
       "explanation": "Au Sprint Planning, les Developers s'appuient sur leur Definition of Done pour prévoir ce qu'ils peuvent accomplir et planifier un Increment qui y réponde. À la Sprint Retrospective, la Scrum Team inspecte notamment sa Definition of Done. Cette carte existe en deux exemplaires.",
       "reference": "Sprint Planning, Sprint Retrospective",
       "errors": {
-        "retro-outputs": "La Sprint Retrospective inspecte la Definition of Done et peut aboutir à l'améliorer ; mais la Definition of Done existe avant elle : c'est ce qu'on inspecte."
+        "retro-outputs": "La Sprint Retrospective inspecte la Definition of Done ; les changements qui en découlent font partie des améliorations identifiées. La Definition of Done existe avant elle : c'est ce qu'on inspecte.",
+        "review-inputs": "La Definition of Done décide de ce qui peut être présenté, mais la Sprint Review inspecte l'Increment ; la Definition of Done sert au Sprint Planning et est inspectée en Sprint Retrospective."
       }
     },
     {
       "id": "mx-sgoal",
       "text": "Le Sprint Goal",
-      "answers": ["planning-outputs", "daily-inputs"],
-      "explanation": "Le Sprint Goal est créé pendant le Sprint Planning (il doit être finalisé avant la fin de l'événement) puis ajouté au Sprint Backlog. Au Daily Scrum, les Developers inspectent la progression vers ce Sprint Goal. Cette carte existe en deux exemplaires.",
-      "reference": "Sprint Planning, Daily Scrum, Sprint Backlog",
+      "answers": [
+        "planning-outputs",
+        "daily-inputs",
+        "sprint-goal"
+      ],
+      "explanation": "Le Sprint Goal est l'unique but du Sprint. Il est créé pendant le Sprint Planning (il doit être finalisé avant la fin de l'événement) puis ajouté au Sprint Backlog ; au Daily Scrum, les Developers inspectent la progression vers ce Sprint Goal. Cette carte existe en trois exemplaires.",
+      "reference": "Sprint Planning, Daily Scrum, Engagement : Sprint Goal",
       "errors": {
         "planning-inputs": "Le Sprint Goal n'existe pas avant le Sprint Planning : toute la Scrum Team le définit pendant l'événement.",
-        "review-inputs": "La Sprint Review inspecte le résultat du Sprint et la progression vers le Product Goal ; le Sprint Goal est créé au Sprint Planning et suivi au Daily Scrum."
+        "review-inputs": "Le guide ne cite pas le Sprint Goal parmi les éléments de la Sprint Review : elle inspecte le résultat du Sprint et la progression vers le Product Goal. Le Sprint Goal est créé au Sprint Planning et suivi au Daily Scrum."
       }
     },
     {
       "id": "mx-sbl",
       "text": "Le Sprint Backlog",
-      "answers": ["planning-outputs", "daily-inputs"],
+      "answers": [
+        "planning-outputs",
+        "daily-inputs"
+      ],
       "explanation": "Le Sprint Backlog réunit le Sprint Goal, les éléments du Product Backlog sélectionnés et le plan pour les livrer : c'est le résultat du Sprint Planning. Il doit être assez détaillé pour que les Developers inspectent leur progression au Daily Scrum. Cette carte existe en deux exemplaires.",
-      "reference": "Sprint Planning, Sprint Backlog",
+      "reference": "Sprint Planning, Daily Scrum, Sprint Backlog",
       "errors": {
         "planning-inputs": "Le Sprint Backlog n'existe pas avant le Sprint Planning : il en est le résultat.",
         "daily-outputs": "Le Daily Scrum adapte le Sprint Backlog si nécessaire, mais il le reçoit du Sprint Planning : c'est ce que les Developers inspectent."
@@ -155,9 +194,12 @@
     {
       "id": "pl-plan",
       "text": "Le plan pour livrer les éléments sélectionnés",
-      "answers": ["planning-outputs"],
-      "explanation": "Pour chaque élément sélectionné, les Developers planifient le travail nécessaire pour créer un Increment qui réponde à la Definition of Done. La façon de procéder est laissée à leur seule discrétion.",
-      "reference": "Sprint Planning",
+      "answers": [
+        "planning-outputs",
+        "daily-inputs"
+      ],
+      "explanation": "Pour chaque élément sélectionné, les Developers planifient au Sprint Planning le travail nécessaire pour créer un Increment qui réponde à la Definition of Done. Ce plan fait partie du Sprint Backlog, que les Developers inspectent et adaptent au Daily Scrum. Cette carte existe en deux exemplaires.",
+      "reference": "Sprint Planning, Sprint Backlog",
       "errors": {
         "daily-outputs": "Le Daily Scrum produit un plan pour la prochaine journée ; le plan pour livrer les éléments du Sprint naît au Sprint Planning."
       }
@@ -165,7 +207,9 @@
     {
       "id": "da-15min",
       "text": "15 minutes, chaque jour ouvré du Sprint",
-      "answers": ["daily-timebox"],
+      "answers": [
+        "daily-timebox"
+      ],
       "explanation": "Le Daily Scrum est un événement de 15 minutes. Pour réduire la complexité, il se tient à la même heure et au même lieu, chaque jour ouvré du Sprint.",
       "reference": "Daily Scrum",
       "errors": {}
@@ -173,8 +217,10 @@
     {
       "id": "da-devs",
       "text": "Les Developers",
-      "answers": ["daily-people"],
-      "explanation": "Le Daily Scrum est un événement de 15 minutes pour les Developers de la Scrum Team. Les autres événements réunissent toute la Scrum Team.",
+      "answers": [
+        "daily-people"
+      ],
+      "explanation": "Le Daily Scrum est un événement de 15 minutes pour les Developers de la Scrum Team. Le Sprint Planning, la Sprint Review et la Sprint Retrospective impliquent toute la Scrum Team.",
       "reference": "Daily Scrum",
       "errors": {
         "planning-people": "Les Developers sont présents au Sprint Planning, mais c'est toute la Scrum Team qui y est requise : seul le Daily Scrum est réservé aux Developers.",
@@ -184,8 +230,10 @@
     },
     {
       "id": "da-inspecter",
-      "text": "Inspecter la progression vers le Sprint Goal et adapter le Sprint Backlog",
-      "answers": ["daily-goal"],
+      "text": "Inspecter la progression vers le Sprint Goal",
+      "answers": [
+        "daily-goal"
+      ],
       "explanation": "L'objectif du Daily Scrum est d'inspecter la progression vers le Sprint Goal et d'adapter le Sprint Backlog si nécessaire, en ajustant le travail planifié.",
       "reference": "Daily Scrum",
       "errors": {
@@ -194,39 +242,50 @@
     },
     {
       "id": "da-obstacles",
-      "text": "Identifier les obstacles et favoriser la prise de décision rapide",
-      "answers": ["daily-goal"],
+      "text": "Repérer les obstacles et décider rapidement",
+      "answers": [
+        "daily-goal"
+      ],
       "explanation": "Les Daily Scrums améliorent la communication, aident à identifier les obstacles et favorisent la prise de décision rapide ; ils éliminent ainsi le besoin d'autres réunions.",
       "reference": "Daily Scrum",
       "errors": {
-        "retro-goal": "La Sprint Retrospective cherche à améliorer la qualité et l'efficacité ; identifier les obstacles et décider vite au quotidien, c'est le Daily Scrum."
+        "retro-goal": "La Sprint Retrospective cherche à améliorer la qualité et l'efficacité ; identifier les obstacles et décider vite au quotidien, c'est le Daily Scrum.",
+        "review-goal": "La Sprint Review décide de la suite du produit ; repérer les obstacles et décider vite au quotidien, c'est le Daily Scrum."
       }
     },
     {
       "id": "da-plan",
-      "text": "Un plan d'action pour la prochaine journée de travail",
-      "answers": ["daily-outputs"],
+      "text": "Un plan pour la prochaine journée de travail",
+      "answers": [
+        "daily-outputs"
+      ],
       "explanation": "Les Developers choisissent la structure et les techniques de leur Daily Scrum, à condition qu'il se concentre sur la progression vers le Sprint Goal et produise un plan d'action pour la prochaine journée de travail.",
       "reference": "Daily Scrum",
       "errors": {
-        "planning-outputs": "Le Sprint Planning produit le plan pour tout le Sprint ; le plan d'action pour la prochaine journée sort du Daily Scrum."
+        "planning-outputs": "Le Sprint Planning produit le plan pour tout le Sprint ; le plan d'action pour la prochaine journée sort du Daily Scrum.",
+        "daily-goal": "Le Daily Scrum doit produire ce plan : c'est sa sortie ; son but est d'inspecter la progression vers le Sprint Goal."
       }
     },
     {
       "id": "da-ajuste",
       "text": "Un Sprint Backlog ajusté si nécessaire",
-      "answers": ["daily-outputs"],
+      "answers": [
+        "daily-outputs"
+      ],
       "explanation": "Le Daily Scrum inspecte la progression vers le Sprint Goal et adapte le Sprint Backlog si nécessaire, en ajustant le travail planifié.",
       "reference": "Daily Scrum",
       "errors": {
         "review-outputs": "La Sprint Review peut ajuster le Product Backlog ; c'est au Daily Scrum que les Developers ajustent le Sprint Backlog.",
-        "retro-outputs": "Les améliorations de la Sprint Retrospective peuvent être ajoutées au Sprint Backlog du prochain Sprint ; ajuster le Sprint Backlog en cours, c'est le Daily Scrum."
+        "retro-outputs": "Les améliorations de la Sprint Retrospective peuvent être ajoutées au Sprint Backlog du prochain Sprint ; ajuster le Sprint Backlog en cours, c'est le Daily Scrum.",
+        "daily-goal": "Adapter le Sprint Backlog fait partie de l'objectif du Daily Scrum ; le Sprint Backlog ajusté en est le résultat concret."
       }
     },
     {
       "id": "re-4h",
       "text": "4 heures maximum pour un Sprint d'un mois",
-      "answers": ["review-timebox"],
+      "answers": [
+        "review-timebox"
+      ],
       "explanation": "La Sprint Review est l'avant-dernier événement du Sprint ; elle est limitée à un maximum de quatre heures pour un Sprint d'un mois, et généralement plus courte pour un Sprint plus court.",
       "reference": "Sprint Review",
       "errors": {
@@ -237,7 +296,9 @@
     {
       "id": "re-pp",
       "text": "Les principales parties prenantes",
-      "answers": ["review-people"],
+      "answers": [
+        "review-people"
+      ],
       "explanation": "À la Sprint Review, la Scrum Team présente les résultats de son travail aux principales parties prenantes ; ensemble, ils passent en revue ce qui a été accompli et ce qui a changé, et collaborent sur la suite.",
       "reference": "Sprint Review",
       "errors": {
@@ -247,8 +308,10 @@
     },
     {
       "id": "re-inspecter",
-      "text": "Inspecter le résultat du Sprint et déterminer les adaptations futures",
-      "answers": ["review-goal"],
+      "text": "Inspecter le résultat du Sprint et adapter la suite",
+      "answers": [
+        "review-goal"
+      ],
       "explanation": "L'objectif de la Sprint Review est d'inspecter le résultat du Sprint et de déterminer les adaptations futures. C'est une session de travail, pas une simple présentation.",
       "reference": "Sprint Review",
       "errors": {
@@ -258,10 +321,12 @@
     },
     {
       "id": "re-increment",
-      "text": "Le résultat du Sprint : l'Increment",
-      "answers": ["review-inputs"],
-      "explanation": "La somme des Increments créés durant le Sprint est présentée à la Sprint Review. Un travail qui ne répond pas à la Definition of Done ne peut pas y être présenté.",
-      "reference": "Sprint Review, Increment",
+      "text": "Les Increments réalisés durant le Sprint",
+      "answers": [
+        "review-inputs"
+      ],
+      "explanation": "Plusieurs Increments peuvent être créés durant un Sprint ; leur somme est présentée à la Sprint Review. Un travail qui ne répond pas à la Definition of Done ne peut pas y être présenté.",
+      "reference": "Sprint Review, Increment, Engagement : Definition of Done",
       "errors": {
         "retro-inputs": "La Sprint Retrospective inspecte la façon dont le Sprint s'est déroulé ; l'Increment, lui, est inspecté à la Sprint Review."
       }
@@ -269,7 +334,9 @@
     {
       "id": "re-env",
       "text": "Ce qui a changé dans l'environnement",
-      "answers": ["review-inputs"],
+      "answers": [
+        "review-inputs"
+      ],
       "explanation": "Pendant la Sprint Review, la Scrum Team et les parties prenantes passent en revue ce qui a été accompli durant le Sprint et ce qui a changé dans leur environnement, pour décider de la suite.",
       "reference": "Sprint Review",
       "errors": {
@@ -279,7 +346,9 @@
     {
       "id": "re-progres",
       "text": "La progression vers le Product Goal",
-      "answers": ["review-inputs"],
+      "answers": [
+        "review-inputs"
+      ],
       "explanation": "À la Sprint Review, la Scrum Team présente les résultats de son travail aux principales parties prenantes et les progrès vers le Product Goal sont discutés.",
       "reference": "Sprint Review",
       "errors": {
@@ -288,29 +357,37 @@
     },
     {
       "id": "re-pbl",
-      "text": "Un Product Backlog ajusté",
-      "answers": ["review-outputs"],
+      "text": "Un Product Backlog ajusté aux nouvelles opportunités",
+      "answers": [
+        "review-outputs"
+      ],
       "explanation": "À la Sprint Review, le Product Backlog peut être ajusté pour répondre à de nouvelles opportunités.",
       "reference": "Sprint Review",
       "errors": {
         "daily-outputs": "Le Daily Scrum ajuste le Sprint Backlog ; c'est à la Sprint Review que le Product Backlog peut être ajusté avec les parties prenantes.",
-        "planning-outputs": "Le Sprint Planning produit le Sprint Backlog ; un Product Backlog ajusté aux nouvelles opportunités est un résultat de la Sprint Review."
+        "planning-outputs": "Le Sprint Planning produit le Sprint Backlog ; un Product Backlog ajusté aux nouvelles opportunités est un résultat de la Sprint Review.",
+        "planning-inputs": "Il alimentera le prochain Sprint Planning, mais c'est la Sprint Review qui l'ajuste ; l'entrée du Sprint Planning, ce sont les éléments les plus importants du Product Backlog."
       }
     },
     {
       "id": "re-decisions",
       "text": "Des décisions sur la suite à donner au produit",
-      "answers": ["review-outputs"],
+      "answers": [
+        "review-outputs"
+      ],
       "explanation": "À partir de ce qui a été accompli et de ce qui a changé, les participants à la Sprint Review collaborent sur la marche à suivre et sur les décisions à prendre.",
       "reference": "Sprint Review",
       "errors": {
-        "retro-outputs": "La Sprint Retrospective décide des améliorations de la façon de travailler ; la suite à donner au produit se décide à la Sprint Review."
+        "retro-outputs": "La Sprint Retrospective décide des améliorations de la façon de travailler ; la suite à donner au produit se décide à la Sprint Review.",
+        "review-goal": "Le but de la Sprint Review est d'inspecter le résultat et de déterminer les adaptations ; les décisions prises en sont la sortie."
       }
     },
     {
       "id": "rt-3h",
       "text": "3 heures maximum pour un Sprint d'un mois",
-      "answers": ["retro-timebox"],
+      "answers": [
+        "retro-timebox"
+      ],
       "explanation": "La Sprint Retrospective conclut le Sprint. Elle est limitée à un maximum de trois heures pour un Sprint d'un mois, et généralement plus courte pour un Sprint plus court.",
       "reference": "Sprint Retrospective",
       "errors": {
@@ -319,18 +396,23 @@
     },
     {
       "id": "rt-ameliorer",
-      "text": "Trouver des pistes pour améliorer la qualité et l'efficacité",
-      "answers": ["retro-goal"],
+      "text": "Améliorer la qualité et l'efficacité",
+      "answers": [
+        "retro-goal"
+      ],
       "explanation": "L'objectif de la Sprint Retrospective consiste à réfléchir à des pistes pour améliorer la qualité et l'efficacité.",
       "reference": "Sprint Retrospective",
       "errors": {
-        "review-goal": "La Sprint Review inspecte le produit et décide de la suite ; améliorer la qualité et l'efficacité de l'équipe est le but de la Sprint Retrospective."
+        "review-goal": "La Sprint Review inspecte le produit et décide de la suite ; améliorer la qualité et l'efficacité de l'équipe est le but de la Sprint Retrospective.",
+        "retro-outputs": "Chercher des pistes d'amélioration, c'est le but de la Sprint Retrospective ; ce qui en sort, ce sont les changements retenus."
       }
     },
     {
       "id": "rt-individus",
-      "text": "Les individus, interactions, processus et outils du dernier Sprint",
-      "answers": ["retro-inputs"],
+      "text": "Individus, interactions, processus et outils du dernier Sprint",
+      "answers": [
+        "retro-inputs"
+      ],
       "explanation": "La Scrum Team inspecte le déroulement du dernier Sprint en ce qui concerne les individus, les interactions, les processus, les outils et sa Definition of Done.",
       "reference": "Sprint Retrospective",
       "errors": {
@@ -339,8 +421,10 @@
     },
     {
       "id": "rt-bilan",
-      "text": "Ce qui s'est bien passé, les problèmes rencontrés et leur résolution",
-      "answers": ["retro-inputs"],
+      "text": "Ce qui a bien ou mal fonctionné pendant le Sprint",
+      "answers": [
+        "retro-inputs"
+      ],
       "explanation": "La Scrum Team discute de ce qui s'est bien passé durant le Sprint, des problèmes rencontrés et de la manière dont ces problèmes ont été (ou n'ont pas été) résolus.",
       "reference": "Sprint Retrospective",
       "errors": {
@@ -350,19 +434,24 @@
     },
     {
       "id": "rt-changements",
-      "text": "Les changements les plus utiles pour améliorer l'efficacité",
-      "answers": ["retro-outputs"],
+      "text": "Les changements retenus pour gagner en efficacité",
+      "answers": [
+        "retro-outputs"
+      ],
       "explanation": "La Scrum Team identifie les changements les plus utiles pour améliorer son efficacité. Les améliorations ayant le plus d'impact sont abordées dès que possible.",
       "reference": "Sprint Retrospective",
       "errors": {
-        "review-outputs": "La Sprint Review décide de la suite à donner au produit ; les changements pour améliorer l'efficacité de l'équipe sortent de la Sprint Retrospective."
+        "review-outputs": "La Sprint Review décide de la suite à donner au produit ; les changements pour améliorer l'efficacité de l'équipe sortent de la Sprint Retrospective.",
+        "retro-goal": "Le but est de chercher des pistes d'amélioration ; les changements retenus en sont le résultat."
       }
     },
     {
       "id": "rt-backlog",
-      "text": "Des améliorations, parfois ajoutées au Sprint Backlog suivant",
-      "answers": ["retro-outputs"],
-      "explanation": "Les améliorations ayant le plus d'impact sont abordées dès que possible ; elles peuvent même être ajoutées au Sprint Backlog du prochain Sprint.",
+      "text": "Des améliorations, parfois dans le prochain Sprint Backlog",
+      "answers": [
+        "retro-outputs"
+      ],
+      "explanation": "Les améliorations ayant le plus d'impact sont abordées dès que possible ; elles peuvent même être ajoutées au Sprint Backlog du prochain Sprint. Le guide 2020 ne l'impose plus.",
       "reference": "Sprint Retrospective",
       "errors": {
         "planning-inputs": "Ces améliorations peuvent finir dans le prochain Sprint Backlog, mais c'est la Sprint Retrospective qui les produit.",
@@ -371,18 +460,22 @@
     },
     {
       "id": "pg-questions",
-      "text": "Répondre à trois questions : hier, aujourd'hui, obstacles",
-      "answers": ["trap"],
-      "explanation": "Le Scrum Guide 2020 a supprimé les trois questions du Daily Scrum. Les Developers choisissent la structure et les techniques qu'ils souhaitent, à condition que le Daily Scrum se concentre sur la progression vers le Sprint Goal et produise un plan pour la prochaine journée.",
-      "reference": "Daily Scrum",
+      "text": "Les trois questions : hier, aujourd'hui, obstacles",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Le Scrum Guide 2020 a supprimé les trois questions du Daily Scrum. Les Developers choisissent la structure et les techniques qu'ils souhaitent, à condition que le Daily Scrum se concentre sur la progression vers le Sprint Goal et produise un plan pour la prochaine journée. Une équipe peut encore utiliser ces questions comme technique, mais ce n'est plus une règle de Scrum.",
+      "reference": "Daily Scrum, Changements entre les versions 2017 et 2020",
       "errors": {
         "daily-goal": "Ces trois questions figuraient dans les anciennes versions du guide ; la version 2020 les a supprimées. Le but du Daily Scrum est d'inspecter la progression vers le Sprint Goal."
       }
     },
     {
       "id": "pg-manager",
-      "text": "Faire un point d'avancement au manager",
-      "answers": ["trap"],
+      "text": "Rendre compte de l'avancement au manager",
+      "answers": [
+        "trap"
+      ],
       "explanation": "Aucun événement Scrum n'est un point d'avancement pour un manager. Le Daily Scrum est un événement des Developers, qui inspectent eux-mêmes leur progression vers le Sprint Goal et adaptent leur plan.",
       "reference": "Daily Scrum",
       "errors": {
@@ -393,30 +486,37 @@
     {
       "id": "pg-chef",
       "text": "Le manager des Developers",
-      "answers": ["trap"],
+      "answers": [
+        "trap"
+      ],
       "explanation": "Les événements Scrum ne prévoient pas de manager. La Scrum Team est autogérée : elle décide en interne qui fait quoi, quand et comment, et il n'y a pas de hiérarchie en son sein.",
       "reference": "Scrum Team",
       "errors": {
         "daily-people": "Le Daily Scrum est un événement pour les Developers ; aucun manager n'y est requis.",
-        "review-people": "La Sprint Review réunit la Scrum Team et les principales parties prenantes ; le guide ne prévoit pas de manager des Developers.",
+        "review-people": "Un manager peut venir à la Sprint Review comme partie prenante, mais le guide ne prévoit aucun manager des Developers : la Scrum Team est autogérée.",
         "planning-people": "Le Sprint Planning réunit toute la Scrum Team ; le guide ne prévoit pas de manager des Developers."
       }
     },
     {
       "id": "pg-assigner",
-      "text": "Assigner les tâches à chaque Developer",
-      "answers": ["trap"],
-      "explanation": "Au Sprint Planning, la façon de transformer les éléments du Product Backlog en Increment est laissée à la seule discrétion des Developers : personne d'autre ne leur dit comment faire.",
-      "reference": "Sprint Planning",
+      "text": "Le Scrum Master ou le Product Owner assigne les tâches aux Developers",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "La Scrum Team décide en interne qui fait quoi, quand et comment. Au Sprint Planning, la façon de transformer les éléments du Product Backlog en Increment est laissée à la seule discrétion des Developers : personne d'autre ne leur dit comment faire.",
+      "reference": "Sprint Planning, Scrum Team",
       "errors": {
         "planning-goal": "Le Sprint Planning définit pourquoi, quoi et comment, mais personne n'assigne de tâches : les Developers s'organisent eux-mêmes.",
-        "planning-outputs": "Le Sprint Planning produit un plan des Developers, pas une répartition imposée des tâches : la Scrum Team est autogérée."
+        "planning-outputs": "Le Sprint Planning produit un plan des Developers, pas une répartition imposée des tâches : la Scrum Team est autogérée.",
+        "daily-outputs": "Le plan du jour appartient aux Developers ; personne ne leur assigne de tâches."
       }
     },
     {
       "id": "pg-po-goal",
       "text": "Un Sprint Goal fixé par le Product Owner seul",
-      "answers": ["trap"],
+      "answers": [
+        "trap"
+      ],
       "explanation": "Au Sprint Planning, le Product Owner explique comment augmenter la valeur du produit, puis l'ensemble de la Scrum Team collabore à définir le Sprint Goal.",
       "reference": "Sprint Planning",
       "errors": {
@@ -425,21 +525,12 @@
       }
     },
     {
-      "id": "pg-demo",
-      "text": "Une démonstration du produit, sans échange avec les parties prenantes",
-      "answers": ["trap"],
-      "explanation": "La Sprint Review est une session de travail : la Scrum Team doit éviter de la limiter à une présentation. Les participants collaborent sur la marche à suivre.",
-      "reference": "Sprint Review",
-      "errors": {
-        "review-goal": "La Sprint Review n'est pas une démonstration à sens unique : c'est une session de travail où l'on décide ensemble de la suite.",
-        "review-inputs": "On y présente bien l'Increment, mais la Sprint Review est une session de travail avec les parties prenantes, pas une démonstration sans échange."
-      }
-    },
-    {
       "id": "pg-coupables",
-      "text": "Désigner les responsables des problèmes du Sprint",
-      "answers": ["trap"],
-      "explanation": "La Sprint Retrospective cherche des pistes pour améliorer la qualité et l'efficacité. Le respect et l'ouverture, valeurs de Scrum, excluent de chercher des coupables : la Scrum Team identifie les changements les plus utiles.",
+      "text": "Chercher les coupables des problèmes du Sprint",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "La Sprint Retrospective cherche des pistes pour améliorer la qualité et l'efficacité. Chercher des coupables va à l'encontre du respect et de l'ouverture, valeurs de Scrum : la Scrum Team identifie les changements les plus utiles.",
       "reference": "Sprint Retrospective, Valeurs Scrum",
       "errors": {
         "retro-goal": "La Sprint Retrospective cherche des améliorations, pas des coupables : les membres de la Scrum Team se respectent mutuellement.",
@@ -448,8 +539,10 @@
     },
     {
       "id": "pg-seul-plan",
-      "text": "Le seul moment où les Developers peuvent ajuster leur plan",
-      "answers": ["trap"],
+      "text": "Le seul moment pour ajuster le plan du Sprint",
+      "answers": [
+        "trap"
+      ],
       "explanation": "Le Daily Scrum n'est pas le seul moment où les Developers sont autorisés à ajuster leur plan : ils se réunissent souvent tout au long de la journée pour en discuter plus en détail.",
       "reference": "Daily Scrum",
       "errors": {
@@ -459,8 +552,10 @@
     {
       "id": "pg-seul-livrer",
       "text": "Le seul moment où l'on peut livrer un Increment",
-      "answers": ["trap"],
-      "explanation": "Un Increment peut être livré aux parties prenantes avant la fin du Sprint. La Sprint Review ne doit jamais être considérée comme le seul moment pour délivrer de la valeur.",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Un Increment peut être livré aux parties prenantes avant la fin du Sprint. La Sprint Review ne doit jamais être considérée comme le seul moment pour apporter de la valeur.",
       "reference": "Increment",
       "errors": {
         "review-goal": "La Sprint Review inspecte le résultat du Sprint, mais elle n'est jamais le seul moment pour livrer : un Increment peut être livré avant la fin du Sprint.",
@@ -469,8 +564,10 @@
     },
     {
       "id": "pg-qualite",
-      "text": "Revoir les objectifs de qualité à la baisse pour tenir le Sprint Goal",
-      "answers": ["trap"],
+      "text": "Baisser la qualité pour tenir le Sprint Goal",
+      "answers": [
+        "trap"
+      ],
       "explanation": "Durant le Sprint, les objectifs de qualité ne sont jamais revus à la baisse. Si le travail s'avère différent de ce qui était prévu, les Developers renégocient le périmètre avec le Product Owner.",
       "reference": "Sprint",
       "errors": {
@@ -481,18 +578,22 @@
     {
       "id": "pg-estimer",
       "text": "Estimer tous les éléments du Product Backlog",
-      "answers": ["trap"],
-      "explanation": "Au Sprint Planning, les Developers sélectionnent les éléments à inclure dans le Sprint et planifient leur réalisation. Le dimensionnement des éléments fait partie de l'affinement, une activité continue, et non d'un événement qui traiterait tout le Product Backlog.",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Au Sprint Planning, les Developers sélectionnent les éléments à inclure dans le Sprint et planifient leur réalisation. Le dimensionnement des éléments relève du refinement, une activité continue ; aucun événement n'a pour but d'estimer tout le Product Backlog.",
       "reference": "Sprint Planning, Product Backlog",
       "errors": {
-        "planning-goal": "Le Sprint Planning porte sur le travail du Sprint, pas sur tout le Product Backlog ; le dimensionnement se fait au fil de l'affinement, activité continue.",
+        "planning-goal": "Le Sprint Planning porte sur le travail du Sprint, pas sur tout le Product Backlog ; le dimensionnement se fait au fil du refinement, activité continue.",
         "review-outputs": "La Sprint Review peut ajuster le Product Backlog, mais elle n'a pas pour résultat d'estimer tous ses éléments."
       }
     },
     {
       "id": "pg-velocite",
-      "text": "Comparer la vélocité de l'équipe à celle des autres équipes",
-      "answers": ["trap"],
+      "text": "Comparer sa vélocité à celle des autres équipes",
+      "answers": [
+        "trap"
+      ],
       "explanation": "Le Scrum Guide ne parle ni de vélocité ni de comparaison entre équipes. La Sprint Retrospective inspecte la façon de travailler de la Scrum Team pour améliorer sa qualité et son efficacité.",
       "reference": "Sprint Retrospective",
       "errors": {
@@ -502,23 +603,53 @@
     },
     {
       "id": "pg-urgence",
-      "text": "Changer le Sprint Goal pour intégrer une demande urgente",
-      "answers": ["trap"],
+      "text": "Changer le Sprint Goal pour une demande urgente",
+      "answers": [
+        "trap"
+      ],
       "explanation": "Durant le Sprint, aucun changement n'est permis qui pourrait remettre en cause le Sprint Goal. Le périmètre peut être clarifié et renégocié avec le Product Owner ; si le Sprint Goal devient obsolète, seul le Product Owner peut annuler le Sprint.",
-      "reference": "Sprint",
+      "reference": "Sprint, Engagement : Sprint Goal",
       "errors": {
         "daily-outputs": "Le Daily Scrum peut adapter le Sprint Backlog, mais sans remettre en cause le Sprint Goal.",
         "review-outputs": "La Sprint Review peut ajuster le Product Backlog pour de nouvelles opportunités, mais le Sprint Goal du Sprint en cours ne change pas."
       }
     },
     {
-      "id": "pg-annuler",
-      "text": "Annuler le Sprint par un vote de la Scrum Team",
-      "answers": ["trap"],
-      "explanation": "Un Sprint peut être annulé si le Sprint Goal devient obsolète, mais seul le Product Owner a le pouvoir de l'annuler.",
-      "reference": "Sprint",
+      "id": "pg-valider",
+      "text": "Faire valider l'Increment par les parties prenantes",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Un élément du Product Backlog devient un Increment dès qu'il satisfait la Definition of Done. La Sprint Review n'est pas une recette : c'est une session de travail où l'on inspecte le résultat et décide de la suite.",
+      "reference": "Sprint Review, Engagement : Definition of Done",
       "errors": {
-        "sprint-goal": "Annuler un Sprint n'est pas son but, et seul le Product Owner peut le faire, si le Sprint Goal devient obsolète."
+        "review-goal": "La Sprint Review inspecte le résultat et décide de la suite ; elle ne valide pas l'Increment : c'est la Definition of Done qui fait d'un travail un Increment.",
+        "review-outputs": "La Sprint Review produit un Product Backlog ajusté et des décisions, pas une validation formelle de l'Increment."
+      }
+    },
+    {
+      "id": "pg-dor",
+      "text": "La Definition of Ready",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Le guide parle d'éléments du Product Backlog « prêts » à être traités en Sprint Planning après le refinement, mais il ne définit aucune Definition of Ready. Le seul engagement de ce type est la Definition of Done.",
+      "reference": "Product Backlog, Engagement : Definition of Done",
+      "errors": {
+        "planning-inputs": "Les éléments « prêts » arrivent au Sprint Planning, mais Scrum ne définit pas de Definition of Ready ; l'entrée formelle de ce type est la Definition of Done.",
+        "review-inputs": "Scrum ne définit pas de Definition of Ready ; ce qui conditionne la présentation à la Sprint Review, c'est la Definition of Done."
+      }
+    },
+    {
+      "id": "pg-refinement",
+      "text": "Le refinement, cinquième événement Scrum",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Scrum compte cinq événements : le Sprint et les quatre qu'il contient. Le refinement du Product Backlog n'en fait pas partie : c'est une activité continue, qui peut d'ailleurs se poursuivre pendant le Sprint Planning.",
+      "reference": "Théorie Scrum, Product Backlog",
+      "errors": {
+        "planning-goal": "Pendant le Sprint Planning, la Scrum Team affine bien les éléments sélectionnés, mais le refinement reste une activité continue, pas un événement."
       }
     }
   ]

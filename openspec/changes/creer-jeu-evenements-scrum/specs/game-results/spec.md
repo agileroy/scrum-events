@@ -28,9 +28,9 @@ Pendant la partie et à la fin, le jeu SHALL afficher le score collectif : le to
 L'écran de fin SHALL lister les cartes fausses, dans l'ordre où elles ont été jouées, avec pour chacune le texte de la carte, le prénom du joueur, la case choisie (ou « Temps écoulé »), la ou les bonnes cases et l'explication (voir `card-deck`). Si aucune carte n'est fausse, l'écran SHALL l'indiquer par un message de félicitations.
 
 #### Scenario: Revue des erreurs
-- **GIVEN** une partie terminée où Marc a placé « Assigner les tâches à chaque Developer » dans Sprint Planning × But
+- **GIVEN** une partie terminée où Marc a placé « Le Scrum Master ou le Product Owner assigne les tâches aux Developers » dans Daily Scrum × Sorties
 - **WHEN** le formateur affiche les résultats
-- **THEN** la carte figure dans le récapitulatif avec « Marc », « Sprint Planning · But », la bonne case « Piège » et l'explication ciblée pour Sprint Planning × But
+- **THEN** la carte figure dans le récapitulatif avec « Marc », « Daily Scrum · Sorties », la bonne case « Piège » et l'explication ciblée pour Daily Scrum × Sorties
 
 #### Scenario: Sans faute
 - **GIVEN** une partie terminée sans carte fausse

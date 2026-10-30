@@ -14,7 +14,7 @@ En formation PSM et PSPO, les confusions sur les événements Scrum reviennent t
 - **Fin de partie** : score de l'équipe, podium des trois meilleurs pourcentages, récapitulatif des erreurs et grille complète.
 - **Entraînement seul** depuis l'accueil, sans formateur ni Firebase : 10 cartes par défaut, au moins un piège, « Rejouer mes erreurs ».
 - **Mode démo** (`?demo`) : une partie partagée entre les onglets d'un même navigateur, sans Firebase.
-- **Paquet de 49 cartes (56 exemplaires, dont 14 pièges)** dans `site/data/cards.json`, relu par deux relecteurs indépendants puis validé par l'auteur ; vue de relecture générée dans `docs/cartes.md`.
+- **Paquet de 50 cartes (60 exemplaires, dont 15 pièges)** dans `site/data/cards.json`, relu par deux relecteurs indépendants puis validé par l'auteur ; vue de relecture générée dans `docs/cartes.md`.
 - Site statique sur GitHub Pages ; état partagé dans la base Firebase existante de l'auteur, dans une nouvelle branche `eventsGame`.
 
 Hors périmètre de cette première version : modification du paquet depuis l'interface, catégories configurables, verdict partiel (bon événement mais mauvaise catégorie), vote de la salle, autres langues, historique des parties, encart dans la boîte à outils (https://agileroy.github.io/outils/).

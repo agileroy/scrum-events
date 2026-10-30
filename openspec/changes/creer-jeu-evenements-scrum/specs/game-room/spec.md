@@ -40,27 +40,27 @@ L'écran du formateur SHALL afficher en grand le code de la salle, un QR code de
 Avant le lancement, le formateur SHALL choisir le nombre de cartes par personne et le chrono (sans chrono, 30, 45 ou 60 secondes ; sans chrono par défaut). Le nombre de cartes par personne SHALL aller de 1 au maximum possible : le plus grand nombre de cartes par personne qui permet de distribuer les mains de tous les participants, chacune avec exactement 1 piège à partir de 2 cartes (voir « Lancement et tirage ») ; 1 carte par personne reste toujours possible tant que le paquet compte au moins une carte par participant. Il SHALL valoir 5 par défaut (ou le maximum s'il est plus petit) et être ramené au nouveau maximum si un participant arrive. Le formateur SHALL pouvoir le changer avec les boutons − et +, ou en saisissant le nombre au clavier : la saisie est appliquée quand il valide (Entrée) ou quitte le champ, et une valeur hors bornes est ramenée dans [1, maximum]. Le bouton « Lancer la partie » SHALL être désactivé tant qu'aucun participant n'est présent.
 
 #### Scenario: Valeur par défaut
-- **GIVEN** un paquet de 56 exemplaires dont 14 pièges, et 4 participants présents
+- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, et 4 participants présents
 - **WHEN** le formateur ouvre les réglages
-- **THEN** le nombre de cartes par personne vaut 5, avec un maximum de 11
+- **THEN** le nombre de cartes par personne vaut 5, avec un maximum de 12
 
 #### Scenario: Maximum
-- **GIVEN** un paquet de 56 exemplaires dont 14 pièges, et 10 participants présents
+- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, et 10 participants présents
 - **WHEN** le formateur ouvre les réglages
 - **THEN** le nombre de cartes par personne vaut 5 et ne peut pas dépasser 6
 
 #### Scenario: Saisie au clavier
-- **GIVEN** un paquet de 56 exemplaires dont 14 pièges, et 4 participants présents
+- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, et 4 participants présents
 - **WHEN** le formateur saisit 8 dans le champ puis appuie sur Entrée
 - **THEN** le nombre de cartes par personne vaut 8 pour tout le monde
 
 #### Scenario: Saisie hors bornes
-- **GIVEN** un paquet de 56 exemplaires dont 14 pièges, et 4 participants présents
+- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, et 4 participants présents
 - **WHEN** le formateur saisit 40 puis quitte le champ
-- **THEN** le nombre de cartes par personne est ramené à 11
+- **THEN** le nombre de cartes par personne est ramené à 12
 
 #### Scenario: Ajustement à l'arrivée d'un participant
-- **GIVEN** un paquet de 56 exemplaires dont 14 pièges, 7 participants et le réglage à 7 cartes par personne
+- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, 7 participants et le réglage à 7 cartes par personne
 - **WHEN** un huitième participant arrive
 - **THEN** le réglage est ramené à 6 cartes par personne
 

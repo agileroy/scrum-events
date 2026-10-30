@@ -42,7 +42,7 @@ Dépôt neuf, construit sur le code de `roles-responsabilites` (version du 30 oc
 
 - **Règles de sécurité** : la branche `eventsGame` reprend celle de `rolesGame` (formateur seul maître des réglages, des tours et des résultats ; joueur actif seul à piocher dans sa main, sélectionner et placer ; chrono ; prénoms uniques ; ménage au-delà de 24 heures), avec la liste exacte des 23 cases valides dans une expression régulière et le verdict limité à `right|wrong`. Un test compare cette liste à `CELLS` de `game-core.js`. Les autres branches ne changent pas ; le fichier complet est donné à l'auteur pour la console Firebase et recopié dans les cinq autres dépôts.
 
-- **Paquet** : 49 cartes, 56 exemplaires, 14 pièges (25 %). Avec 10 participants, le maximum reste de 5 cartes par personne avec un piège chacun (56 ≥ 50, et 42 cartes non piège ≥ 40). Pas de piège sur les timebox ni de carte sur les personnes facultatives (invités du Sprint Planning, PO et SM au Daily), à la demande de l'auteur. Relecture par deux agents indépendants (fidélité au guide ; jouabilité et clarté), puis validation de l'auteur sur `docs/cartes.md`.
+- **Paquet** : 50 cartes, 60 exemplaires, 15 pièges (25 %). Avec 10 participants, le maximum reste de 5 cartes par personne avec un piège chacun (60 ≥ 50, et 45 cartes non piège ≥ 40). Pas de piège sur les timebox ni de carte sur les personnes facultatives (invités du Sprint Planning, PO et SM au Daily), à la demande de l'auteur. Relecture par deux agents indépendants (fidélité au guide ; jouabilité et clarté), puis validation de l'auteur sur `docs/cartes.md`.
 
 ## Risks / Trade-offs
 
