@@ -14,7 +14,7 @@ const lines = [
   `Source : ${deck.source}. Fichier source : \`site/data/cards.json\` (ce document est généré, ne pas le modifier).`,
   '',
   `${deck.cards.length} cartes différentes, soit ${stats.total} exemplaires dont ${stats.traps} pièges.`,
-  'Une carte par case. Quand deux cases ont le même contenu, la carte existe en deux exemplaires, chacun juste dans l\'une de ces cases tant qu\'elle est libre.',
+  'Une carte par case. Quand deux cases ont le même contenu, la carte existe en deux exemplaires, chacun juste dans la colonne de l\'une de ces cases tant qu\'elle est libre. En jeu, la bonne colonne suffit : la carte rejoint sa case.',
   '',
   '## Grille complète',
   '',

@@ -3,7 +3,7 @@
 Source : Scrum Guide 2020, traduction française officielle (novembre 2020). Fichier source : `site/data/cards.json` (ce document est généré, ne pas le modifier).
 
 30 cartes différentes, soit 32 exemplaires dont 10 pièges.
-Une carte par case. Quand deux cases ont le même contenu, la carte existe en deux exemplaires, chacun juste dans l'une de ces cases tant qu'elle est libre.
+Une carte par case. Quand deux cases ont le même contenu, la carte existe en deux exemplaires, chacun juste dans la colonne de l'une de ces cases tant qu'elle est libre. En jeu, la bonne colonne suffit : la carte rejoint sa case.
 
 ## Grille complète
 
