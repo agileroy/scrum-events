@@ -70,12 +70,12 @@ Au début de la partie, chaque case active SHALL être face cachée. Quand une c
 
 #### Scenario: Première carte juste
 - **GIVEN** la case Sprint Planning × Timebox encore face cachée
-- **WHEN** la carte « 8 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court » y est placée et jugée « Juste »
+- **WHEN** la carte « 8 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court » y est placée et jugée « Juste »
 - **THEN** la case se retourne sur tous les écrans et l'écran projeté y affiche le texte de la carte
 
 #### Scenario: Carte fausse
 - **GIVEN** la case Sprint Review × Timebox encore face cachée
-- **WHEN** la carte « 3 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court » y est placée et jugée « Faux »
+- **WHEN** la carte « 3 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court » y est placée et jugée « Faux »
 - **THEN** la case reste face cachée
 
 ### Requirement: Passage à la carte suivante

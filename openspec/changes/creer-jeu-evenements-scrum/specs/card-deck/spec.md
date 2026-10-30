@@ -22,7 +22,7 @@ Le paquet SHALL être un fichier JSON du site (`site/data/cards.json`). Chaque c
 - **THEN** ils échouent en signalant la case inconnue
 
 ### Requirement: Une carte par case
-Chaque case active SHALL recevoir exactement une carte, dont le texte regroupe tout l'essentiel du Scrum Guide 2020 pour cette case (par exemple, pour Sprint × But : « Atteindre le Sprint Goal, son unique but, en transformant les idées en valeur »). Quand deux cases ont exactement le même contenu, la carte SHALL exister en autant d'exemplaires, identifiés par l'identifiant de la carte suivi de `-1`, `-2` : chaque exemplaire est distribué et joué comme une carte à part entière, et il est juste dans l'une de ces cases tant qu'elle est libre. Une carte en plusieurs exemplaires MAY avoir une explication propre à chaque case. Les tests automatiques MUST refuser un paquet où une case active reçoit plus d'une carte.
+Chaque case active SHALL recevoir exactement une carte, dont le texte regroupe tout l'essentiel du Scrum Guide 2020 pour cette case (par exemple, pour Sprint × But : « Atteindre le Sprint Goal en transformant les idées en valeur »). Quand deux cases ont exactement le même contenu, la carte SHALL exister en autant d'exemplaires, identifiés par l'identifiant de la carte suivi de `-1`, `-2` : chaque exemplaire est distribué et joué comme une carte à part entière, et il est juste dans l'une de ces cases tant qu'elle est libre. Une carte en plusieurs exemplaires MAY avoir une explication propre à chaque case. Les tests automatiques MUST refuser un paquet où une case active reçoit plus d'une carte.
 
 #### Scenario: Deux exemplaires
 - **GIVEN** la carte « Toute la Scrum Team », dont les bonnes cases sont Sprint Planning × Personnes requises et Sprint Retrospective × Personnes requises
@@ -38,7 +38,7 @@ Chaque case active SHALL recevoir exactement une carte, dont le texte regroupe t
 Le verdict d'une carte SHALL être « Juste » si la case choisie est l'une de ses bonnes cases et qu'elle est encore libre, et « Faux » sinon, y compris quand la carte est placée dans la zone Piège alors qu'elle n'est pas un piège, ou dans une case alors qu'elle est un piège. Une case déjà remplie par une carte juste MUST NOT pouvoir être choisie. Il n'y a pas de verdict partiel.
 
 #### Scenario: Mauvaise colonne
-- **GIVEN** la carte « 8 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court », dont la bonne case est Sprint Planning × Timebox
+- **GIVEN** la carte « 8 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court », dont la bonne case est Sprint Planning × Timebox
 - **WHEN** elle est placée dans Sprint Review × Timebox
 - **THEN** le verdict est « Faux »
 

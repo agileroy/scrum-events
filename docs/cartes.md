@@ -9,31 +9,32 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 
 | | Sprint | Sprint Planning | Daily Scrum | Sprint Review | Sprint Retrospective |
 |---|---|---|---|---|---|
-| **Timebox** | Un mois maximum, durée fixe ; le Sprint suivant démarre aussitôt | 8 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court | 15 minutes, chaque jour ouvré, à la même heure et au même lieu | 4 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court | 3 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court |
+| **Timebox** | Un mois ou moins, durée fixe ; le suivant démarre dès la fin du précédent | 8 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court | 15 minutes, chaque jour ouvré, à la même heure et au même lieu | 4 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court | 3 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court |
 | **Personnes requises** | *(grisée)* | Toute la Scrum Team | Les Developers | La Scrum Team et les principales parties prenantes | Toute la Scrum Team |
-| **But** | Atteindre le Sprint Goal, son unique but, en transformant les idées en valeur | Lancer le Sprint : pourquoi il est important, ce qui peut être fait, comment le réaliser | Inspecter la progression vers le Sprint Goal et adapter le Sprint Backlog si nécessaire | Inspecter le résultat du Sprint et déterminer les adaptations futures | Trouver des pistes pour améliorer la qualité et l'efficacité |
-| **Entrées** | *(grisée)* | Le Product Backlog et le Product Goal, la capacité à venir et les performances passées, la Definition of Done | Le Sprint Backlog : Sprint Goal, éléments sélectionnés et plan pour les livrer | Les Increments du Sprint, les changements de l'environnement, la progression vers le Product Goal | Le dernier Sprint : individus, interactions, processus, outils et Definition of Done |
+| **But** | Atteindre le Sprint Goal en transformant les idées en valeur | Lancer le Sprint : pourquoi il est important, ce qui peut être fait et comment | Inspecter la progression vers le Sprint Goal et adapter le Sprint Backlog si nécessaire | Inspecter le résultat du Sprint et déterminer les adaptations futures | Trouver des pistes pour améliorer la qualité et l'efficacité |
+| **Entrées** | *(grisée)* | Product Backlog, Product Goal, capacité, performances passées, Definition of Done | Le Sprint Backlog : Sprint Goal, éléments sélectionnés et plan pour les livrer | Les Increments, les changements de l'environnement, la progression vers le Product Goal | Le dernier Sprint : individus, interactions, processus, outils et Definition of Done |
 | **Sorties** | *(grisée)* | Le Sprint Backlog : Sprint Goal, éléments sélectionnés et plan pour les livrer | Un plan d'action pour la prochaine journée de travail | Des décisions sur la suite du produit et un Product Backlog ajusté si nécessaire | Les changements les plus utiles, parfois ajoutés au prochain Sprint Backlog |
 
 ## Sprint
 
-### sp-timebox · Un mois maximum, durée fixe ; le Sprint suivant démarre aussitôt
+### sp-timebox · Un mois ou moins, durée fixe ; le suivant démarre dès la fin du précédent
 
 **Explication** (Sprint) : Les Sprints sont des événements d'une durée fixe, d'un mois ou moins, pour créer une cohérence. Un nouveau Sprint commence immédiatement après la fin du précédent.
 
 - Si placée en **Sprint Planning · Timebox** : Le Sprint Planning dure au plus 8 heures pour un Sprint d'un mois : c'est le Sprint lui-même qui dure un mois ou moins.
 
-### sp-but · Atteindre le Sprint Goal, son unique but, en transformant les idées en valeur
+### sp-but · Atteindre le Sprint Goal en transformant les idées en valeur
 
 **Explication** (Sprint, Engagement : Sprint Goal) : Le Sprint Goal est l'unique but du Sprint. Les Sprints sont au cœur de Scrum : c'est là que les idées sont transformées en valeur, avec une inspection et une adaptation de la progression vers le Product Goal au moins une fois par mois.
 
 - Si placée en **Sprint Planning · But** : Le Sprint Planning crée le Sprint Goal, mais l'atteindre est le but de tout le Sprint.
 - Si placée en **Sprint Review · But** : La Sprint Review inspecte le résultat du Sprint ; atteindre le Sprint Goal est le but du Sprint lui-même.
 - Si placée en **Sprint Planning · Sorties** : Le Sprint Goal est bien créé au Sprint Planning, mais cette carte décrit le but du Sprint : l'atteindre en transformant les idées en valeur.
+- Si placée en **Daily Scrum · But** : Le Daily Scrum inspecte la progression vers le Sprint Goal ; l'atteindre est le but du Sprint tout entier.
 
 ## Sprint Planning
 
-### pl-timebox · 8 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court
+### pl-timebox · 8 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court
 
 **Explication** (Sprint Planning) : Le Sprint Planning est limité à un maximum de huit heures pour un Sprint d'un mois. Pour un Sprint plus court, l'événement est généralement plus court.
 
@@ -50,14 +51,14 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 - Si placée en **Daily Scrum · Personnes requises** : Le Daily Scrum est un événement pour les Developers ; le Product Owner et le Scrum Master n'y participent qu'en tant que Developers, s'ils travaillent activement sur des éléments du Sprint Backlog.
 - Si placée en **Sprint Review · Personnes requises** : La Sprint Review réunit la Scrum Team, mais aussi les principales parties prenantes, à qui elle présente les résultats de son travail.
 
-### pl-but · Lancer le Sprint : pourquoi il est important, ce qui peut être fait, comment le réaliser
+### pl-but · Lancer le Sprint : pourquoi il est important, ce qui peut être fait et comment
 
 **Explication** (Sprint Planning) : Le Sprint Planning lance le Sprint en présentant le travail à effectuer. Il aborde trois thèmes : pourquoi ce Sprint est important (le Sprint Goal), ce qui peut être fait, et comment le travail choisi sera réalisé.
 
 - Si placée en **Daily Scrum · But** : Le Daily Scrum adapte le plan au fil du Sprint ; les thèmes pourquoi, quoi et comment sont ceux du Sprint Planning.
 - Si placée en **Sprint · But** : Le but du Sprint est d'atteindre le Sprint Goal ; c'est le Sprint Planning qui lance le Sprint en définissant pourquoi, quoi et comment.
 
-### pl-entrees · Le Product Backlog et le Product Goal, la capacité à venir et les performances passées, la Definition of Done
+### pl-entrees · Product Backlog, Product Goal, capacité, performances passées, Definition of Done
 
 **Explication** (Sprint Planning) : Le Product Owner veille à ce que les participants soient prêts à discuter des éléments les plus importants du Product Backlog et de leur lien avec le Product Goal. Plus les Developers connaissent leurs performances passées, leur capacité à venir et leur Definition of Done, mieux ils peuvent prévoir ce qu'ils accompliront.
 
@@ -94,18 +95,19 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 
 - Si placée en **Sprint Review · But** : La Sprint Review inspecte le résultat du Sprint avec les parties prenantes ; la progression vers le Sprint Goal s'inspecte chaque jour, au Daily Scrum.
 - Si placée en **Daily Scrum · Sorties** : Adapter le Sprint Backlog fait partie du but du Daily Scrum ; ce qui en sort concrètement, c'est le plan d'action pour la prochaine journée.
+- Si placée en **Sprint · But** : Le Sprint vise à atteindre le Sprint Goal ; en inspecter la progression chaque jour, c'est le but du Daily Scrum.
 
 ### da-sorties · Un plan d'action pour la prochaine journée de travail
 
 **Explication** (Daily Scrum) : Le Daily Scrum se concentre sur la progression vers le Sprint Goal et produit un plan d'action pour la prochaine journée de travail.
 
 - Si placée en **Sprint Planning · Sorties** : Le Sprint Planning produit le plan de tout le Sprint ; le plan de la prochaine journée sort du Daily Scrum.
-- Si placée en **Sprint Review · Sorties** : La Sprint Review peut ajuster le Product Backlog ; le Sprint Backlog, lui, est ajusté par les Developers tout au long du Sprint, notamment au Daily Scrum.
+- Si placée en **Sprint Review · Sorties** : La Sprint Review ajuste le Product Backlog ; le plan de la prochaine journée sort du Daily Scrum.
 - Si placée en **Daily Scrum · But** : Le but du Daily Scrum est d'inspecter la progression vers le Sprint Goal ; le plan d'action pour la journée en est la sortie.
 
 ## Sprint Review
 
-### re-timebox · 4 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court
+### re-timebox · 4 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court
 
 **Explication** (Sprint Review) : La Sprint Review est l'avant-dernier événement du Sprint ; elle est limitée à un maximum de quatre heures pour un Sprint d'un mois. Pour un Sprint plus court, l'événement est généralement plus court.
 
@@ -117,7 +119,7 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 **Explication** (Sprint Review) : À la Sprint Review, la Scrum Team présente les résultats de son travail aux principales parties prenantes ; ensemble, ils passent en revue ce qui a été accompli et ce qui a changé, et collaborent sur la suite.
 
 - Si placée en **Sprint Planning · Personnes requises** : La Scrum Team peut inviter d'autres personnes au Sprint Planning pour des conseils, mais ce n'est pas requis ; les principales parties prenantes sont attendues à la Sprint Review.
-- Si placée en **Sprint Retrospective · Personnes requises** : La Sprint Retrospective est un événement de la Scrum Team pour améliorer sa façon de travailler ; les principales parties prenantes sont attendues à la Sprint Review.
+- Si placée en **Sprint Retrospective · Personnes requises** : La Sprint Retrospective réunit la Scrum Team, pour améliorer sa façon de travailler ; les principales parties prenantes sont attendues à la Sprint Review.
 
 ### re-but · Inspecter le résultat du Sprint et déterminer les adaptations futures
 
@@ -126,7 +128,7 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 - Si placée en **Sprint Retrospective · But** : La Sprint Retrospective inspecte la façon de travailler de l'équipe ; le résultat du Sprint, le produit, s'inspecte à la Sprint Review.
 - Si placée en **Daily Scrum · But** : Le Daily Scrum inspecte la progression vers le Sprint Goal pendant le Sprint ; le résultat du Sprint s'inspecte à la Sprint Review.
 
-### re-entrees · Les Increments du Sprint, les changements de l'environnement, la progression vers le Product Goal
+### re-entrees · Les Increments, les changements de l'environnement, la progression vers le Product Goal
 
 **Explication** (Sprint Review, Increment) : À la Sprint Review, la Scrum Team et les parties prenantes passent en revue ce qui a été accompli durant le Sprint (la somme des Increments) et ce qui a changé dans leur environnement ; les progrès vers le Product Goal sont discutés.
 
@@ -140,10 +142,11 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 - Si placée en **Sprint Retrospective · Sorties** : La Sprint Retrospective décide des améliorations de la façon de travailler ; la suite à donner au produit se décide à la Sprint Review.
 - Si placée en **Daily Scrum · Sorties** : Le Daily Scrum adapte le Sprint Backlog ; ajuster le Product Backlog pour répondre aux nouvelles opportunités est une sortie de la Sprint Review.
 - Si placée en **Sprint Review · But** : Le but de la Sprint Review est d'inspecter et de déterminer les adaptations ; le Product Backlog ajusté et les décisions en sont la sortie.
+- Si placée en **Sprint Planning · Entrées** : Le Product Backlog ajusté alimente bien le prochain Sprint Planning, mais il sort de la Sprint Review.
 
 ## Sprint Retrospective
 
-### rt-timebox · 3 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court
+### rt-timebox · 3 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court
 
 **Explication** (Sprint Retrospective) : La Sprint Retrospective conclut le Sprint. Elle est limitée à un maximum de trois heures pour un Sprint d'un mois. Pour un Sprint plus court, l'événement est généralement plus court.
 
@@ -171,6 +174,7 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 - Si placée en **Sprint Review · Sorties** : La Sprint Review décide de la suite à donner au produit ; les changements pour améliorer l'efficacité de l'équipe sortent de la Sprint Retrospective.
 - Si placée en **Sprint Planning · Entrées** : Ces améliorations peuvent alimenter le prochain Sprint Backlog, mais elles sont produites par la Sprint Retrospective : c'est leur case.
 - Si placée en **Sprint Retrospective · But** : Le but est de chercher des pistes d'amélioration ; les changements retenus en sont le résultat.
+- Si placée en **Sprint Planning · Sorties** : Ces changements peuvent rejoindre le prochain Sprint Backlog, mais ils sortent de la Sprint Retrospective ; le Sprint Planning produit le Sprint Backlog dans son ensemble.
 
 ## Pièges (10)
 
@@ -179,6 +183,7 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 **Explication** (Daily Scrum, Changements entre les versions 2017 et 2020) : Le Scrum Guide 2020 a supprimé les trois questions du Daily Scrum. Les Developers choisissent la structure et les techniques qu'ils souhaitent, à condition que le Daily Scrum se concentre sur la progression vers le Sprint Goal et produise un plan pour la prochaine journée. Une équipe peut encore utiliser ces questions comme technique, mais ce n'est plus une règle de Scrum.
 
 - Si placée en **Daily Scrum · But** : Ces trois questions figuraient dans les anciennes versions du guide ; la version 2020 les a supprimées. Le but du Daily Scrum est d'inspecter la progression vers le Sprint Goal.
+- Si placée en **Daily Scrum · Entrées** : Les trois questions ne sont plus prescrites ; au Daily Scrum, les Developers inspectent le Sprint Backlog et la progression vers le Sprint Goal.
 
 ### pg-chef · Le manager des Developers
 
@@ -187,13 +192,14 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 - Si placée en **Daily Scrum · Personnes requises** : Le Daily Scrum est un événement pour les Developers ; aucun manager n'y est requis.
 - Si placée en **Sprint Review · Personnes requises** : Un manager peut venir à la Sprint Review comme partie prenante, mais le guide ne prévoit aucun manager des Developers : la Scrum Team est autogérée.
 - Si placée en **Sprint Planning · Personnes requises** : Le Sprint Planning réunit toute la Scrum Team ; le guide ne prévoit pas de manager des Developers.
+- Si placée en **Sprint Retrospective · Personnes requises** : La Sprint Retrospective réunit la Scrum Team ; le guide ne prévoit pas de manager des Developers.
 
-### pg-assigner · Le Scrum Master ou le Product Owner assigne les tâches aux Developers
+### pg-assigner · Les tâches réparties entre les Developers par le Scrum Master
 
 **Explication** (Sprint Planning, Scrum Team) : La Scrum Team décide en interne qui fait quoi, quand et comment. Au Sprint Planning, la façon de transformer les éléments du Product Backlog en Increment est laissée à la seule discrétion des Developers : personne d'autre ne leur dit comment faire.
 
 - Si placée en **Sprint Planning · But** : Le Sprint Planning définit pourquoi, quoi et comment, mais personne n'assigne de tâches : les Developers s'organisent eux-mêmes.
-- Si placée en **Sprint Planning · Sorties** : Le Sprint Planning produit un plan des Developers, pas une répartition imposée des tâches : la Scrum Team est autogérée.
+- Si placée en **Sprint Planning · Sorties** : Le Sprint Planning produit le plan des Developers, pas une répartition des tâches décidée par le Scrum Master : la Scrum Team est autogérée.
 - Si placée en **Daily Scrum · Sorties** : Le plan du jour appartient aux Developers ; personne ne leur assigne de tâches.
 
 ### pg-po-goal · Un Sprint Goal fixé par le Product Owner seul
@@ -202,13 +208,14 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 
 - Si placée en **Sprint Planning · Sorties** : Le Sprint Goal est bien un résultat du Sprint Planning, mais il est défini par toute la Scrum Team, pas par le Product Owner seul.
 - Si placée en **Sprint Planning · Entrées** : Le Sprint Goal n'est pas imposé par le Product Owner avant l'événement : toute la Scrum Team le définit pendant le Sprint Planning.
+- Si placée en **Sprint Planning · But** : Le Sprint Planning définit bien le Sprint Goal, mais toute la Scrum Team y collabore, pas le Product Owner seul.
 
-### pg-coupables · Chercher les coupables des problèmes du Sprint
+### pg-obligatoire · Au moins une amélioration ajoutée obligatoirement au prochain Sprint Backlog
 
-**Explication** (Sprint Retrospective, Valeurs Scrum) : La Sprint Retrospective cherche des pistes pour améliorer la qualité et l'efficacité : elle explore l'origine des problèmes (hypothèses, processus, outils), pas des coupables. Les membres de la Scrum Team se respectent mutuellement, valeur de Scrum.
+**Explication** (Sprint Retrospective, Changements entre les versions 2017 et 2020) : Le guide 2017 imposait d'inclure au moins une amélioration dans le Sprint Backlog suivant. Le guide 2020 dit seulement que les améliorations ayant le plus d'impact peuvent même être ajoutées au Sprint Backlog du prochain Sprint.
 
-- Si placée en **Sprint Retrospective · But** : La Sprint Retrospective cherche des améliorations, pas des coupables : les membres de la Scrum Team se respectent mutuellement.
-- Si placée en **Sprint Retrospective · Sorties** : La Sprint Retrospective produit des améliorations, pas une liste de coupables.
+- Si placée en **Sprint Retrospective · Sorties** : La Sprint Retrospective identifie les changements les plus utiles ; les ajouter au prochain Sprint Backlog est possible, pas obligatoire.
+- Si placée en **Sprint Planning · Entrées** : Rien n'oblige à ajouter une amélioration au Sprint Backlog ; le guide 2020 le permet seulement.
 
 ### pg-valider · Faire valider l'Increment par les parties prenantes
 
@@ -224,11 +231,12 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 - Si placée en **Sprint Planning · Entrées** : Les éléments « prêts » arrivent au Sprint Planning, mais Scrum ne définit pas de Definition of Ready ; l'entrée formelle de ce type est la Definition of Done.
 - Si placée en **Sprint Review · Entrées** : Scrum ne définit pas de Definition of Ready ; ce qui conditionne la présentation à la Sprint Review, c'est la Definition of Done.
 
-### pg-refinement · Le refinement, cinquième événement Scrum
+### pg-refinement · Les éléments validés lors de l'événement de refinement
 
 **Explication** (Théorie Scrum, Product Backlog) : Scrum compte cinq événements : le Sprint et les quatre qu'il contient. Le refinement du Product Backlog n'en fait pas partie : c'est une activité continue, qui peut d'ailleurs se poursuivre pendant le Sprint Planning.
 
 - Si placée en **Sprint Planning · But** : Pendant le Sprint Planning, la Scrum Team affine bien les éléments sélectionnés, mais le refinement reste une activité continue, pas un événement.
+- Si placée en **Sprint Planning · Entrées** : Des éléments affinés arrivent bien au Sprint Planning, mais le refinement est une activité continue, pas un événement Scrum.
 
 ### pg-urgence · Changer le Sprint Goal pour une demande urgente
 
@@ -237,7 +245,7 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 - Si placée en **Daily Scrum · Sorties** : Le Daily Scrum peut adapter le Sprint Backlog, mais sans remettre en cause le Sprint Goal.
 - Si placée en **Sprint Review · Sorties** : La Sprint Review peut ajuster le Product Backlog pour de nouvelles opportunités, mais le Sprint Goal du Sprint en cours ne change pas.
 
-### pg-qualite · Baisser la qualité pour tenir le Sprint Goal
+### pg-qualite · Reporter les tests au Sprint suivant pour tenir le Sprint Goal
 
 **Explication** (Sprint) : Durant le Sprint, les objectifs de qualité ne sont jamais revus à la baisse. Si le travail s'avère différent de ce qui était prévu, les Developers renégocient le périmètre avec le Product Owner.
 

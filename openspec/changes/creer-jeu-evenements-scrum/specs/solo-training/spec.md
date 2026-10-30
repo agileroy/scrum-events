@@ -25,7 +25,7 @@ Les cartes d'un entraînement SHALL être tirées au hasard parmi tous les exemp
 Chaque carte SHALL se jouer comme en groupe : carte face cachée à toucher pour la retourner, choix d'une case libre de la grille ou de la zone Piège, au toucher modifiable jusqu'à « Valider » ou par glisser-déposer, puis correction (verdict, case choisie, bonnes cases mises en évidence, explication ciblée et explication générale, référence au Scrum Guide 2020), selon les mêmes règles de verdict que la partie en groupe (voir `card-deck`). Les cases SHALL se retourner et se remplir comme en groupe (voir `game-turn`). Il n'y a pas de chrono. Après la correction, un bouton « Carte suivante » SHALL passer à la carte suivante ; après la dernière carte, il SHALL devenir « Voir les résultats ». L'écran SHALL indiquer la progression (« Carte 3 sur 10 ») et le score en cours. Un lien « Arrêter » SHALL permettre, après confirmation, d'afficher les résultats des cartes déjà jouées.
 
 #### Scenario: Correction d'une carte
-- **GIVEN** un entraînement en cours, avec la carte « 4 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court » retournée
+- **GIVEN** un entraînement en cours, avec la carte « 4 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court » retournée
 - **WHEN** l'utilisateur la place dans Sprint Planning × Timebox et clique sur « Valider »
 - **THEN** la correction affiche « Faux », la bonne case Sprint Review × Timebox et l'explication ciblée pour le Sprint Planning, puis le bouton « Carte suivante »
 
