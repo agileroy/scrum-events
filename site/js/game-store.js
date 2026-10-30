@@ -6,7 +6,7 @@ import {
   MAX_PLAYERS, ROOM_TTL_MS, TIMER_CHOICES, TIMER_GRACE_MS, generateCode, isValidCode, normalizeCode, normalizeName,
   validateName, nameKey, shuffle, asList, nextPlayer, lateQuota, maxCardsPerPlayer, clampCardsPerPlayer, verdict,
   dealHands, undealtCards, playedCounts,
-  resultList, isCell, deckStats, occupiedBefore,
+  resultList, isCell, deckStats, occupiedBefore, resolvePlacement,
 } from './game-core.js?v=__VERSION__';
 
 export const ROOT = 'eventsGame';
@@ -138,10 +138,12 @@ export function createGameStore(db, { random = cryptoRandom } = {}) {
       if (!turn || turn.revealed || !turn.cardId) return false;
       const card = cardsById[turn.cardId];
       const timedOut = !turn.placement;
-      const cell = turn.placement ?? null;
-      const result = {
-        playerUid: turn.playerUid, cardId: turn.cardId, cell, verdict: card ? verdict(cell, card, occupiedBefore(room.results, cardsById, turn.seq)) : 'wrong', timedOut,
-      };
+      // La colonne suffit : une carte juste rejoint sa bonne case de la colonne choisie.
+      const placed = card
+        ? resolvePlacement(turn.placement ?? null, card, occupiedBefore(room.results, cardsById, turn.seq))
+        : { cell: turn.placement ?? null, verdict: 'wrong' };
+      const cell = placed.cell ?? null;
+      const result = { playerUid: turn.playerUid, cardId: turn.cardId, cell, verdict: placed.verdict, timedOut };
       if (cell === null) delete result.cell;
       await db.update(roomPath(code), { [`results/${turn.seq}`]: result, 'turn/revealed': true });
       return true;

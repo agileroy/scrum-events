@@ -521,3 +521,30 @@ body.is-dragging .flip-card.is-draggable { opacity: 0.45; }
 }
 .cell.is-drop-target .cell-face { box-shadow: inset 0 0 0 4px var(--accent); }
 .cell-trap.is-drop-target { border-style: solid; background: var(--region-hover); }
+
+/* Colonne choisie ou survolée : la colonne suffit pour placer une carte */
+.grid-event.is-selected, .grid-event.is-drop-target { background: var(--region-selected); border-radius: 8px 8px 0 0; }
+.cell.is-selected .cell-face { background: var(--region-selected); box-shadow: inset 0 0 0 2px var(--text); }
+.cell.is-drop-target .cell-face { background: var(--region-selected); box-shadow: inset 0 0 0 3px var(--accent); }
+.cell.is-filled.is-selected .cell-front, .cell.is-filled.is-drop-target .cell-front { color: var(--text); }
+
+/* Carte révélée après une erreur : indicateur coloré */
+.cell-flag { display: none; }
+.cell.is-mistake .cell-front { border-top-color: var(--wrong-text); background: var(--wrong-bg); }
+.cell.is-mistake .cell-flag {
+  display: inline-block; align-self: flex-start; margin-top: auto; padding: 1px 8px; border-radius: 999px;
+  background: var(--wrong-text); color: var(--wrong-bg); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.02em;
+}
+.cell.is-mistake.is-correct .cell-front { background: var(--wrong-bg); box-shadow: inset 0 0 0 3px var(--wrong-text); }
+.cell-cards li.is-mistake { color: var(--wrong-text); }
+.trap-list .cell-cards li.is-mistake::after { content: " · erreur"; font-weight: 800; }
+@media (max-width: 699px) {
+  .events-grid:not(.is-answers) .cell-flag { display: none; }
+  .cell.is-mistake .cell-count { color: var(--wrong-text); }
+}
+
+/* Pièges posés pendant la partie : liste compacte en colonnes */
+.events-grid:not(.is-answers) .trap-list .cell-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 4px 14px; }
+.events-grid:not(.is-answers) .trap-list .cell-cards li { font-size: 0.78rem; }
+.events-grid:not(.is-answers) .trap-list .cell-cards li + li { border-top: 0; padding-top: 0; }
+@media (max-width: 699px) { .events-grid:not(.is-answers) .trap-list { display: none; } }

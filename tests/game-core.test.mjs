@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  CELLS, EVENTS, CATEGORIES, DISABLED_CELLS, TRAP, cellLabel, isCell, answersLabel, expandDeck, filledCells, answerGrid,
-  expectedCells, occupiedBefore,
+  CELLS, EVENTS, CATEGORIES, DISABLED_CELLS, TRAP, cellLabel, isCell, answersLabel, expandDeck, answerGrid,
+  expectedCells, occupiedBefore, resolvePlacement, choiceLabel, boardState,
   verdict, explanationFor, frenchTypography, validateDeck, validateName, normalizeName, nameKey,
   generateCode, isValidCode, normalizeCode, maxCardsPerPlayer, deckStats, dealHands, undealtCards, drawTrainingDeck, clampCardsPerPlayer, shuffle, asList,
   nextPlayer, lateQuota, playedCounts, secondsLeft, teamScore, playerScores, podium, mistakes, formatPercent,
@@ -43,9 +43,25 @@ test('verdict : une carte en plusieurs exemplaires est juste dans chacune de ses
   assert.equal(verdict('daily-people', triple), 'wrong');
 });
 
-test('verdict : mauvaise colonne ou mauvaise ligne, c\'est faux (pas de partiel)', () => {
-  assert.equal(verdict('review-timebox', single), 'wrong');
-  assert.equal(verdict('planning-goal', single), 'wrong');
+test('verdict : la colonne suffit, la carte rejoint sa bonne case', () => {
+  assert.equal(verdict('review-timebox', single), 'wrong');                 // mauvaise colonne
+  assert.equal(verdict('planning-goal', single), 'right');                  // bonne colonne, autre ligne
+  assert.deepEqual(resolvePlacement('planning-outputs', single), { cell: 'planning-timebox', verdict: 'right' });
+  assert.deepEqual(resolvePlacement('review-goal', single), { cell: 'review-goal', verdict: 'wrong' });
+  assert.deepEqual(resolvePlacement('retro-goal', triple), { cell: 'retro-people', verdict: 'right' });
+  assert.equal(verdict('planning-timebox', trap), 'wrong');                 // un piège ne va que dans la zone Piège
+  assert.equal(verdict(TRAP, single), 'wrong');
+});
+
+test('verdict : bonne colonne mais case déjà révélée', () => {
+  assert.equal(verdict('planning-goal', single, ['planning-timebox']), 'wrong');
+  assert.deepEqual(resolvePlacement('planning-goal', triple, ['planning-people']), { cell: 'planning-goal', verdict: 'wrong' });
+  assert.deepEqual(resolvePlacement('retro-timebox', triple, ['planning-people']), { cell: 'retro-people', verdict: 'right' });
+});
+
+test('libellé d\'un choix : l\'événement de la colonne', () => {
+  assert.equal(choiceLabel('review-inputs'), 'Sprint Review');
+  assert.equal(choiceLabel(TRAP), 'Piège');
 });
 
 test('verdict : la zone Piège face à une case est toujours fausse', () => {
@@ -72,14 +88,13 @@ test('bonne réponse montrée : la case jouée si juste, sinon les bonnes cases 
   assert.deepEqual(expectedCells(trap, 'daily-goal', []), [TRAP]);
 });
 
-test('cases occupées avant un tour', () => {
+test('cases occupées avant un tour : une carte fausse se révèle aussi sur sa bonne case', () => {
   const byId = Object.fromEntries(expandDeck({ cards: [single, triple] }).map((c) => [c.id, c]));
   const results = {
     0: { cardId: 'mx-equipe-1', cell: 'planning-people', verdict: 'right' },
     1: { cardId: 'pl-8h', cell: 'review-timebox', verdict: 'wrong' },
-    2: { cardId: 'pl-8h', cell: 'planning-timebox', verdict: 'right' },
   };
-  assert.deepEqual(occupiedBefore(results, byId, 2), ['planning-people']);
+  assert.deepEqual(occupiedBefore(results, byId, 1), ['planning-people']);
   assert.deepEqual(occupiedBefore(results, byId).sort(), ['planning-people', 'planning-timebox']);
 });
 
@@ -105,16 +120,22 @@ test('exemplaires : une carte par bonne case, identifiants suffixés', () => {
   assert.deepEqual(copies[2].answers, triple.answers);
 });
 
-test('contenu des cases : cartes justes seulement, sans doublon, dans l\'ordre', () => {
+test('plateau : cartes justes posées, cartes fausses révélées sur leur bonne case libre, pièges à part', () => {
   const byId = Object.fromEntries(expandDeck({ cards: [single, triple, trap] }).map((c) => [c.id, c]));
   const results = {
     0: { cardId: 'mx-equipe-1', cell: 'planning-people', verdict: 'right' },
-    1: { cardId: 'mx-equipe-2', cell: 'planning-people', verdict: 'right' },
+    1: { cardId: 'mx-equipe-2', cell: 'daily-goal', verdict: 'wrong' },
     2: { cardId: 'pl-8h', cell: 'review-timebox', verdict: 'wrong' },
-    3: { cardId: 'pg-x', cell: TRAP, verdict: 'right' },
-    4: { cardId: 'pl-8h', verdict: 'wrong', timedOut: true },
+    3: { cardId: 'pg-x', cell: 'daily-goal', verdict: 'wrong' },
   };
-  assert.deepEqual(filledCells(results, byId), { 'planning-people': ['Toute la Scrum Team'] });
+  const board = boardState(results, byId);
+  assert.deepEqual(board.cells, {
+    'planning-people': { text: 'Toute la Scrum Team', wrong: false },
+    'review-people': { text: 'Toute la Scrum Team', wrong: true },
+    'planning-timebox': { text: '8 heures', wrong: true },
+  });
+  assert.deepEqual(board.traps, [{ text: 'Piège', wrong: true }]);
+  assert.deepEqual(boardState(results, byId, 1).cells, { 'planning-people': { text: 'Toute la Scrum Team', wrong: false } });
 });
 
 test('grille complète : chaque carte dans chacune de ses cases, sans les pièges', () => {

@@ -71,30 +71,76 @@ export function answersOf(card) {
   return Array.isArray(card?.answers) ? card.answers : [];
 }
 
-/**
- * Verdict d'un placement : juste si la case choisie est l'une des bonnes cases de la carte et qu'elle est encore
- * libre (`occupied` : cases déjà remplies par une carte juste ; une case n'accueille qu'une carte), faux sinon.
- */
-export function verdict(chosen, card, occupied = []) {
-  return isCell(chosen) && answersOf(card).includes(chosen) && (chosen === TRAP || !occupied.includes(chosen)) ? 'right' : 'wrong';
+/** Libellé d'un choix : la colonne suffit, on affiche l'événement (ou « Piège »). */
+export function choiceLabel(cell) {
+  if (cell === TRAP) return 'Piège';
+  const parts = cellParts(cell);
+  return EVENT_LABELS[parts?.event] ?? cellLabel(cell);
+}
+
+/** Événement (colonne) d'une case, null pour la zone Piège. */
+export function eventOf(cell) {
+  if (cell === TRAP) return null;
+  return cellParts(cell)?.event ?? null;
 }
 
 /**
- * Cases à montrer comme bonne réponse : la case choisie si la carte est juste ; sinon les bonnes cases encore
- * libres au moment du placement (toutes, si aucune n'est libre). Les autres emplacements d'une carte en plusieurs
- * exemplaires ne sont pas montrés.
+ * Placement d'une carte : la colonne suffit. Une carte posée n'importe où dans la colonne de l'un de ses
+ * événements est juste et rejoint sa bonne case, si celle-ci est encore libre (`occupied` : cases déjà révélées ;
+ * une case n'accueille qu'une carte). Un piège n'est juste que dans la zone Piège.
+ * Renvoie { cell, verdict } : la case où la carte se pose si elle est juste, la case choisie sinon.
+ */
+export function resolvePlacement(chosen, card, occupied = []) {
+  const answers = answersOf(card);
+  if (!isCell(chosen)) return { cell: chosen ?? null, verdict: 'wrong' };
+  if (chosen === TRAP) return { cell: TRAP, verdict: answers.includes(TRAP) ? 'right' : 'wrong' };
+  if (answers.includes(chosen) && !occupied.includes(chosen)) return { cell: chosen, verdict: 'right' };
+  const snap = answers.find((cell) => cell !== TRAP && eventOf(cell) === eventOf(chosen) && !occupied.includes(cell));
+  return snap ? { cell: snap, verdict: 'right' } : { cell: chosen, verdict: 'wrong' };
+}
+
+/** Verdict d'un placement (voir `resolvePlacement`). */
+export function verdict(chosen, card, occupied = []) {
+  return resolvePlacement(chosen, card, occupied).verdict;
+}
+
+/**
+ * Cases à montrer comme bonne réponse : la case où la carte s'est posée si elle est juste ; sinon les bonnes cases
+ * encore libres au moment du placement (toutes, si aucune n'est libre). Les autres emplacements d'une carte en
+ * plusieurs exemplaires ne sont pas montrés.
  */
 export function expectedCells(card, chosen, occupied = []) {
+  const placed = resolvePlacement(chosen, card, occupied);
+  if (placed.verdict === 'right') return [placed.cell];
   const answers = answersOf(card);
-  if (verdict(chosen, card, occupied) === 'right') return [chosen];
   const free = answers.filter((cell) => cell === TRAP || !occupied.includes(cell));
   return free.length ? free : answers;
 }
 
-/** Cases remplies avant le tour `seq` (cartes justes posées dans une case de la grille). */
+/**
+ * Plateau rejoué dans l'ordre des tours (avant le tour `seq`) : une carte juste se pose sur sa case ; une carte
+ * fausse se révèle quand même sur sa bonne case libre, marquée comme erreur. Les pièges vont dans la zone Piège.
+ * Renvoie { cells: { case: { text, wrong } }, traps: [{ text, wrong }] }.
+ */
+export function boardState(results, cardsById, seq = Infinity) {
+  const cells = {};
+  const traps = [];
+  for (const result of resultList(results)) {
+    if (result.seq >= seq) break;
+    const card = cardsById[result.cardId];
+    if (!card) continue;
+    const wrong = result.verdict !== 'right';
+    const target = wrong ? expectedCells(card, result.cell ?? null, Object.keys(cells))[0] : result.cell;
+    const entry = { text: card.text, wrong };
+    if (target === TRAP) traps.push(entry);
+    else if (isCell(target) && !cells[target]) cells[target] = entry;
+  }
+  return { cells, traps };
+}
+
+/** Cases déjà révélées avant le tour `seq`. */
 export function occupiedBefore(results, cardsById, seq = Infinity) {
-  const before = Object.fromEntries(resultList(results).filter((r) => r.seq < seq).map((r) => [r.seq, r]));
-  return Object.keys(filledCells(before, cardsById));
+  return Object.keys(boardState(results, cardsById, seq).cells);
 }
 
 /** Libellé des bonnes cases (« Sprint Planning · Timebox ou Sprint Review · Timebox ») ; `cells` restreint la liste. */
@@ -116,7 +162,12 @@ export function answersLabel(card, cells = null) {
  * (la case jouée si elle est juste, sinon la bonne case montrée) remplace l'explication générale.
  */
 export function explanationFor(card, chosen, target = null) {
-  const targeted = chosen && !answersOf(card).includes(chosen) ? card.errors?.[chosen] ?? null : null;
+  let targeted = null;
+  if (chosen && !answersOf(card).includes(chosen)) {
+    // Explication ciblée de la case choisie, à défaut celle d'une case de la même colonne (la colonne suffit).
+    const sameColumn = Object.keys(card.errors ?? {}).find((cell) => cell !== TRAP && eventOf(cell) === eventOf(chosen));
+    targeted = card.errors?.[chosen] ?? (chosen !== TRAP && sameColumn ? card.errors[sameColumn] : null);
+  }
   const general = (target && card.explanations?.[target]) || card.explanation;
   return { targeted, general, reference: card.reference };
 }
@@ -191,19 +242,9 @@ export function isTrap(card) {
   return answersOf(card).includes(TRAP);
 }
 
-/**
- * Contenu de la grille : pour chaque case, les textes des cartes posées au bon endroit (sans doublon),
- * dans l'ordre où elles ont été jouées. `results` : résultats de la partie ; `cardsById` : exemplaires.
- */
+/** Contenu des cases ({ case: [texte] }) : cartes révélées, justes ou fausses (voir `boardState`). */
 export function filledCells(results, cardsById) {
-  const cells = {};
-  for (const result of resultList(results)) {
-    const card = cardsById[result.cardId];
-    if (!card || result.verdict !== 'right' || !result.cell || result.cell === TRAP) continue;
-    cells[result.cell] ??= [];
-    if (!cells[result.cell].includes(card.text)) cells[result.cell].push(card.text);
-  }
-  return cells;
+  return Object.fromEntries(Object.entries(boardState(results, cardsById).cells).map(([cell, entry]) => [cell, [entry.text]]));
 }
 
 /** Grille complète (l'antisèche) : pour chaque case, les textes de toutes les cartes du paquet qui y vont. */

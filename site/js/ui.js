@@ -3,7 +3,7 @@
 
 import {
   MAX_PLAYERS, TIMER_CHOICES, VERDICT_LABELS, TRAP, frenchTypography, explanationFor, normalizeCode, cellLabel, answersLabel,
-  isTrap, filledCells, answerGrid, expectedCells, occupiedBefore,
+  isTrap, boardState, answerGrid, expectedCells, occupiedBefore, resolvePlacement, choiceLabel,
   isValidCode, deckStats, maxCardsPerPlayer, clampCardsPerPlayer, nextPlayer, playedCounts, resultList, secondsLeft,
   teamScore, playerScores, podium, mistakes, formatPercent, asList, verdict, shuffle, drawTrainingDeck,
 } from './game-core.js?v=__VERSION__';
@@ -157,10 +157,8 @@ export async function startApp(gameStore, { deck, cards }) {
 
   /** Grille complète de fin, avec les cartes posées juste pendant la partie. */
   function renderAnswers(results) {
-    const played = new Set(Object.values(filledCells(results, cardsById)).flat());
-    for (const result of resultList(results)) {
-      if (result.verdict === 'right' && result.cell === TRAP && cardsById[result.cardId]) played.add(cardsById[result.cardId].text);
-    }
+    const board = boardState(results, cardsById);
+    const played = new Set([...Object.values(board.cells), ...board.traps].filter((entry) => !entry.wrong).map((entry) => entry.text));
     answersGrid.setAnswers(answerGrid(deck), trapTexts, played);
   }
 
@@ -482,9 +480,9 @@ export async function startApp(gameStore, { deck, cards }) {
     $('validate').hidden = !choosing;
     $('validate').disabled = !selection;
     let hint = '';
-    if (choosing) hint = selection ? `Votre choix : ${cellLabel(selection)}. Validez quand vous êtes sûr.` : 'Glissez la carte sur une case ou sur la zone Piège, ou touchez une case puis validez.';
+    if (choosing) hint = selection ? `Votre choix : ${choiceLabel(selection)}. Validez quand vous êtes sûr.` : 'Glissez la carte dans la colonne du bon événement, ou sur la zone Piège. Vous pouvez aussi toucher une case puis valider.';
     else if (card && !turn.revealed && turn.placement) hint = 'Correction en cours…';
-    else if (card && !turn.revealed && selection) hint = `Hésite sur : ${cellLabel(selection)}`;
+    else if (card && !turn.revealed && selection) hint = `Hésite sur : ${choiceLabel(selection)}`;
     else if (turn.done) hint = 'Partie terminée : place aux résultats.';
     else if (spectator) hint = 'Plus assez de cartes pour vous faire jouer : vous suivez la partie en spectateur.';
     $('card-hint').textContent = hint;
@@ -492,7 +490,7 @@ export async function startApp(gameStore, { deck, cards }) {
     grid.setInteractive(Boolean(choosing));
     const expected = result && card ? expectedCells(card, result.cell ?? null, occupiedBefore(results, cardsById, turn.seq)) : [];
     grid.update(result && card ? { chosen: result.cell ?? null, correct: expected } : { selection });
-    grid.setFilled(filledCells(results, cardsById));
+    grid.setFilled(boardState(results, cardsById));
 
     // Correction
     renderCorrection(card, result, expected);
@@ -549,7 +547,7 @@ export async function startApp(gameStore, { deck, cards }) {
     const verdictNode = $('verdict');
     verdictNode.textContent = result.timedOut ? `${VERDICT_LABELS[result.verdict]} · Temps écoulé` : VERDICT_LABELS[result.verdict];
     verdictNode.className = `verdict verdict-${result.verdict}`;
-    $('chosen-region').textContent = result.cell ? cellLabel(result.cell) : 'Aucun (temps écoulé)';
+    $('chosen-region').textContent = !result.cell ? 'Aucun (temps écoulé)' : result.verdict === 'right' ? cellLabel(result.cell) : choiceLabel(result.cell);
     $('correct-label').textContent = expected.length > 1 ? 'Bonnes réponses' : 'Bonne réponse';
     $('correct-region').textContent = answersLabel(card, expected);
     const explanation = explanationFor(card, result.cell ?? null, expected[0] ?? null);
@@ -635,19 +633,9 @@ export async function startApp(gameStore, { deck, cards }) {
     if (!ok) $('card-hint').textContent = 'Placement refusé : le temps est peut-être écoulé.';
   }
 
-  function endDrag() {
-    drag?.ghost?.remove();
-    grid.setDropTarget(null);
-    document.body.classList.remove('is-dragging');
-    drag = null;
-  }
-
-  $('flip-card').addEventListener('pointerdown', (event) => {
-    if (!draggable || event.button > 0) return;
-    drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY, ghost: null, cell: null };
-    $('flip-card').setPointerCapture?.(event.pointerId);
-  });
-  $('flip-card').addEventListener('pointermove', (event) => {
+  // Le geste est suivi sur toute la fenêtre (pas par capture du pointeur sur la carte, que le navigateur peut
+  // perdre quand la carte est redessinée) : le relâcher est toujours reçu, le placement validé et le curseur rétabli.
+  function onDragMove(event) {
     if (!drag || event.pointerId !== drag.id) return;
     if (!drag.ghost) {
       if (Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) < DRAG_THRESHOLD) return;
@@ -659,6 +647,7 @@ export async function startApp(gameStore, { deck, cards }) {
       document.body.classList.add('is-dragging');
       drag.ghost = ghost;
     }
+    event.preventDefault();
     drag.ghost.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
     const cell = grid.cellAt(event.clientX, event.clientY);
     if (cell !== drag.cell) {
@@ -666,14 +655,37 @@ export async function startApp(gameStore, { deck, cards }) {
       grid.setDropTarget(cell);
       if (cell) chooseCell(cell);
     }
-  });
-  $('flip-card').addEventListener('pointerup', (event) => {
-    if (!drag || event.pointerId !== drag.id) return;
-    const cell = drag.ghost ? grid.cellAt(event.clientX, event.clientY) : null;
+  }
+
+  function onDragEnd(event) {
+    if (!drag || (event.pointerId !== undefined && event.pointerId !== drag.id)) return;
+    const dragged = Boolean(drag.ghost);
+    const cell = dragged && event.type === 'pointerup' ? grid.cellAt(event.clientX, event.clientY) : null;
     endDrag();
     if (cell && draggable) dropOn(cell);
+  }
+
+  function endDrag() {
+    drag?.ghost?.remove();
+    grid.setDropTarget(null);
+    document.body.classList.remove('is-dragging');
+    window.removeEventListener('pointermove', onDragMove);
+    window.removeEventListener('pointerup', onDragEnd);
+    window.removeEventListener('pointercancel', onDragEnd);
+    drag = null;
+  }
+
+  $('flip-card').addEventListener('pointerdown', (event) => {
+    if (!draggable || event.button > 0) return;
+    endDrag();
+    drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY, ghost: null, cell: null };
+    window.addEventListener('pointermove', onDragMove, { passive: false });
+    window.addEventListener('pointerup', onDragEnd);
+    window.addEventListener('pointercancel', onDragEnd);
   });
-  $('flip-card').addEventListener('pointercancel', endDrag);
+  window.addEventListener('blur', endDrag);
+  // Pas de glisser-déposer natif du navigateur sur la carte (il interromprait les événements Pointer).
+  $('flip-card').addEventListener('dragstart', (event) => event.preventDefault());
 
   $('flip-card').addEventListener('click', () => {
     if (solo) { soloFlip(); return; }
@@ -759,7 +771,7 @@ export async function startApp(gameStore, { deck, cards }) {
       meta.className = 'recap-meta';
       if (withNames) meta.append(text('span', nameOf(mistake.playerUid), 'recap-player'));
       meta.append(
-        text('span', mistake.cell ? cellLabel(mistake.cell) : 'Temps écoulé', `recap-chosen verdict-${mistake.verdict}`),
+        text('span', mistake.cell ? choiceLabel(mistake.cell) : 'Temps écoulé', `recap-chosen verdict-${mistake.verdict}`),
         text('span', '→', 'recap-arrow'),
         text('span', answersLabel(mistake.card, mistake.expected), 'recap-correct'),
       );
@@ -828,8 +840,8 @@ export async function startApp(gameStore, { deck, cards }) {
   function soloValidate() {
     if (!solo.flipped || !solo.selection || solo.results[solo.index]) return;
     const card = soloCard();
-    const occupied = occupiedBefore(solo.results, cardsById, solo.index);
-    solo.results[solo.index] = { playerUid: 'solo', cardId: card.id, cell: solo.selection, verdict: verdict(solo.selection, card, occupied), timedOut: false };
+    const placed = resolvePlacement(solo.selection, card, occupiedBefore(solo.results, cardsById, solo.index));
+    solo.results[solo.index] = { playerUid: 'solo', cardId: card.id, cell: placed.cell, verdict: placed.verdict, timedOut: false };
     render();
   }
 
@@ -863,12 +875,12 @@ export async function startApp(gameStore, { deck, cards }) {
     $('validate').hidden = !choosing;
     $('validate').disabled = !solo.selection;
     $('card-hint').textContent = choosing
-      ? (solo.selection ? `Votre choix : ${cellLabel(solo.selection)}. Validez quand vous êtes sûr.` : 'Glissez la carte sur une case ou sur la zone Piège, ou touchez une case puis validez.')
+      ? (solo.selection ? `Votre choix : ${choiceLabel(solo.selection)}. Validez quand vous êtes sûr.` : 'Glissez la carte dans la colonne du bon événement, ou sur la zone Piège. Vous pouvez aussi toucher une case puis valider.')
       : '';
     grid.setInteractive(Boolean(choosing));
     const expected = result ? expectedCells(card, result.cell, occupiedBefore(solo.results, cardsById, solo.index)) : [];
     grid.update(result ? { chosen: result.cell, correct: expected } : { selection: solo.selection });
-    grid.setFilled(filledCells(solo.results, cardsById));
+    grid.setFilled(boardState(solo.results, cardsById));
     renderCorrection(card, result, expected);
     $('host-controls').hidden = true;
     $('my-progress').hidden = true;

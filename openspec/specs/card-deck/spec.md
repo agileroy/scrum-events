@@ -27,7 +27,7 @@ Le paquet SHALL être un fichier JSON du site (`site/data/cards.json`). Chaque c
 - **THEN** ils échouent en signalant la case inconnue
 
 ### Requirement: Une carte par case
-Chaque case active SHALL recevoir exactement une carte, dont le texte regroupe tout l'essentiel du Scrum Guide 2020 pour cette case (par exemple, pour Sprint × But : « Atteindre le Sprint Goal en transformant les idées en valeur »). Quand deux cases ont exactement le même contenu, la carte SHALL exister en autant d'exemplaires, identifiés par l'identifiant de la carte suivi de `-1`, `-2` : chaque exemplaire est distribué et joué comme une carte à part entière, et il est juste dans l'une de ces cases tant qu'elle est libre. Une carte en plusieurs exemplaires MAY avoir une explication propre à chaque case. Les tests automatiques MUST refuser un paquet où une case active reçoit plus d'une carte.
+Chaque case active SHALL recevoir exactement une carte, dont le texte regroupe tout l'essentiel du Scrum Guide 2020 pour cette case (par exemple, pour Sprint × But : « Atteindre le Sprint Goal en transformant les idées en valeur »). Quand deux cases ont exactement le même contenu, la carte SHALL exister en autant d'exemplaires, identifiés par l'identifiant de la carte suivi de `-1`, `-2` : chaque exemplaire est distribué et joué comme une carte à part entière, et il est juste dans la colonne de l'une de ces cases tant qu'elle est libre. Une carte en plusieurs exemplaires MAY avoir une explication propre à chaque case. Les tests automatiques MUST refuser un paquet où une case active reçoit plus d'une carte.
 
 #### Scenario: Deux exemplaires
 - **GIVEN** la carte « Toute la Scrum Team », dont les bonnes cases sont Sprint Planning × Personnes requises et Sprint Retrospective × Personnes requises
@@ -40,11 +40,16 @@ Chaque case active SHALL recevoir exactement une carte, dont le texte regroupe t
 - **THEN** ils échouent en signalant la case en double
 
 ### Requirement: Verdict
-Le verdict d'une carte SHALL être « Juste » si la case choisie est l'une de ses bonnes cases et qu'elle est encore libre, et « Faux » sinon, y compris quand la carte est placée dans la zone Piège alors qu'elle n'est pas un piège, ou dans une case alors qu'elle est un piège. Une case déjà remplie par une carte juste MUST NOT pouvoir être choisie. Il n'y a pas de verdict partiel.
+La colonne SHALL suffire : une carte posée n'importe où dans la colonne de l'un de ses événements (une case de la colonne, ou son en-tête) SHALL être « Juste » et rejoindre sa bonne case, si celle-ci est encore libre. Un piège SHALL être « Juste » seulement dans la zone Piège. Dans tous les autres cas, le verdict SHALL être « Faux » : mauvaise colonne, carte non piège dans la zone Piège, piège dans la grille, ou bonne case déjà révélée. Toutes les cases actives SHALL rester choisissables. Il n'y a pas de verdict partiel.
+
+#### Scenario: Bonne colonne, autre ligne
+- **GIVEN** la carte « 8 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court », dont la bonne case est Sprint Planning × Timebox
+- **WHEN** elle est déposée sur Sprint Planning × But
+- **THEN** le verdict est « Juste » et la carte se pose dans Sprint Planning × Timebox
 
 #### Scenario: Mauvaise colonne
-- **GIVEN** la carte « 8 heures maximum pour un Sprint d'un mois, généralement moins s'il est plus court », dont la bonne case est Sprint Planning × Timebox
-- **WHEN** elle est placée dans Sprint Review × Timebox
+- **GIVEN** la même carte
+- **WHEN** elle est déposée dans la colonne Sprint Review
 - **THEN** le verdict est « Faux »
 
 #### Scenario: Piège démasqué
@@ -53,20 +58,20 @@ Le verdict d'une carte SHALL être « Juste » si la case choisie est l'une de s
 - **THEN** le verdict est « Juste »
 
 #### Scenario: Second exemplaire
-- **GIVEN** un premier exemplaire de « Toute la Scrum Team » déjà placé juste dans Sprint Planning × Personnes requises
-- **WHEN** Julie pioche le second exemplaire
-- **THEN** la case Sprint Planning × Personnes requises ne peut plus être choisie, et le second exemplaire est juste dans Sprint Retrospective × Personnes requises
+- **GIVEN** un premier exemplaire de « Toute la Scrum Team » déjà révélé dans Sprint Planning × Personnes requises
+- **WHEN** le second exemplaire est déposé dans la colonne Sprint Retrospective
+- **THEN** il est « Juste » et se pose dans Sprint Retrospective × Personnes requises
 
 ### Requirement: Explication de la correction
-La correction SHALL afficher la case choisie, la bonne réponse, l'explication de la carte et la section du Scrum Guide 2020 concernée. Pour une carte juste, la bonne réponse SHALL être la seule case jouée ; pour une carte fausse, les bonnes cases encore libres. Les autres emplacements d'une carte en plusieurs exemplaires MUST NOT être affichés, et l'explication propre à la case montrée, si elle existe, SHALL remplacer l'explication générale. Si la carte prévoit une explication ciblée pour la case choisie à tort, elle SHALL s'afficher avant l'explication. Les textes SHALL respecter la typographie française (espaces insécables avant les signes doubles).
+La correction SHALL afficher le choix (l'événement de la colonne choisie, ou « Piège »), la bonne réponse, l'explication de la carte et la section du Scrum Guide 2020 concernée. Pour une carte juste, la bonne réponse SHALL être la seule case où la carte s'est posée ; pour une carte fausse, les bonnes cases encore libres. Les autres emplacements d'une carte en plusieurs exemplaires MUST NOT être affichés, et l'explication propre à la case montrée, si elle existe, SHALL remplacer l'explication générale. Si la carte prévoit une explication ciblée pour la case choisie à tort, ou à défaut pour une case de la même colonne, elle SHALL s'afficher avant l'explication. Les textes SHALL respecter la typographie française (espaces insécables avant les signes doubles).
 
 #### Scenario: Exemplaire juste
-- **GIVEN** la carte « Toute la Scrum Team » placée dans Sprint Retrospective × Personnes requises
+- **GIVEN** la carte « Toute la Scrum Team » déposée dans la colonne Sprint Retrospective
 - **WHEN** la correction s'affiche
 - **THEN** elle montre « Juste » et la seule bonne réponse « Sprint Retrospective · Personnes requises », avec l'explication propre à la Sprint Retrospective, sans mentionner le Sprint Planning
 
 #### Scenario: Explication ciblée
-- **GIVEN** la carte « Les Developers » placée dans Sprint Planning × Personnes requises
+- **GIVEN** la carte « Les Developers » déposée dans la colonne Sprint Planning
 - **WHEN** la correction s'affiche
 - **THEN** elle montre l'explication ciblée sur le Sprint Planning, puis l'explication générale et la référence « Scrum Guide 2020 · Daily Scrum »
 
