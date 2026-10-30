@@ -1,0 +1,10 @@
+{
+  "name": "scrum-events",
+  "private": true,
+  "type": "module",
+  "description": "Jeu de formation PSM / PSPO : les événements Scrum, en temps réel",
+  "scripts": {
+    "test": "node --test",
+    "cartes": "node tools/cards-review.mjs"
+  }
+}

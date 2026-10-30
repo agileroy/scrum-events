@@ -1,0 +1,37 @@
+schema: spec-driven
+
+# Project context: constraints an agent cannot infer from the code.
+context: |
+  Rédiger tous les artefacts OpenSpec (proposal, design, specs, tasks) en français.
+  Jeu de formation PSM / PSPO « Les événements Scrum » : les participants placent des cartes dans une grille
+  à deux dimensions, colonnes = événements (Sprint, Sprint Planning, Daily Scrum, Sprint Review,
+  Sprint Retrospective), lignes = catégories (Timebox, Personnes requises, But, Entrées, Sorties), ou dans une
+  zone « Piège » pour ce qui n'existe pas dans Scrum. Certaines cases sont grisées (aucune carte n'y va).
+  Une carte = une case ; une carte valable à plusieurs endroits existe en plusieurs exemplaires.
+  Vocabulaire de la traduction française officielle du Scrum Guide 2020 (novembre 2020) : Product Owner,
+  Scrum Master, Developers, Scrum Team, Definition of Done, Increment ; termes gardés en anglais :
+  Product Goal, Sprint Goal, refinement (du Product Backlog).
+  Chaque explication de carte s'appuie sur le Scrum Guide 2020 ; le paquet de cartes est un fichier JSON
+  du dépôt (site/data/cards.json), relu et validé par l'auteur.
+  Déroulé collectif en temps réel, identique au jeu frère roles-responsabilites : un formateur (qui ne joue pas)
+  anime depuis un écran projeté ; les participants (10 au maximum) rejoignent depuis leur téléphone avec un code
+  de salle ou un QR code, jouent chacun leur tour, et tout le monde voit le choix du joueur actif et la correction.
+  Hébergement : site statique sur GitHub Pages (https://agileroy.github.io/scrum-events/), sans serveur à maintenir.
+  Temps réel : Firebase Realtime Database (offre gratuite, connexion anonyme), projet partagé avec
+  poker-planning, matrice-competences, wheel-of-chance, moving-motivators et roles-responsabilites :
+  database.rules.json doit rester identique dans les six dépôts ; ce jeu n'utilise que la branche `eventsGame`.
+  Aucun autre service tiers. N'utiliser que HTTPS (port 443), pas de connexion directe entre navigateurs (WebRTC).
+  Le VPN de l'entreprise (proxy Zscaler) bloque GitHub Pages et Firebase : le jeu se joue hors VPN,
+  et les participants bloqués rejoignent depuis leur téléphone via le QR code.
+  Pas de serveur pour le ménage : les salles de plus de 24 heures sont supprimées par les navigateurs,
+  dans la limite autorisée par les règles de sécurité.
+  Stack : HTML/CSS/JavaScript vanilla en modules ES, sans framework ni étape de build (dossier site/).
+  Architecture : site/js/game-core.js contient la logique métier pure (sans DOM ni Firebase) ;
+  site/js/game-store.js porte les actions de la partie sur une interface de base de données ;
+  site/js/firebase-db.js est le seul module qui parle à Firebase ; site/js/memory-db.js implémente la même
+  interface en mémoire (tests de parcours et mode démo ?demo) ; site/js/grid.js dessine la grille ;
+  site/js/ui.js gère l'interface.
+  Les règles de sécurité Firebase (database.rules.json) doivent appliquer les mêmes contraintes que l'interface.
+  Interface en français, sans compte.
+  Tests : lanceur intégré de Node.js (npm test), à faire évoluer avec chaque changement de comportement ;
+  la publication GitHub Actions est bloquée si un test échoue.
