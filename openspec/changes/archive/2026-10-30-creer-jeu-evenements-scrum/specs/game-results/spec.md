@@ -25,7 +25,7 @@ Pendant la partie et à la fin, le jeu SHALL afficher le score collectif : le to
 - **THEN** Julie et Marc sont tous les deux sur la première marche, et Inès sur la deuxième
 
 ### Requirement: Récapitulatif des erreurs
-L'écran de fin SHALL lister les cartes fausses, dans l'ordre où elles ont été jouées, avec pour chacune le texte de la carte, le prénom du joueur, la case choisie (ou « Temps écoulé »), la bonne réponse et l'explication, selon les mêmes règles que la correction (voir `card-deck`) (voir `card-deck`). Si aucune carte n'est fausse, l'écran SHALL l'indiquer par un message de félicitations.
+L'écran de fin SHALL lister les cartes fausses, dans l'ordre où elles ont été jouées, avec pour chacune le texte de la carte, le prénom du joueur, la case choisie (ou « Temps écoulé »), la bonne réponse et l'explication, selon les mêmes règles que la correction (voir `card-deck`). Si aucune carte n'est fausse, l'écran SHALL l'indiquer par un message de félicitations.
 
 #### Scenario: Revue des erreurs
 - **GIVEN** une partie terminée où Marc a placé « Les tâches réparties entre les Developers par le Scrum Master » dans Daily Scrum × Sorties
