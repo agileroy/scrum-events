@@ -25,7 +25,7 @@ Pendant la partie et à la fin, le jeu SHALL afficher le score collectif : le to
 - **THEN** Julie et Marc sont tous les deux sur la première marche, et Inès sur la deuxième
 
 ### Requirement: Récapitulatif des erreurs
-L'écran de fin SHALL lister les cartes fausses, dans l'ordre où elles ont été jouées, avec pour chacune le texte de la carte, le prénom du joueur, la case choisie (ou « Temps écoulé »), la ou les bonnes cases et l'explication (voir `card-deck`). Si aucune carte n'est fausse, l'écran SHALL l'indiquer par un message de félicitations.
+L'écran de fin SHALL lister les cartes fausses, dans l'ordre où elles ont été jouées, avec pour chacune le texte de la carte, le prénom du joueur, la case choisie (ou « Temps écoulé »), la bonne réponse et l'explication, selon les mêmes règles que la correction (voir `card-deck`) (voir `card-deck`). Si aucune carte n'est fausse, l'écran SHALL l'indiquer par un message de félicitations.
 
 #### Scenario: Revue des erreurs
 - **GIVEN** une partie terminée où Marc a placé « Le Scrum Master ou le Product Owner assigne les tâches aux Developers » dans Daily Scrum × Sorties
@@ -38,7 +38,7 @@ L'écran de fin SHALL lister les cartes fausses, dans l'ordre où elles ont ét�
 - **THEN** il affiche « Aucune erreur, bravo à toute l'équipe ! » à la place du récapitulatif
 
 ### Requirement: Grille complète
-L'écran de fin SHALL afficher la grille complète, toutes cases retournées, avec dans chaque case le texte de toutes les cartes du paquet qui y vont (une seule fois par carte, même en plusieurs exemplaires), et la liste des pièges du paquet. Les cartes posées juste pendant la partie SHALL être distinguées des autres.
+L'écran de fin SHALL afficher la grille complète, toutes cases retournées, avec dans chaque case le texte de sa carte, et la liste des pièges du paquet. Les cartes posées juste pendant la partie SHALL être distinguées des autres.
 
 #### Scenario: Antisèche de fin
 - **GIVEN** une partie terminée où la carte « Les Developers » n'a pas été piochée

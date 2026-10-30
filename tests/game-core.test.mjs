@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   CELLS, EVENTS, CATEGORIES, DISABLED_CELLS, TRAP, cellLabel, isCell, answersLabel, expandDeck, filledCells, answerGrid,
+  expectedCells, occupiedBefore,
   verdict, explanationFor, frenchTypography, validateDeck, validateName, normalizeName, nameKey,
   generateCode, isValidCode, normalizeCode, maxCardsPerPlayer, deckStats, dealHands, undealtCards, drawTrainingDeck, clampCardsPerPlayer, shuffle, asList,
   nextPlayer, lateQuota, playedCounts, secondsLeft, teamScore, playerScores, podium, mistakes, formatPercent,
@@ -56,6 +57,37 @@ test('verdict : carte non placée (temps écoulé), case inconnue ou grisée', (
   assert.equal(verdict(null, single), 'wrong');
   assert.equal(verdict('sprint-outputs', { answers: ['sprint-outputs'] }), 'wrong');
   assert.equal(verdict('chef', single), 'wrong');
+});
+
+test('verdict : une case déjà remplie n\'accueille plus de carte', () => {
+  assert.equal(verdict('planning-people', triple, ['planning-people']), 'wrong');
+  assert.equal(verdict('retro-people', triple, ['planning-people']), 'right');
+  assert.equal(verdict(TRAP, trap, ['planning-people']), 'right');
+});
+
+test('bonne réponse montrée : la case jouée si juste, sinon les bonnes cases encore libres', () => {
+  assert.deepEqual(expectedCells(triple, 'review-people', []), ['review-people']);
+  assert.deepEqual(expectedCells(triple, 'daily-people', ['planning-people']), ['review-people', 'retro-people']);
+  assert.deepEqual(expectedCells(triple, 'daily-people', triple.answers), triple.answers);
+  assert.deepEqual(expectedCells(trap, 'daily-goal', []), [TRAP]);
+});
+
+test('cases occupées avant un tour', () => {
+  const byId = Object.fromEntries(expandDeck({ cards: [single, triple] }).map((c) => [c.id, c]));
+  const results = {
+    0: { cardId: 'mx-equipe-1', cell: 'planning-people', verdict: 'right' },
+    1: { cardId: 'pl-8h', cell: 'review-timebox', verdict: 'wrong' },
+    2: { cardId: 'pl-8h', cell: 'planning-timebox', verdict: 'right' },
+  };
+  assert.deepEqual(occupiedBefore(results, byId, 2), ['planning-people']);
+  assert.deepEqual(occupiedBefore(results, byId).sort(), ['planning-people', 'planning-timebox']);
+});
+
+test('explication par case pour une carte en plusieurs exemplaires', () => {
+  const eq = { ...triple, explanation: 'Gén.', explanations: { 'retro-people': 'Rétro.' }, errors: { 'daily-people': 'Daily.' } };
+  assert.equal(explanationFor(eq, 'retro-people', 'retro-people').general, 'Rétro.');
+  assert.equal(explanationFor(eq, 'planning-people', 'planning-people').general, 'Gén.');
+  assert.deepEqual(explanationFor(eq, 'daily-people', 'retro-people'), { targeted: 'Daily.', general: 'Rétro.', reference: undefined });
 });
 
 test('libellé des bonnes cases', () => {
@@ -116,10 +148,12 @@ test('typographie française : espaces insécables', () => {
 
 // ---------------------------------------------------------------- Paquet
 
-/** Paquet minimal valide : une carte par case active et un piège. */
+/** Paquet minimal valide : une carte par case active (sauf daily-goal, laissée aux tests), une carte en deux exemplaires et un piège. */
 const fullDeck = (extra = []) => ({
   cards: [
-    ...CELLS.filter((c) => c !== TRAP).map((cell, i) => ({ id: `c${i}`, text: 'T', answers: [cell], explanation: 'E', reference: 'R', errors: {} })),
+    ...CELLS.filter((c) => ![TRAP, 'daily-goal', 'planning-people', 'retro-people'].includes(c))
+      .map((cell, i) => ({ id: `c${i}`, text: 'T', answers: [cell], explanation: 'E', reference: 'R', errors: {} })),
+    { id: 'eq', text: 'Toute la Scrum Team', answers: ['planning-people', 'retro-people'], explanation: 'E', reference: 'R', errors: {}, explanations: { 'retro-people': 'R' } },
     { id: 'p0', text: 'P', answers: [TRAP], explanation: 'E', reference: 'R', errors: {} },
     ...extra,
   ],
@@ -127,11 +161,16 @@ const fullDeck = (extra = []) => ({
 const card = (over = {}) => ({ id: 'a', text: 'T', answers: ['daily-goal'], explanation: 'E', reference: 'R', errors: {}, ...over });
 
 test('paquet valide', () => {
-  assert.deepEqual(validateDeck(fullDeck([card(), card({ id: 'b', answers: ['planning-people', 'retro-people'] })])), []);
+  assert.deepEqual(validateDeck(fullDeck([card()])), []);
+});
+
+test('paquet invalide : deux cartes pour une même case, ou explication par case hors des bonnes cases', () => {
+  assert.match(validateDeck(fullDeck([card(), card({ id: 'b' })])).join(), /Plusieurs cartes pour la case daily-goal/);
+  assert.match(validateDeck(fullDeck([card({ explanations: { 'review-goal': 'x' } })])).join(), /explication par case/);
 });
 
 test('paquet invalide : doublon, case inconnue ou grisée, champ vide, erreur ciblée sur une bonne case', () => {
-  assert.match(validateDeck(fullDeck([card(), card()])).join(), /double/);
+  assert.match(validateDeck(fullDeck([card(), card()])).join(), /Identifiant en double/);
   assert.match(validateDeck(fullDeck([card({ answers: ['chef'] })])).join(), /case inconnue/);
   assert.match(validateDeck(fullDeck([card({ answers: ['sprint-outputs'] })])).join(), /case inconnue/);
   assert.match(validateDeck(fullDeck([card({ answers: [] })])).join(), /aucune bonne case/);
@@ -143,13 +182,13 @@ test('paquet invalide : doublon, case inconnue ou grisée, champ vide, erreur ci
 });
 
 test('paquet invalide : une case active sans carte', () => {
-  const deck = fullDeck();
+  const deck = fullDeck([card()]);
   deck.cards = deck.cards.filter((c) => !c.answers.includes('review-outputs'));
   assert.match(validateDeck(deck).join(), /Aucune carte pour la case review-outputs/);
 });
 
 test('paquet invalide : un exemplaire qui reprend l\'identifiant d\'une autre carte', () => {
-  assert.match(validateDeck(fullDeck([card({ id: 'x', answers: ['daily-goal', 'retro-goal'] }), card({ id: 'x-1' })])).join(), /Exemplaire en double/);
+  assert.match(validateDeck(fullDeck([card({ id: 'x', answers: ['daily-goal', 'daily-timebox'] }), card({ id: 'x-1', answers: ['daily-people'] })])).join(), /Exemplaire en double/);
 });
 
 // ---------------------------------------------------------------- Prénom et code

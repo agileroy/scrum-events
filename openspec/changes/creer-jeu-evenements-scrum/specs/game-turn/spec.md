@@ -14,7 +14,7 @@ Avant la pioche, tous les écrans SHALL montrer une carte face cachée. Le joueu
 #### Scenario: Carte retournée
 - **GIVEN** Julie, joueuse active, devant la carte face cachée
 - **WHEN** elle touche la carte
-- **THEN** la carte se retourne et son texte, par exemple « 15 minutes, chaque jour ouvré du Sprint », s'affiche sur tous les écrans
+- **THEN** la carte se retourne et son texte, par exemple « 15 minutes, chaque jour ouvré, à la même heure et au même lieu », s'affiche sur tous les écrans
 
 #### Scenario: Carte d'un autre joueur
 - **GIVEN** Julie, joueuse active
@@ -22,7 +22,7 @@ Avant la pioche, tous les écrans SHALL montrer une carte face cachée. Le joueu
 - **THEN** rien ne se passe, et la carte indique « Julie va retourner la carte »
 
 ### Requirement: Placement dans la grille
-Le joueur actif SHALL choisir une case de la grille, ou la zone Piège, en la touchant sur son téléphone (ou au clavier) ; la case choisie SHALL être mise en évidence et son nom complet affiché sous la carte (« Votre choix : Sprint Review · Entrées »), et il SHALL pouvoir changer d'avis tant qu'il n'a pas confirmé. Chaque case SHALL offrir une zone tactile d'au moins 44 × 44 px sur un écran de 360 px de large. Un bouton « Valider » SHALL confirmer le placement ; le placement validé MUST être définitif. Seul le joueur actif MUST pouvoir placer la carte, y compris du point de vue des règles de sécurité de la base, et seulement dans une case active ou dans la zone Piège. Avant la validation, l'écran projeté et les autres téléphones SHALL afficher la case en cours de sélection.
+Le joueur actif SHALL choisir une case libre de la grille, ou la zone Piège, en la touchant (ou au clavier), ou en y faisant glisser sa carte retournée ; une case déjà remplie MUST NOT pouvoir être choisie. La case choisie SHALL être mise en évidence et son nom complet affiché sous la carte (« Votre choix : Sprint Review · Entrées »), et il SHALL pouvoir changer d'avis tant qu'il n'a pas confirmé. Chaque case SHALL offrir une zone tactile d'au moins 44 × 44 px sur un écran de 360 px de large. Un bouton « Valider » SHALL confirmer le placement ; déposer la carte sur une case par glisser-déposer (souris, stylet ou doigt) SHALL aussi le confirmer, la case survolée étant sélectionnée et visible de tous pendant le geste. Le placement validé MUST être définitif. Seul le joueur actif MUST pouvoir placer la carte, y compris du point de vue des règles de sécurité de la base, et seulement dans une case active ou dans la zone Piège. Avant la validation, l'écran projeté et les autres téléphones SHALL afficher la case en cours de sélection.
 
 #### Scenario: Placement en direct
 - **GIVEN** Julie, joueuse active, avec sa carte piochée
@@ -33,6 +33,16 @@ Le joueur actif SHALL choisir une case de la grille, ou la zone Piège, en la to
 - **GIVEN** Julie qui a touché la case Sprint Review × Entrées sans valider
 - **WHEN** elle touche la zone Piège puis « Valider »
 - **THEN** la carte est placée dans la zone Piège
+
+#### Scenario: Glisser-déposer
+- **GIVEN** Julie, joueuse active sur un ordinateur, avec sa carte retournée
+- **WHEN** elle fait glisser la carte au-dessus de Sprint Review × Entrées puis la lâche sur Daily Scrum × Entrées
+- **THEN** l'écran projeté a montré Sprint Review × Entrées puis Daily Scrum × Entrées en cours de sélection, et la carte est placée dans Daily Scrum × Entrées
+
+#### Scenario: Case déjà remplie
+- **GIVEN** la case Sprint Planning × Timebox déjà retournée
+- **WHEN** Julie la touche ou y lâche sa carte
+- **THEN** rien n'est sélectionné et la carte reste à placer
 
 #### Scenario: Placement par un autre joueur
 - **GIVEN** Julie, joueuse active
@@ -48,7 +58,7 @@ Si le formateur a activé le chrono, un compte à rebours SHALL démarrer dès l
 - **THEN** la carte est comptée « Faux » avec la mention « Temps écoulé », et la correction s'affiche
 
 ### Requirement: Correction à chaque carte
-Dès la validation, ou à la fin du chrono, la correction SHALL s'afficher en même temps sur l'écran projeté et sur tous les téléphones : verdict (« Juste » ou « Faux »), case choisie, bonnes cases mises en évidence dans la grille, case choisie à tort mise en évidence différemment, et explication (voir `card-deck`). Le score collectif en cours SHALL être mis à jour. Le téléphone du joueur actif SHALL vibrer brièvement (au plus 200 ms) si le navigateur le permet.
+Dès la validation, ou à la fin du chrono, la correction SHALL s'afficher en même temps sur l'écran projeté et sur tous les téléphones : verdict (« Juste » ou « Faux »), case choisie, bonne réponse mise en évidence dans la grille (voir `card-deck`), case choisie à tort mise en évidence différemment, et explication (voir `card-deck`). Le score collectif en cours SHALL être mis à jour. Le téléphone du joueur actif SHALL vibrer brièvement (au plus 200 ms) si le navigateur le permet.
 
 #### Scenario: Correction pour toute la salle
 - **GIVEN** Julie qui a validé la carte « Les Developers » dans Sprint Review × Personnes requises
@@ -56,16 +66,16 @@ Dès la validation, ou à la fin du chrono, la correction SHALL s'afficher en m�
 - **THEN** tout le monde voit « Faux », la case Daily Scrum × Personnes requises mise en évidence comme bonne réponse et l'explication ciblée pour la Sprint Review
 
 ### Requirement: Cases qui se retournent
-Au début de la partie, chaque case active SHALL être face cachée. Quand une carte est placée juste dans une case, cette case SHALL se retourner (avec la même animation que la carte, sauf réduction des animations) et afficher les cartes justes qui y ont été posées, sans doublon ; sur l'écran projeté, la face SHALL montrer le texte des cartes, et sur téléphone, le nombre de cartes posées. Une carte fausse MUST NOT remplir de case. La grille SHALL se reconstituer à l'identique après un rechargement de page.
+Au début de la partie, chaque case active SHALL être face cachée. Quand une carte est placée juste dans une case, cette case SHALL se retourner (avec la même animation que la carte, sauf réduction des animations) et afficher la carte qui y a été posée ; sur l'écran projeté, la face SHALL montrer son texte, et sur téléphone, une marque de case remplie. Une carte fausse MUST NOT remplir de case. La grille SHALL se reconstituer à l'identique après un rechargement de page.
 
 #### Scenario: Première carte juste
 - **GIVEN** la case Sprint Planning × Timebox encore face cachée
-- **WHEN** la carte « 8 heures maximum pour un Sprint d'un mois » y est placée et jugée « Juste »
-- **THEN** la case se retourne sur tous les écrans et l'écran projeté y affiche « 8 heures maximum pour un Sprint d'un mois »
+- **WHEN** la carte « 8 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court » y est placée et jugée « Juste »
+- **THEN** la case se retourne sur tous les écrans et l'écran projeté y affiche le texte de la carte
 
 #### Scenario: Carte fausse
 - **GIVEN** la case Sprint Review × Timebox encore face cachée
-- **WHEN** la carte « 3 heures maximum pour un Sprint d'un mois » y est placée et jugée « Faux »
+- **WHEN** la carte « 3 heures maximum pour un Sprint d'un mois, moins pour un Sprint plus court » y est placée et jugée « Faux »
 - **THEN** la case reste face cachée
 
 ### Requirement: Passage à la carte suivante

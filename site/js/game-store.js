@@ -6,7 +6,7 @@ import {
   MAX_PLAYERS, ROOM_TTL_MS, TIMER_CHOICES, TIMER_GRACE_MS, generateCode, isValidCode, normalizeCode, normalizeName,
   validateName, nameKey, shuffle, asList, nextPlayer, lateQuota, maxCardsPerPlayer, clampCardsPerPlayer, verdict,
   dealHands, undealtCards, playedCounts,
-  resultList, isCell, deckStats,
+  resultList, isCell, deckStats, occupiedBefore,
 } from './game-core.js?v=__VERSION__';
 
 export const ROOT = 'eventsGame';
@@ -140,7 +140,7 @@ export function createGameStore(db, { random = cryptoRandom } = {}) {
       const timedOut = !turn.placement;
       const cell = turn.placement ?? null;
       const result = {
-        playerUid: turn.playerUid, cardId: turn.cardId, cell, verdict: card ? verdict(cell, card) : 'wrong', timedOut,
+        playerUid: turn.playerUid, cardId: turn.cardId, cell, verdict: card ? verdict(cell, card, occupiedBefore(room.results, cardsById, turn.seq)) : 'wrong', timedOut,
       };
       if (cell === null) delete result.cell;
       await db.update(roomPath(code), { [`results/${turn.seq}`]: result, 'turn/revealed': true });

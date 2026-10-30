@@ -40,29 +40,29 @@ L'écran du formateur SHALL afficher en grand le code de la salle, un QR code de
 Avant le lancement, le formateur SHALL choisir le nombre de cartes par personne et le chrono (sans chrono, 30, 45 ou 60 secondes ; sans chrono par défaut). Le nombre de cartes par personne SHALL aller de 1 au maximum possible : le plus grand nombre de cartes par personne qui permet de distribuer les mains de tous les participants, chacune avec exactement 1 piège à partir de 2 cartes (voir « Lancement et tirage ») ; 1 carte par personne reste toujours possible tant que le paquet compte au moins une carte par participant. Il SHALL valoir 5 par défaut (ou le maximum s'il est plus petit) et être ramené au nouveau maximum si un participant arrive. Le formateur SHALL pouvoir le changer avec les boutons − et +, ou en saisissant le nombre au clavier : la saisie est appliquée quand il valide (Entrée) ou quitte le champ, et une valeur hors bornes est ramenée dans [1, maximum]. Le bouton « Lancer la partie » SHALL être désactivé tant qu'aucun participant n'est présent.
 
 #### Scenario: Valeur par défaut
-- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, et 4 participants présents
+- **GIVEN** un paquet de 32 exemplaires dont 10 pièges, et 4 participants présents
 - **WHEN** le formateur ouvre les réglages
-- **THEN** le nombre de cartes par personne vaut 5, avec un maximum de 12
+- **THEN** le nombre de cartes par personne vaut 5, avec un maximum de 6
 
 #### Scenario: Maximum
-- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, et 10 participants présents
+- **GIVEN** un paquet de 32 exemplaires dont 10 pièges, et 10 participants présents
 - **WHEN** le formateur ouvre les réglages
-- **THEN** le nombre de cartes par personne vaut 5 et ne peut pas dépasser 6
+- **THEN** le nombre de cartes par personne vaut 3 et ne peut pas dépasser 3
 
 #### Scenario: Saisie au clavier
-- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, et 4 participants présents
-- **WHEN** le formateur saisit 8 dans le champ puis appuie sur Entrée
-- **THEN** le nombre de cartes par personne vaut 8 pour tout le monde
+- **GIVEN** un paquet de 32 exemplaires dont 10 pièges, et 4 participants présents
+- **WHEN** le formateur saisit 4 dans le champ puis appuie sur Entrée
+- **THEN** le nombre de cartes par personne vaut 4 pour tout le monde
 
 #### Scenario: Saisie hors bornes
-- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, et 4 participants présents
+- **GIVEN** un paquet de 32 exemplaires dont 10 pièges, et 4 participants présents
 - **WHEN** le formateur saisit 40 puis quitte le champ
-- **THEN** le nombre de cartes par personne est ramené à 12
+- **THEN** le nombre de cartes par personne est ramené à 6
 
 #### Scenario: Ajustement à l'arrivée d'un participant
-- **GIVEN** un paquet de 60 exemplaires dont 15 pièges, 7 participants et le réglage à 7 cartes par personne
-- **WHEN** un huitième participant arrive
-- **THEN** le réglage est ramené à 6 cartes par personne
+- **GIVEN** un paquet de 32 exemplaires dont 10 pièges, 4 participants et le réglage à 6 cartes par personne
+- **WHEN** un cinquième participant arrive
+- **THEN** le réglage est ramené à 5 cartes par personne
 
 ### Requirement: Lancement et tirage
 Au lancement, le jeu SHALL figer l'ordre de passage des participants présents, tiré au hasard, et distribuer à chacun une main d'autant de cartes que le réglage. À partir de 2 cartes par personne, chaque main MUST contenir exactement 1 carte Piège, les autres cartes n'étant pas des pièges ; l'ordre des cartes de chaque main SHALL être mélangé, pour que la position du piège varie d'un participant à l'autre. Avec 1 carte par personne, chaque main SHALL être une carte tirée au hasard dans tout le paquet. Chaque participant SHALL piocher dans sa propre main, dans l'ordre. Tous les exemplaires distribués pendant une partie MUST être différents ; deux exemplaires d'une même carte peuvent se trouver dans la même main. Chaque participant présent au lancement SHALL piocher exactement le nombre de cartes réglé, sauf s'il quitte la partie. L'interface et les explications MUST NOT révéler aux participants qu'ils ont un piège par main.

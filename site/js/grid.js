@@ -92,13 +92,32 @@ export function createGrid(container, { onSelect = () => {}, mode = 'play' } = {
   }
 
   let primed = false;   // faux tant que la grille n'a pas affiché un premier état : pas d'animation au chargement
+  let interactive = false;
+
+  /** Une case remplie est occupée : elle ne peut plus être choisie. */
+  function refreshDisabled() {
+    for (const { el, filled } of Object.values(cells)) if (el.tagName === 'BUTTON') el.disabled = !interactive || Boolean(filled);
+  }
 
   return {
     element: root,
 
     setInteractive(value) {
+      interactive = value;
       root.classList.toggle('is-interactive', value);
-      for (const { el } of Object.values(cells)) if (el.tagName === 'BUTTON') el.disabled = !value;
+      refreshDisabled();
+    },
+
+    /** Case active et libre sous un point de l'écran (glisser-déposer), ou null. */
+    cellAt(x, y) {
+      const target = document.elementFromPoint(x, y)?.closest?.('[data-cell]');
+      if (!target || !root.contains(target) || target.disabled) return null;
+      return target.dataset.cell;
+    },
+
+    /** Mise en évidence de la case survolée pendant un glisser-déposer. */
+    setDropTarget(cell) {
+      for (const [id, { el }] of Object.entries(cells)) el.classList.toggle('is-drop-target', id === cell);
     },
 
     /** state : { selection, chosen, correct: [cases] } ; met en évidence la sélection, puis la correction. */
@@ -120,7 +139,7 @@ export function createGrid(container, { onSelect = () => {}, mode = 'play' } = {
         const filled = texts.length > 0;
         const key = texts.join('\n');
         if (entry.key !== key) {
-          entry.front.querySelector('.cell-count').textContent = filled ? String(texts.length) : '';
+          entry.front.querySelector('.cell-count').textContent = filled ? '✓' : '';
           entry.front.querySelector('.cell-list').replaceChildren(cardList(texts));
           entry.key = key;
         }
@@ -134,6 +153,7 @@ export function createGrid(container, { onSelect = () => {}, mode = 'play' } = {
         }
       }
       primed = true;
+      refreshDisabled();
     },
 
     /** Nouvelle partie : cases remises face cachée sans animation. */

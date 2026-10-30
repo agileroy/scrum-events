@@ -506,3 +506,18 @@ main { max-width: 1400px; margin: 0 auto; padding: 0 16px 40px; }
   .join-layout { flex-direction: column; align-items: stretch; }
   .qr-big { align-self: center; width: min(100%, 240px); }
 }
+
+/* ---------------------------------------------------------------- Glisser-déposer */
+
+.flip-card.is-draggable { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.flip-card.is-draggable .flip-front { box-shadow: 0 0 0 2px var(--accent-soft); }
+body.is-dragging, body.is-dragging * { cursor: grabbing !important; user-select: none; -webkit-user-select: none; }
+body.is-dragging .flip-card.is-draggable { opacity: 0.45; }
+.drag-ghost {
+  position: fixed; left: 0; top: 0; z-index: 50; pointer-events: none;
+  max-width: 260px; margin: 12px 0 0 12px; padding: 10px 14px; border-radius: 12px;
+  background: var(--surface); color: var(--text); border: 2px solid var(--accent);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 0.25); font-weight: 700; font-size: 0.95rem; line-height: 1.3;
+}
+.cell.is-drop-target .cell-face { box-shadow: inset 0 0 0 4px var(--accent); }
+.cell-trap.is-drop-target { border-style: solid; background: var(--region-hover); }

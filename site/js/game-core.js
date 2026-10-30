@@ -71,14 +71,35 @@ export function answersOf(card) {
   return Array.isArray(card?.answers) ? card.answers : [];
 }
 
-/** Verdict d'un placement : juste si la case choisie est l'une des bonnes cases de la carte, faux sinon. */
-export function verdict(chosen, card) {
-  return isCell(chosen) && answersOf(card).includes(chosen) ? 'right' : 'wrong';
+/**
+ * Verdict d'un placement : juste si la case choisie est l'une des bonnes cases de la carte et qu'elle est encore
+ * libre (`occupied` : cases déjà remplies par une carte juste ; une case n'accueille qu'une carte), faux sinon.
+ */
+export function verdict(chosen, card, occupied = []) {
+  return isCell(chosen) && answersOf(card).includes(chosen) && (chosen === TRAP || !occupied.includes(chosen)) ? 'right' : 'wrong';
 }
 
-/** Libellé des bonnes cases (« Sprint Planning · Timebox ou Sprint Review · Timebox »). */
-export function answersLabel(card) {
+/**
+ * Cases à montrer comme bonne réponse : la case choisie si la carte est juste ; sinon les bonnes cases encore
+ * libres au moment du placement (toutes, si aucune n'est libre). Les autres emplacements d'une carte en plusieurs
+ * exemplaires ne sont pas montrés.
+ */
+export function expectedCells(card, chosen, occupied = []) {
   const answers = answersOf(card);
+  if (verdict(chosen, card, occupied) === 'right') return [chosen];
+  const free = answers.filter((cell) => cell === TRAP || !occupied.includes(cell));
+  return free.length ? free : answers;
+}
+
+/** Cases remplies avant le tour `seq` (cartes justes posées dans une case de la grille). */
+export function occupiedBefore(results, cardsById, seq = Infinity) {
+  const before = Object.fromEntries(resultList(results).filter((r) => r.seq < seq).map((r) => [r.seq, r]));
+  return Object.keys(filledCells(before, cardsById));
+}
+
+/** Libellé des bonnes cases (« Sprint Planning · Timebox ou Sprint Review · Timebox ») ; `cells` restreint la liste. */
+export function answersLabel(card, cells = null) {
+  const answers = cells ?? answersOf(card);
   const join = (items) => (items.length <= 1 ? items[0] ?? '' : `${items.slice(0, -1).join(', ')} ou ${items[items.length - 1]}`);
   if (answers.length <= 1) return cellLabel(answers[0]);
   // Même catégorie dans plusieurs événements : « Sprint Planning, Sprint Review ou Sprint Retrospective · Timebox ».
@@ -89,10 +110,15 @@ export function answersLabel(card) {
   return join(answers.map(cellLabel));
 }
 
-/** Explication à afficher : ciblée pour la case choisie si elle existe, toujours accompagnée de l'explication générale. */
-export function explanationFor(card, chosen) {
+/**
+ * Explication à afficher : ciblée pour la case choisie si elle existe, toujours accompagnée de l'explication générale.
+ * Une carte en plusieurs exemplaires peut avoir une explication par case (`explanations`) : celle de `target`
+ * (la case jouée si elle est juste, sinon la bonne case montrée) remplace l'explication générale.
+ */
+export function explanationFor(card, chosen, target = null) {
   const targeted = chosen && !answersOf(card).includes(chosen) ? card.errors?.[chosen] ?? null : null;
-  return { targeted, general: card.explanation, reference: card.reference };
+  const general = (target && card.explanations?.[target]) || card.explanation;
+  return { targeted, general, reference: card.reference };
 }
 
 /** Espaces insécables de la typographie française (avant : ; ! ? et à l'intérieur des guillemets). */
@@ -135,6 +161,10 @@ export function validateDeck(deck) {
     for (const field of ['text', 'explanation', 'reference']) {
       if (typeof card?.[field] !== 'string' || !card[field].trim()) problems.push(`${id} : champ « ${field} » vide`);
     }
+    for (const [cell, text] of Object.entries(card?.explanations ?? {})) {
+      if (!answers.includes(cell)) problems.push(`${id} : explication par case pour une case qui n'est pas l'une de ses bonnes cases (${cell})`);
+      if (typeof text !== 'string' || !text.trim()) problems.push(`${id} : explication par case vide (${cell})`);
+    }
     for (const [cell, text] of Object.entries(card?.errors ?? {})) {
       if (!isCell(cell)) problems.push(`${id} : explication ciblée pour une case inconnue (${cell})`);
       else if (answers.includes(cell)) problems.push(`${id} : explication ciblée pour l'une de ses bonnes cases`);
@@ -146,8 +176,12 @@ export function validateDeck(deck) {
     if (copyIds.has(copy.id) || (copy.copy && ids.has(copy.id))) problems.push(`Exemplaire en double : ${copy.id}`);
     copyIds.add(copy.id);
   }
+  // Une carte par case : chaque case active reçoit exactement une carte (ou un exemplaire).
   for (const cell of CELLS) {
-    if (cell !== TRAP && !deck.cards.some((card) => answersOf(card).includes(cell))) problems.push(`Aucune carte pour la case ${cell}`);
+    if (cell === TRAP) continue;
+    const count = deck.cards.filter((card) => answersOf(card).includes(cell)).length;
+    if (!count) problems.push(`Aucune carte pour la case ${cell}`);
+    else if (count > 1) problems.push(`Plusieurs cartes pour la case ${cell}`);
   }
   return problems;
 }
@@ -449,7 +483,8 @@ export function mistakes(results, cardsById) {
     .filter((result) => result.verdict !== 'right' && cardsById[result.cardId])
     .map((result) => {
       const card = cardsById[result.cardId];
-      return { ...result, card, explanation: explanationFor(card, result.cell ?? null) };
+      const expected = expectedCells(card, result.cell ?? null, occupiedBefore(results, cardsById, result.seq));
+      return { ...result, card, expected, explanation: explanationFor(card, result.cell ?? null, expected[0]) };
     });
 }
 

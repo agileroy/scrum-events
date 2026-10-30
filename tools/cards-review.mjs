@@ -14,7 +14,7 @@ const lines = [
   `Source : ${deck.source}. Fichier source : \`site/data/cards.json\` (ce document est généré, ne pas le modifier).`,
   '',
   `${deck.cards.length} cartes différentes, soit ${stats.total} exemplaires dont ${stats.traps} pièges.`,
-  'Une carte qui a plusieurs bonnes cases existe en autant d\'exemplaires ; chaque exemplaire est juste dans n\'importe laquelle de ces cases.',
+  'Une carte par case. Quand deux cases ont le même contenu, la carte existe en deux exemplaires, chacun juste dans l\'une de ces cases tant qu\'elle est libre.',
   '',
   '## Grille complète',
   '',
@@ -34,6 +34,8 @@ function cardBlock(card) {
   const answers = answersOf(card);
   const copiesNote = answers.length > 1 ? ` (${answers.length} exemplaires : ${answers.map(cellLabel).join(', ')})` : '';
   lines.push(`### ${card.id} · ${card.text}${copiesNote}`, '', `**Explication** (${card.reference}) : ${card.explanation}`, '');
+  for (const [cell, text] of Object.entries(card.explanations ?? {})) lines.push(`- Exemplaire **${cellLabel(cell)}** : ${text}`);
+  if (Object.keys(card.explanations ?? {}).length) lines.push('');
   for (const [wrong, text] of Object.entries(card.errors ?? {})) lines.push(`- Si placée en **${cellLabel(wrong)}** : ${text}`);
   if (Object.keys(card.errors ?? {}).length) lines.push('');
 }

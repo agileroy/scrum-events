@@ -60,12 +60,12 @@ test('réglages : 5 par défaut et ajusté à l\'arrivée d\'un participant', as
   const t = setup();
   const host = t.make('host');
   const code = await host.createRoom();
-  for (let i = 0; i < 7; i += 1) await t.make(`p${i}`).join(code, `P${i}`);
+  for (let i = 0; i < 4; i += 1) await t.make(`p${i}`).join(code, `P${i}`);
   assert.equal(effectiveCardsPerPlayer(t.room(code), deckStats(cards)), 5);
-  await host.setCardsPerPlayer(code, 7);
-  await t.make('p7').join(code, 'P7');
-  // 60 exemplaires dont 15 pièges : 7 au plus pour 7 participants, 6 pour 8.
-  assert.equal(effectiveCardsPerPlayer(t.room(code), deckStats(cards)), 6);
+  await host.setCardsPerPlayer(code, 6);
+  await t.make('p4').join(code, 'P4');
+  // 32 exemplaires dont 10 pièges : 6 au plus pour 4 participants, 5 pour 5.
+  assert.equal(effectiveCardsPerPlayer(t.room(code), deckStats(cards)), 5);
 });
 
 test('partie complète : cartes toutes différentes, correction, fin', async () => {
@@ -205,10 +205,10 @@ test('arrivée tardive : spectateur si le paquet est épuisé', async () => {
   const t = setup();
   const host = t.make('host');
   const code = await host.createRoom();
-  for (let i = 0; i < 9; i += 1) await t.make(`p${i}`).join(code, `P${i}`);
-  // Paquet réduit à 45 exemplaires (9 pièges, 36 autres) : 5 cartes chacun pour 9 participants, tout est distribué.
-  const small = [...cards.filter((c) => trapCard(c)).slice(0, 9), ...cards.filter((c) => !trapCard(c)).slice(0, 36)];
-  await host.setCardsPerPlayer(code, 5);
+  for (let i = 0; i < 5; i += 1) await t.make(`p${i}`).join(code, `P${i}`);
+  // Paquet réduit à 20 exemplaires (5 pièges, 15 autres) : 4 cartes chacun pour 5 participants, tout est distribué.
+  const small = [...cards.filter((c) => trapCard(c)).slice(0, 5), ...cards.filter((c) => !trapCard(c)).slice(0, 15)];
+  await host.setCardsPerPlayer(code, 4);
   await host.launch(code, t.room(code), small);
   await t.make('marc').join(code, 'Marc');
   hostReactions(host, code, t.room(code), Object.fromEntries(small.map((c) => [c.id, c])));
@@ -220,9 +220,9 @@ test('arrivée tardive : limitée par les cartes non distribuées', async () => 
   const t = setup();
   const host = t.make('host');
   const code = await host.createRoom();
-  for (let i = 0; i < 9; i += 1) await t.make(`p${i}`).join(code, `P${i}`);
-  // 40 exemplaires (10 pièges, 30 autres) : 4 cartes chacun pour 9 participants, 36 distribuées, 4 libres (1 piège, 3 autres).
-  const deck40 = [...cards.filter((c) => trapCard(c)).slice(0, 10), ...cards.filter((c) => !trapCard(c)).slice(0, 30)];
+  for (let i = 0; i < 4; i += 1) await t.make(`p${i}`).join(code, `P${i}`);
+  // 20 exemplaires (5 pièges, 15 autres) : 4 cartes chacun pour 4 participants, 16 distribuées, 4 libres (1 piège, 3 autres).
+  const deck40 = [...cards.filter((c) => trapCard(c)).slice(0, 5), ...cards.filter((c) => !trapCard(c)).slice(0, 15)];
   await host.setCardsPerPlayer(code, 4);
   await host.launch(code, t.room(code), deck40);
   await t.make('marc').join(code, 'Marc');

@@ -3,7 +3,7 @@
 
 import {
   MAX_PLAYERS, TIMER_CHOICES, VERDICT_LABELS, TRAP, frenchTypography, explanationFor, normalizeCode, cellLabel, answersLabel,
-  answersOf, isTrap, filledCells, answerGrid,
+  isTrap, filledCells, answerGrid, expectedCells, occupiedBefore,
   isValidCode, deckStats, maxCardsPerPlayer, clampCardsPerPlayer, nextPlayer, playedCounts, resultList, secondsLeft,
   teamScore, playerScores, podium, mistakes, formatPercent, asList, verdict, shuffle, drawTrainingDeck,
 } from './game-core.js?v=__VERSION__';
@@ -482,7 +482,7 @@ export async function startApp(gameStore, { deck, cards }) {
     $('validate').hidden = !choosing;
     $('validate').disabled = !selection;
     let hint = '';
-    if (choosing) hint = selection ? `Votre choix : ${cellLabel(selection)}. Validez quand vous êtes sûr.` : 'Touchez une case de la grille, ou la zone Piège, puis validez.';
+    if (choosing) hint = selection ? `Votre choix : ${cellLabel(selection)}. Validez quand vous êtes sûr.` : 'Glissez la carte sur une case ou sur la zone Piège, ou touchez une case puis validez.';
     else if (card && !turn.revealed && turn.placement) hint = 'Correction en cours…';
     else if (card && !turn.revealed && selection) hint = `Hésite sur : ${cellLabel(selection)}`;
     else if (turn.done) hint = 'Partie terminée : place aux résultats.';
@@ -490,11 +490,12 @@ export async function startApp(gameStore, { deck, cards }) {
     $('card-hint').textContent = hint;
 
     grid.setInteractive(Boolean(choosing));
-    grid.update(result && card ? { chosen: result.cell ?? null, correct: answersOf(card) } : { selection });
+    const expected = result && card ? expectedCells(card, result.cell ?? null, occupiedBefore(results, cardsById, turn.seq)) : [];
+    grid.update(result && card ? { chosen: result.cell ?? null, correct: expected } : { selection });
     grid.setFilled(filledCells(results, cardsById));
 
     // Correction
-    renderCorrection(card, result);
+    renderCorrection(card, result, expected);
     if (result && card) {
       if (lastRevealedSeq !== turn.seq) {
         if (lastRevealedSeq !== null && turn.playerUid === uid) navigator.vibrate?.(150); // pas au chargement
@@ -542,16 +543,16 @@ export async function startApp(gameStore, { deck, cards }) {
   }
 
   /** Correction d'une carte (verdict, cases, explications), commune à la partie en groupe et à l'entraînement. */
-  function renderCorrection(card, result) {
+  function renderCorrection(card, result, expected = []) {
     $('correction').hidden = !(result && card);
     if (!result || !card) return;
     const verdictNode = $('verdict');
     verdictNode.textContent = result.timedOut ? `${VERDICT_LABELS[result.verdict]} · Temps écoulé` : VERDICT_LABELS[result.verdict];
     verdictNode.className = `verdict verdict-${result.verdict}`;
     $('chosen-region').textContent = result.cell ? cellLabel(result.cell) : 'Aucun (temps écoulé)';
-    $('correct-label').textContent = answersOf(card).length > 1 ? 'Bonnes réponses' : 'Bonne réponse';
-    $('correct-region').textContent = answersLabel(card);
-    const explanation = explanationFor(card, result.cell ?? null);
+    $('correct-label').textContent = expected.length > 1 ? 'Bonnes réponses' : 'Bonne réponse';
+    $('correct-region').textContent = answersLabel(card, expected);
+    const explanation = explanationFor(card, result.cell ?? null, expected[0] ?? null);
     $('explanation-targeted').hidden = !explanation.targeted;
     setTypo($('explanation-targeted'), explanation.targeted ?? '');
     setTypo($('explanation'), explanation.general);
@@ -567,10 +568,11 @@ export async function startApp(gameStore, { deck, cards }) {
     showFlipCard({
       key: card ? `${turn.seq}:${turn.cardId}` : null, card, hidden: Boolean(turn.done),
       canFlip: isMine && !card && !turn.done, waitingText: `${nameOf(turn.playerUid)} va retourner la carte`,
+      canDrag: Boolean(isMine && card && !turn.placement && !turn.revealed),
     });
   }
 
-  function showFlipCard({ key, card, hidden, canFlip, waitingText }) {
+  function showFlipCard({ key, card, hidden, canFlip, waitingText, canDrag = false }) {
     const flip = $('flip-card');
     flip.closest('.card-stage').hidden = hidden;
     if (key !== shownCardKey) {
@@ -581,7 +583,9 @@ export async function startApp(gameStore, { deck, cards }) {
       shownCardKey = key;
       if (!animate) requestAnimationFrame(() => requestAnimationFrame(() => flip.classList.remove('no-anim')));
     }
-    flip.disabled = !canFlip;
+    flip.disabled = !canFlip && !canDrag;
+    flip.classList.toggle('is-draggable', canDrag);
+    draggable = canDrag;
     if (canFlip) flip.setAttribute('aria-label', 'Retourner la carte');
     else flip.removeAttribute('aria-label');
     $('back-hint').textContent = canFlip ? 'Touchez la carte pour la retourner' : waitingText;
@@ -604,6 +608,72 @@ export async function startApp(gameStore, { deck, cards }) {
     node.classList.toggle('is-urgent', left <= 5);
     node.setAttribute('aria-label', `${left} secondes restantes`);
   }
+
+  // ---------------------------------------------------------------- Glisser-déposer
+  // La carte retournée se glisse sur une case (souris, stylet ou doigt) : le survol sélectionne la case, visible
+  // de tous comme un toucher, et le dépôt valide le placement. Toucher une case puis « Valider » reste possible.
+
+  let draggable = false;
+  let drag = null;   // { id, startX, startY, ghost, cell }
+  const DRAG_THRESHOLD = 6;
+
+  function chooseCell(cell) {
+    if (solo) { soloSelect(cell); return; }
+    if (!room?.turn || room.turn.playerUid !== uid || room.turn.placement) return;
+    localSelection = cell;
+    localSelectionSeq = room.turn.seq;
+    render();
+    gameStore.select(code, room, cell);
+  }
+
+  async function dropOn(cell) {
+    chooseCell(cell);
+    if (solo) { soloValidate(); return; }
+    if (!room) return;
+    $('validate').disabled = true;
+    const ok = await gameStore.place(code, room, cell);
+    if (!ok) $('card-hint').textContent = 'Placement refusé : le temps est peut-être écoulé.';
+  }
+
+  function endDrag() {
+    drag?.ghost?.remove();
+    grid.setDropTarget(null);
+    document.body.classList.remove('is-dragging');
+    drag = null;
+  }
+
+  $('flip-card').addEventListener('pointerdown', (event) => {
+    if (!draggable || event.button > 0) return;
+    drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY, ghost: null, cell: null };
+    $('flip-card').setPointerCapture?.(event.pointerId);
+  });
+  $('flip-card').addEventListener('pointermove', (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    if (!drag.ghost) {
+      if (Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) < DRAG_THRESHOLD) return;
+      const ghost = document.createElement('div');
+      ghost.className = 'drag-ghost';
+      ghost.setAttribute('aria-hidden', 'true');
+      ghost.textContent = $('card-text').textContent;
+      document.body.append(ghost);
+      document.body.classList.add('is-dragging');
+      drag.ghost = ghost;
+    }
+    drag.ghost.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
+    const cell = grid.cellAt(event.clientX, event.clientY);
+    if (cell !== drag.cell) {
+      drag.cell = cell;
+      grid.setDropTarget(cell);
+      if (cell) chooseCell(cell);
+    }
+  });
+  $('flip-card').addEventListener('pointerup', (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const cell = drag.ghost ? grid.cellAt(event.clientX, event.clientY) : null;
+    endDrag();
+    if (cell && draggable) dropOn(cell);
+  });
+  $('flip-card').addEventListener('pointercancel', endDrag);
 
   $('flip-card').addEventListener('click', () => {
     if (solo) { soloFlip(); return; }
@@ -691,7 +761,7 @@ export async function startApp(gameStore, { deck, cards }) {
       meta.append(
         text('span', mistake.cell ? cellLabel(mistake.cell) : 'Temps écoulé', `recap-chosen verdict-${mistake.verdict}`),
         text('span', '→', 'recap-arrow'),
-        text('span', answersLabel(mistake.card), 'recap-correct'),
+        text('span', answersLabel(mistake.card, mistake.expected), 'recap-correct'),
       );
       item.append(head, meta);
       if (mistake.explanation.targeted) {
@@ -758,7 +828,8 @@ export async function startApp(gameStore, { deck, cards }) {
   function soloValidate() {
     if (!solo.flipped || !solo.selection || solo.results[solo.index]) return;
     const card = soloCard();
-    solo.results[solo.index] = { playerUid: 'solo', cardId: card.id, cell: solo.selection, verdict: verdict(solo.selection, card), timedOut: false };
+    const occupied = occupiedBefore(solo.results, cardsById, solo.index);
+    solo.results[solo.index] = { playerUid: 'solo', cardId: card.id, cell: solo.selection, verdict: verdict(solo.selection, card, occupied), timedOut: false };
     render();
   }
 
@@ -786,18 +857,19 @@ export async function startApp(gameStore, { deck, cards }) {
     $('card-meta').textContent = 'Entraînement';
     showFlipCard({
       key: solo.flipped ? `solo:${solo.index}:${card.id}` : null, card: solo.flipped ? card : null,
-      hidden: false, canFlip: !solo.flipped, waitingText: '',
+      hidden: false, canFlip: !solo.flipped, waitingText: '', canDrag: Boolean(solo.flipped && !result),
     });
     const choosing = solo.flipped && !result;
     $('validate').hidden = !choosing;
     $('validate').disabled = !solo.selection;
     $('card-hint').textContent = choosing
-      ? (solo.selection ? `Votre choix : ${cellLabel(solo.selection)}. Validez quand vous êtes sûr.` : 'Touchez une case de la grille, ou la zone Piège, puis validez.')
+      ? (solo.selection ? `Votre choix : ${cellLabel(solo.selection)}. Validez quand vous êtes sûr.` : 'Glissez la carte sur une case ou sur la zone Piège, ou touchez une case puis validez.')
       : '';
     grid.setInteractive(Boolean(choosing));
-    grid.update(result ? { chosen: result.cell, correct: answersOf(card) } : { selection: solo.selection });
+    const expected = result ? expectedCells(card, result.cell, occupiedBefore(solo.results, cardsById, solo.index)) : [];
+    grid.update(result ? { chosen: result.cell, correct: expected } : { selection: solo.selection });
     grid.setFilled(filledCells(solo.results, cardsById));
-    renderCorrection(card, result);
+    renderCorrection(card, result, expected);
     $('host-controls').hidden = true;
     $('my-progress').hidden = true;
     $('solo-controls').hidden = false;

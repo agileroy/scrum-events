@@ -12,21 +12,23 @@ test('le paquet de cartes du site est valide', () => {
   assert.deepEqual(validateDeck(deck), []);
 });
 
-test('chaque case active a au moins une carte', () => {
+test('une carte par case : chaque case active reçoit exactement un exemplaire', () => {
   for (const cell of CELLS.filter((c) => c !== TRAP)) {
-    assert.ok(deck.cards.some((card) => answersOf(card).includes(cell)), cell);
+    assert.equal(deck.cards.filter((card) => answersOf(card).includes(cell)).length, 1, cell);
   }
+  assert.equal(copies.filter((c) => !answersOf(c).includes(TRAP)).length, CELLS.length - 1);
 });
 
-test('le paquet permet 5 cartes par personne avec un piège chacun, salle pleine', () => {
+test('le paquet permet un piège par participant, salle pleine, et 5 cartes chacun à 6', () => {
   const stats = deckStats(copies);
   assert.ok(stats.traps >= MAX_PLAYERS, 'au moins un piège par participant');
-  assert.ok(maxCardsPerPlayer(stats, MAX_PLAYERS) >= 5);
+  assert.ok(maxCardsPerPlayer(stats, MAX_PLAYERS) >= 3);
+  assert.ok(maxCardsPerPlayer(stats, 6) >= 4);
 });
 
-test('les pièges représentent entre 15 et 30 % des exemplaires', () => {
+test('les pièges représentent au plus un tiers des exemplaires', () => {
   const share = deckStats(copies).traps / copies.length;
-  assert.ok(share >= 0.15 && share <= 0.3, `part des pièges : ${Math.round(share * 100)} %`);
+  assert.ok(share >= 0.2 && share <= 0.34, `part des pièges : ${Math.round(share * 100)} %`);
 });
 
 test('les identifiants des exemplaires sont acceptés par les règles de sécurité', () => {
@@ -35,5 +37,5 @@ test('les identifiants des exemplaires sont acceptés par les règles de sécuri
 });
 
 test('les textes de carte restent courts (petite case projetée)', () => {
-  for (const card of deck.cards) assert.ok(card.text.length <= 80, `${card.id} : ${card.text.length} caractères`);
+  for (const card of deck.cards) assert.ok(card.text.length <= 110, `${card.id} : ${card.text.length} caractères`);
 });
