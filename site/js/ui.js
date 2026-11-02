@@ -158,8 +158,9 @@ export async function startApp(gameStore, { deck, cards }) {
   /** Grille complète de fin, avec les cartes posées juste pendant la partie. */
   function renderAnswers(results) {
     const board = boardState(results, cardsById);
-    const played = new Set([...Object.values(board.cells), ...board.traps].filter((entry) => !entry.wrong).map((entry) => entry.text));
-    answersGrid.setAnswers(answerGrid(deck), trapTexts, played);
+    const playedCells = new Set(Object.entries(board.cells).filter(([, entry]) => !entry.wrong).map(([cell]) => cell));
+    const playedTraps = new Set(board.traps.filter((entry) => !entry.wrong).map((entry) => entry.text));
+    answersGrid.setAnswers(answerGrid(deck), trapTexts, playedCells, playedTraps);
   }
 
   // ---------------------------------------------------------------- Abonnement à la salle

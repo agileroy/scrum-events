@@ -204,15 +204,19 @@ export function createGrid(container, { onSelect = () => {}, mode = 'play' } = {
       this.update({});
     },
 
-    /** Grille complète : textes de toutes les cartes ; `played` : textes posés juste pendant la partie. */
-    setAnswers(grid, trapTexts, played = new Set()) {
+    /**
+     * Grille complète : textes de toutes les cartes. `playedCells` : cases trouvées pendant la partie (par case, pour
+     * qu'une carte en deux exemplaires ne soit marquée que là où elle a été posée) ; `playedTraps` : textes des pièges
+     * démasqués.
+     */
+    setAnswers(grid, trapTexts, playedCells = new Set(), playedTraps = new Set()) {
       for (const [id, entry] of Object.entries(cells)) {
         if (id === TRAP) continue;
         const texts = grid[id] ?? [];
         entry.el.classList.add('is-filled', 'no-anim');
-        entry.front.querySelector('.cell-list').replaceChildren(cardList(texts, played));
+        entry.front.querySelector('.cell-list').replaceChildren(cardList(texts, playedCells.has(id) ? new Set(texts) : null));
       }
-      trapList.replaceChildren(cardList(trapTexts, played));
+      trapList.replaceChildren(cardList(trapTexts, playedTraps));
     },
   };
 }
