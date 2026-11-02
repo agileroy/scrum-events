@@ -410,6 +410,117 @@
         "daily-outputs": "Le Daily Scrum peut ajuster le Sprint Backlog, jamais la qualité : les objectifs de qualité ne sont jamais revus à la baisse.",
         "retro-outputs": "La Sprint Retrospective cherche à améliorer la qualité, pas à la baisser."
       }
+    },
+    {
+      "id": "pg-sm-anime",
+      "text": "Le Scrum Master comme animateur attitré",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Aucun événement n'impose que le Scrum Master l'anime. Il s'assure que tous les événements Scrum ont bien lieu et sont efficients, productifs et tenus dans leur timebox ; le Daily Scrum, par exemple, est un événement pour les Developers, qui en choisissent la structure et les techniques.",
+      "reference": "Scrum Master, Daily Scrum",
+      "errors": {
+        "daily-people": "Le Daily Scrum est un événement pour les Developers ; le Scrum Master s'assure qu'il a lieu, il n'est pas tenu de l'animer.",
+        "retro-people": "La Sprint Retrospective réunit la Scrum Team ; le Scrum Master s'assure qu'elle a lieu, mais le guide n'impose pas qu'il l'anime.",
+        "planning-people": "Le Sprint Planning réunit toute la Scrum Team ; le Scrum Master en fait partie, mais aucun animateur attitré n'est prévu.",
+        "review-people": "La Sprint Review réunit la Scrum Team et les principales parties prenantes ; le guide ne désigne pas d'animateur."
+      }
+    },
+    {
+      "id": "pg-sprint0",
+      "text": "Un Sprint 0 de préparation, avant le premier Increment",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Toute la Scrum Team est responsable de la création d'un Increment qui ait de la valeur et qui soit utile, à chaque Sprint. Un « Sprint 0 » sans Increment n'existe pas dans Scrum : tout le travail nécessaire, y compris la préparation, se fait dans le cadre des Sprints.",
+      "reference": "Scrum Team, Sprint",
+      "errors": {
+        "sprint-goal": "Le Sprint Goal est l'unique but du Sprint, et chaque Sprint doit créer un Increment utile : un Sprint de préparation sans Increment n'existe pas dans Scrum.",
+        "planning-goal": "Le Sprint Planning lance un Sprint qui doit produire au moins un Increment utile ; il n'existe pas de Sprint de préparation sans Increment.",
+        "planning-outputs": "Le Sprint Planning produit le Sprint Backlog d'un Sprint qui doit livrer un Increment utile ; un Sprint de préparation sans Increment n'existe pas."
+      }
+    },
+    {
+      "id": "pg-daily-seul",
+      "text": "Le seul moment où les Developers ajustent leur plan",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Le Daily Scrum n'est pas le seul moment où les Developers sont autorisés à ajuster leur plan. Ils se réunissent souvent tout au long de la journée pour en discuter plus en détail.",
+      "reference": "Daily Scrum",
+      "errors": {
+        "daily-goal": "Le Daily Scrum inspecte bien la progression et adapte le Sprint Backlog, mais les Developers peuvent ajuster leur plan à tout moment de la journée.",
+        "daily-outputs": "Le Daily Scrum produit un plan pour la journée, mais ce n'est pas le seul moment où les Developers peuvent l'ajuster."
+      }
+    },
+    {
+      "id": "pg-po-demo",
+      "text": "Le Product Owner et les parties prenantes, sans les Developers",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "À la Sprint Review, c'est la Scrum Team qui présente les résultats de son travail aux principales parties prenantes, et tous collaborent sur la suite. Ce n'est pas une démonstration du Product Owner seul.",
+      "reference": "Sprint Review",
+      "errors": {
+        "review-people": "La Sprint Review réunit toute la Scrum Team, Developers compris, et les principales parties prenantes.",
+        "planning-people": "Le Sprint Planning réunit toute la Scrum Team, Developers compris ; d'autres personnes peuvent seulement y être invitées pour des conseils."
+      }
+    },
+    {
+      "id": "pg-po-accept",
+      "text": "Les éléments acceptés par le Product Owner",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Le guide ne prévoit aucune acceptation par le Product Owner : un élément du Product Backlog est terminé et fait partie de l'Increment dès qu'il satisfait la Definition of Done.",
+      "reference": "Increment, Engagement : Definition of Done",
+      "errors": {
+        "review-inputs": "La Sprint Review inspecte les Increments, c'est-à-dire le travail qui répond à la Definition of Done ; aucune acceptation par le Product Owner n'est prévue.",
+        "planning-inputs": "Le Product Backlog entre au Sprint Planning ; la notion d'éléments « acceptés par le Product Owner » n'existe pas dans Scrum.",
+        "retro-inputs": "La Sprint Retrospective inspecte la Definition of Done elle-même ; c'est elle, et non le Product Owner, qui dit quand un travail est terminé."
+      }
+    },
+    {
+      "id": "pg-engagement",
+      "text": "Un engagement à livrer tous les éléments sélectionnés",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "L'engagement du Sprint Backlog est le Sprint Goal. Les éléments sélectionnés forment un plan qui peut évoluer : si le travail s'avère différent de ce qui était prévu, les Developers renégocient le périmètre avec le Product Owner, sans remettre en cause le Sprint Goal.",
+      "reference": "Sprint, Engagement : Sprint Goal",
+      "errors": {
+        "planning-outputs": "Le Sprint Planning produit un Sprint Backlog dont l'engagement est le Sprint Goal ; le périmètre des éléments sélectionnés peut être renégocié pendant le Sprint.",
+        "sprint-goal": "Le but du Sprint est d'atteindre le Sprint Goal ; les éléments sélectionnés peuvent être renégociés avec le Product Owner.",
+        "planning-goal": "Le Sprint Planning définit pourquoi, quoi et comment, mais le seul engagement est le Sprint Goal, pas la livraison de tous les éléments."
+      }
+    },
+    {
+      "id": "pg-pp-planning",
+      "text": "Les parties prenantes, pour choisir le travail du Sprint",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Au Sprint Planning, ce sont les Developers qui sélectionnent les éléments du Product Backlog, en discutant avec le Product Owner. La Scrum Team peut inviter d'autres personnes pour donner des conseils, mais elles ne choisissent pas le travail.",
+      "reference": "Sprint Planning",
+      "errors": {
+        "planning-people": "Toute la Scrum Team est requise au Sprint Planning ; elle peut inviter d'autres personnes pour des conseils, mais elles ne choisissent pas le travail.",
+        "review-people": "Les principales parties prenantes sont attendues à la Sprint Review, pas obligatoirement au Sprint Planning.",
+        "planning-inputs": "Le Product Backlog et le Product Goal entrent au Sprint Planning, mais ce sont les Developers, avec le Product Owner, qui choisissent le travail du Sprint."
+      }
+    },
+    {
+      "id": "pg-3sprints",
+      "text": "Les Sprint Backlogs des trois prochains Sprints, établis dès ce Sprint Planning",
+      "answers": [
+        "trap"
+      ],
+      "explanation": "Le Sprint Planning lance le Sprint en présentant le travail à effectuer durant ce Sprint. Il produit un seul Sprint Backlog, celui du Sprint en cours : son Sprint Goal, les éléments sélectionnés et le plan pour les livrer. Ce Sprint Backlog est mis à jour tout au long du Sprint selon ce qu'on en apprend.",
+      "reference": "Sprint Planning, Sprint Backlog",
+      "errors": {
+        "planning-outputs": "Le Sprint Planning produit le Sprint Backlog du Sprint qui commence, et un seul : chaque Sprint a son propre Sprint Goal, défini lors de son Sprint Planning.",
+        "planning-goal": "Le Sprint Planning lance le Sprint en cours : pourquoi il est important, ce qui peut être fait et comment. Il n'établit pas le plan des Sprints suivants.",
+        "review-outputs": "La Sprint Review ajuste le Product Backlog et décide de la suite, sans établir le Sprint Backlog des Sprints suivants."
+      }
     }
   ]
 }

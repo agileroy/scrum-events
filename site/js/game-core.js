@@ -360,6 +360,51 @@ export function dealHands(cards, uids, perPlayer, random = Math.random) {
   return hands;
 }
 
+/** Mode « tout le paquet » : chaque participant reçoit au moins 1 et au plus 2 pièges. */
+export const FULL_DECK_MIN_TRAPS = 1;
+export const FULL_DECK_MAX_TRAPS = 2;
+
+/**
+ * Plan du mode « tout le paquet » : toutes les cartes de grille sont distribuées, chacune une fois, et des pièges
+ * complètent pour que chacun ait le même nombre de cartes, avec 1 à 2 pièges par personne. Renvoie le plus petit
+ * nombre de cartes par personne possible, { perPlayer, traps, grid }, ou null si le paquet n'a pas assez de pièges.
+ */
+export function fullDeckPlan({ total, traps }, playerCount) {
+  if (playerCount <= 0) return null;
+  const grid = total - traps;
+  // Le premier nombre de cartes qui laisse au moins 1 piège par personne en laisse au plus 2 (moins de 2 par personne).
+  const perPlayer = Math.ceil((grid + playerCount * FULL_DECK_MIN_TRAPS) / playerCount);
+  const needed = playerCount * perPlayer - grid;
+  if (needed > traps || needed > playerCount * FULL_DECK_MAX_TRAPS) return null;
+  return { perPlayer, traps: needed, grid };
+}
+
+/**
+ * Mains du mode « tout le paquet » : toutes les cartes de grille, plus les pièges du plan, répartis à raison de 1 piège
+ * par personne et d'un second piège pour des participants tirés au hasard. Chaque main est mélangée.
+ * Renvoie { uid: [identifiants] }, ou null si le plan est impossible.
+ */
+export function dealFullDeck(cards, uids, random = Math.random) {
+  const plan = fullDeckPlan(deckStats(cards), uids.length);
+  if (!plan) return null;
+  const grid = shuffle(cards.filter((card) => !isTrap(card)).map((card) => card.id), random);
+  const traps = shuffle(cards.filter(isTrap).map((card) => card.id), random).slice(0, plan.traps);
+  const extra = new Set(shuffle(uids, random).slice(0, plan.traps - uids.length));
+  const hands = {};
+  for (const uid of uids) {
+    const hand = [traps.pop()];
+    if (extra.has(uid)) hand.push(traps.pop());
+    while (hand.length < plan.perPlayer) hand.push(grid.pop());
+    hands[uid] = shuffle(hand, random);
+  }
+  return hands;
+}
+
+/** Cartes de grille (non pièges) qui ne sont dans aucune main. */
+export function undealtGridCards(cards, hands) {
+  return undealtCards(cards, hands).filter((card) => !isTrap(card));
+}
+
 /** Nombre de cartes par défaut d'un entraînement seul. */
 export const TRAINING_DEFAULT_COUNT = 10;
 

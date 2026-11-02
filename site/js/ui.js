@@ -3,7 +3,7 @@
 
 import {
   MAX_PLAYERS, TIMER_CHOICES, VERDICT_LABELS, TRAP, frenchTypography, explanationFor, normalizeCode, cellLabel, answersLabel,
-  isTrap, boardState, answerGrid, expectedCells, occupiedBefore, resolvePlacement, choiceLabel,
+  isTrap, boardState, fullDeckPlan, dealFullDeck, answerGrid, expectedCells, occupiedBefore, resolvePlacement, choiceLabel,
   isValidCode, deckStats, maxCardsPerPlayer, clampCardsPerPlayer, nextPlayer, playedCounts, resultList, secondsLeft,
   teamScore, playerScores, podium, mistakes, formatPercent, asList, verdict, shuffle, drawTrainingDeck,
 } from './game-core.js?v=__VERSION__';
@@ -11,6 +11,8 @@ import { createGrid } from './grid.js?v=__VERSION__';
 import { activePlayers, isConnected, effectiveCardsPerPlayer, hostReactions } from './game-store.js?v=__VERSION__';
 
 const NAME_STORAGE_KEY = 'scrum-events.name';
+/** Choix « tout le paquet » du formateur, propre à son navigateur et à sa salle (avant le lancement). */
+const fullDeckKey = (roomCode) => `scrum-events.full-deck.${roomCode}`;
 const SCREENS = ['status', 'home', 'host-lobby', 'player-lobby', 'game', 'end', 'message'];
 
 const $ = (id) => document.getElementById(id);
@@ -363,13 +365,19 @@ export async function startApp(gameStore, { deck, cards }) {
 
     const max = maxCardsPerPlayer(stats, players.length);
     const value = effectiveCardsPerPlayer(room, stats);
+    const full = readStored(fullDeckKey(code)) === '1';
+    const plan = fullDeckPlan(stats, players.length);
     const input = $('cards-value');
     input.max = String(Math.max(max, 1));
-    input.disabled = !players.length;
-    if (document.activeElement !== input) input.value = players.length ? String(value) : '';
-    $('cards-hint').textContent = players.length ? `Maximum ${max}` : `${cardIds.length} cartes dans le paquet`;
-    $('cards-minus').disabled = !players.length || value <= 1;
-    $('cards-plus').disabled = !players.length || value >= max;
+    input.disabled = !players.length || full;
+    if (document.activeElement !== input) input.value = !players.length ? '' : String(full && plan ? plan.perPlayer : value);
+    $('cards-hint').textContent = full ? '' : players.length ? `Maximum ${max}` : `${cardIds.length} cartes dans le paquet`;
+    $('cards-minus').disabled = !players.length || full || value <= 1;
+    $('cards-plus').disabled = !players.length || full || value >= max;
+    $('full-deck').checked = full;
+    $('full-deck-hint').textContent = !full ? '' : !players.length ? 'En attente des participants'
+      : plan ? `${plan.grid} notions + ${plan.traps} piège${plan.traps > 1 ? 's' : ''} : ${plan.perPlayer} cartes chacun`
+        : 'Pas assez de pièges pour ce nombre de participants';
 
     const timer = room.meta.timerSeconds ?? 0;
     const options = $('timer-options');
@@ -386,8 +394,13 @@ export async function startApp(gameStore, { deck, cards }) {
       }
     }
     for (const button of options.children) button.setAttribute('aria-checked', String(Number(button.dataset.seconds) === timer));
-    $('launch').disabled = !players.length;
+    $('launch').disabled = !players.length || (full && !plan);
   }
+
+  $('full-deck').addEventListener('change', () => {
+    store(fullDeckKey(code), $('full-deck').checked ? '1' : '0');
+    if (room?.meta?.status === 'lobby') renderHostLobby();
+  });
 
   function changeCards(delta) {
     const players = activePlayers(room).length;
@@ -417,7 +430,9 @@ export async function startApp(gameStore, { deck, cards }) {
     if (busy || !room) return;
     busy = true;
     $('launch').disabled = true;
-    try { await gameStore.launch(code, room, cards); } finally { busy = false; }
+    try {
+      await gameStore.launch(code, room, cards, { fullDeck: readStored(fullDeckKey(code)) === '1' });
+    } finally { busy = false; }
   });
 
   async function deleteRoom() {
@@ -919,11 +934,19 @@ export async function startApp(gameStore, { deck, cards }) {
     $('replay-mistakes').hidden = !mistakes(solo.results, cardsById).length;
   }
 
-  $('training-form').addEventListener('submit', (event) => {
-    event.preventDefault();
+  /** Cartes d'un entraînement : le nombre saisi, ou tout le paquet (toutes les notions et 1 piège). */
+  function trainingIds() {
+    if ($('training-full').checked) return dealFullDeck(cards, ['solo']).solo;
     const ids = drawTrainingDeck(cards, $('training-count').value);
     $('training-count').value = String(ids.length);
-    startSolo(ids);
+    return ids;
+  }
+  const soloPlan = fullDeckPlan(stats, 1);
+  $('training-full-hint').textContent = soloPlan ? `(${soloPlan.grid} notions + ${soloPlan.traps} piège)` : '';
+  $('training-full').addEventListener('change', () => { $('training-count').disabled = $('training-full').checked; });
+  $('training-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    startSolo(trainingIds());
   });
   $('solo-next').addEventListener('click', soloNext);
   $('solo-stop').addEventListener('click', async () => {
@@ -938,7 +961,7 @@ export async function startApp(gameStore, { deck, cards }) {
     if (ids.length) startSolo(shuffle(ids));
   });
   $('new-training').addEventListener('click', () => {
-    startSolo(drawTrainingDeck(cards, $('training-count').value));
+    startSolo(trainingIds());
   });
   $('training-home').addEventListener('click', () => {
     solo = null;

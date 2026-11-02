@@ -267,3 +267,22 @@ test('suppression de la salle par le formateur', async () => {
   await host.deleteRoom(code);
   assert.equal(t.room(code), null);
 });
+
+test('tout le paquet : lancement avec toutes les notions, retardataire spectateur', async () => {
+  const t = setup();
+  const host = t.make('host');
+  const code = await host.createRoom();
+  for (const name of ['julie', 'marc', 'ines', 'paul']) await t.make(name).join(code, name);
+  assert.ok(await host.launch(code, t.room(code), cards, { fullDeck: true }));
+  let room = t.room(code);
+  const hands = Object.values(room.meta.hands);
+  assert.equal(room.meta.cardsPerPlayer, 7);
+  assert.ok(hands.every((hand) => hand.length === 7));
+  assert.equal(hands.flat().filter((id) => !isTrap(id)).length, 22);
+  assert.ok(Object.values(room.players).every((p) => p.quota === 7));
+  await t.make('zoe').join(code, 'Zoé');
+  hostReactions(host, code, t.room(code), cardsById);
+  await new Promise((r) => setImmediate(r));
+  room = t.room(code);
+  assert.equal(room.players.zoe.quota, 0, 'plus aucune notion à distribuer : spectatrice');
+});

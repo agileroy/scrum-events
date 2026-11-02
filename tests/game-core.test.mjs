@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   CELLS, EVENTS, CATEGORIES, DISABLED_CELLS, TRAP, cellLabel, isCell, answersLabel, expandDeck, answerGrid,
-  expectedCells, occupiedBefore, resolvePlacement, choiceLabel, boardState,
+  expectedCells, occupiedBefore, resolvePlacement, choiceLabel, boardState, fullDeckPlan, dealFullDeck, undealtGridCards,
   verdict, explanationFor, frenchTypography, validateDeck, validateName, normalizeName, nameKey,
   generateCode, isValidCode, normalizeCode, maxCardsPerPlayer, deckStats, dealHands, undealtCards, drawTrainingDeck, clampCardsPerPlayer, shuffle, asList,
   nextPlayer, lateQuota, playedCounts, secondsLeft, teamScore, playerScores, podium, mistakes, formatPercent,
@@ -471,4 +471,55 @@ test('entraînement : le remplacement par un piège ne crée pas de doublon', ()
   const ids = drawTrainingDeck(noTrapFirst, 3, () => 0.999);
   assert.equal(new Set(ids).size, 3);
   assert.equal(ids.filter(isTrap).length, 1);
+});
+
+// ---------------------------------------------------------------- Mode « tout le paquet »
+
+/** Paquet de 22 cartes de grille et 18 pièges, comme le paquet réel. */
+const fullModeDeck = [
+  ...Array.from({ length: 22 }, (_, i) => ({ id: `g${i}`, answers: ['daily-goal'] })),
+  ...Array.from({ length: 18 }, (_, i) => ({ id: `trap-${i}`, answers: ['trap'] })),
+];
+
+test('tout le paquet : plan de 1 à 10 participants', () => {
+  const stats = deckStats(fullModeDeck);
+  const expected = { 1: [23, 1], 2: [12, 2], 3: [9, 5], 4: [7, 6], 5: [6, 8], 6: [5, 8], 7: [5, 13], 8: [4, 10], 9: [4, 14], 10: [4, 18] };
+  for (const [n, [perPlayer, traps]] of Object.entries(expected)) {
+    assert.deepEqual(fullDeckPlan(stats, Number(n)), { perPlayer, traps, grid: 22 }, `${n} participants`);
+  }
+});
+
+test('tout le paquet : impossible sans assez de pièges', () => {
+  assert.equal(fullDeckPlan({ total: 32, traps: 10 }, 10), null);
+  assert.equal(fullDeckPlan({ total: 32, traps: 10 }, 7), null);
+  assert.ok(fullDeckPlan({ total: 32, traps: 10 }, 8));
+  assert.equal(fullDeckPlan({ total: 40, traps: 18 }, 0), null);
+});
+
+test('tout le paquet : toutes les cartes de grille une fois, mains égales, 1 à 2 pièges chacun', () => {
+  for (let n = 1; n <= 10; n += 1) {
+    const uids = Array.from({ length: n }, (_, i) => `p${i}`);
+    for (let round = 0; round < 30; round += 1) {
+      const hands = dealFullDeck(fullModeDeck, uids);
+      const all = Object.values(hands).flat();
+      assert.equal(new Set(all).size, all.length, 'cartes toutes différentes');
+      assert.equal(all.filter((id) => id.startsWith('g')).length, 22, 'toutes les notions');
+      const size = hands.p0.length;
+      for (const hand of Object.values(hands)) {
+        assert.equal(hand.length, size, 'mains égales');
+        const traps = hand.filter(isTrap).length;
+        assert.ok(traps >= 1 && traps <= 2, `${traps} pièges`);
+      }
+      assert.deepEqual(undealtGridCards(fullModeDeck, hands), []);
+    }
+  }
+});
+
+test('tout le paquet : le second piège tombe sur des participants différents', () => {
+  const seen = new Set();
+  for (let round = 0; round < 100; round += 1) {
+    const hands = dealFullDeck(fullModeDeck, ['a', 'b', 'c', 'd']);
+    for (const [uid, hand] of Object.entries(hands)) if (hand.filter(isTrap).length === 2) seen.add(uid);
+  }
+  assert.deepEqual([...seen].sort(), ['a', 'b', 'c', 'd']);
 });

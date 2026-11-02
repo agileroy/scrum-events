@@ -2,7 +2,7 @@
 
 Source : Scrum Guide 2020, traduction française officielle (novembre 2020). Fichier source : `site/data/cards.json` (ce document est généré, ne pas le modifier).
 
-30 cartes différentes, soit 32 exemplaires dont 10 pièges.
+38 cartes différentes, soit 40 exemplaires dont 18 pièges.
 Une carte par case. Quand deux cases ont le même contenu, la carte existe en deux exemplaires, chacun juste dans la colonne de l'une de ces cases tant qu'elle est libre. En jeu, la bonne colonne suffit : la carte rejoint sa case.
 
 ## Grille complète
@@ -176,7 +176,7 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 - Si placée en **Sprint Retrospective · But** : Le but est de chercher des pistes d'amélioration ; les changements retenus en sont le résultat.
 - Si placée en **Sprint Planning · Sorties** : Ces changements peuvent rejoindre le prochain Sprint Backlog, mais ils sortent de la Sprint Retrospective ; le Sprint Planning produit le Sprint Backlog dans son ensemble.
 
-## Pièges (10)
+## Pièges (18)
 
 ### pg-questions · Les trois questions : hier, aujourd'hui, obstacles
 
@@ -251,3 +251,66 @@ Une carte par case. Quand deux cases ont le même contenu, la carte existe en de
 
 - Si placée en **Daily Scrum · Sorties** : Le Daily Scrum peut ajuster le Sprint Backlog, jamais la qualité : les objectifs de qualité ne sont jamais revus à la baisse.
 - Si placée en **Sprint Retrospective · Sorties** : La Sprint Retrospective cherche à améliorer la qualité, pas à la baisser.
+
+### pg-sm-anime · Le Scrum Master comme animateur attitré
+
+**Explication** (Scrum Master, Daily Scrum) : Aucun événement n'impose que le Scrum Master l'anime. Il s'assure que tous les événements Scrum ont bien lieu et sont efficients, productifs et tenus dans leur timebox ; le Daily Scrum, par exemple, est un événement pour les Developers, qui en choisissent la structure et les techniques.
+
+- Si placée en **Daily Scrum · Personnes requises** : Le Daily Scrum est un événement pour les Developers ; le Scrum Master s'assure qu'il a lieu, il n'est pas tenu de l'animer.
+- Si placée en **Sprint Retrospective · Personnes requises** : La Sprint Retrospective réunit la Scrum Team ; le Scrum Master s'assure qu'elle a lieu, mais le guide n'impose pas qu'il l'anime.
+- Si placée en **Sprint Planning · Personnes requises** : Le Sprint Planning réunit toute la Scrum Team ; le Scrum Master en fait partie, mais aucun animateur attitré n'est prévu.
+- Si placée en **Sprint Review · Personnes requises** : La Sprint Review réunit la Scrum Team et les principales parties prenantes ; le guide ne désigne pas d'animateur.
+
+### pg-sprint0 · Un Sprint 0 de préparation, avant le premier Increment
+
+**Explication** (Scrum Team, Sprint) : Toute la Scrum Team est responsable de la création d'un Increment qui ait de la valeur et qui soit utile, à chaque Sprint. Un « Sprint 0 » sans Increment n'existe pas dans Scrum : tout le travail nécessaire, y compris la préparation, se fait dans le cadre des Sprints.
+
+- Si placée en **Sprint · But** : Le Sprint Goal est l'unique but du Sprint, et chaque Sprint doit créer un Increment utile : un Sprint de préparation sans Increment n'existe pas dans Scrum.
+- Si placée en **Sprint Planning · But** : Le Sprint Planning lance un Sprint qui doit produire au moins un Increment utile ; il n'existe pas de Sprint de préparation sans Increment.
+- Si placée en **Sprint Planning · Sorties** : Le Sprint Planning produit le Sprint Backlog d'un Sprint qui doit livrer un Increment utile ; un Sprint de préparation sans Increment n'existe pas.
+
+### pg-daily-seul · Le seul moment où les Developers ajustent leur plan
+
+**Explication** (Daily Scrum) : Le Daily Scrum n'est pas le seul moment où les Developers sont autorisés à ajuster leur plan. Ils se réunissent souvent tout au long de la journée pour en discuter plus en détail.
+
+- Si placée en **Daily Scrum · But** : Le Daily Scrum inspecte bien la progression et adapte le Sprint Backlog, mais les Developers peuvent ajuster leur plan à tout moment de la journée.
+- Si placée en **Daily Scrum · Sorties** : Le Daily Scrum produit un plan pour la journée, mais ce n'est pas le seul moment où les Developers peuvent l'ajuster.
+
+### pg-po-demo · Le Product Owner et les parties prenantes, sans les Developers
+
+**Explication** (Sprint Review) : À la Sprint Review, c'est la Scrum Team qui présente les résultats de son travail aux principales parties prenantes, et tous collaborent sur la suite. Ce n'est pas une démonstration du Product Owner seul.
+
+- Si placée en **Sprint Review · Personnes requises** : La Sprint Review réunit toute la Scrum Team, Developers compris, et les principales parties prenantes.
+- Si placée en **Sprint Planning · Personnes requises** : Le Sprint Planning réunit toute la Scrum Team, Developers compris ; d'autres personnes peuvent seulement y être invitées pour des conseils.
+
+### pg-po-accept · Les éléments acceptés par le Product Owner
+
+**Explication** (Increment, Engagement : Definition of Done) : Le guide ne prévoit aucune acceptation par le Product Owner : un élément du Product Backlog est terminé et fait partie de l'Increment dès qu'il satisfait la Definition of Done.
+
+- Si placée en **Sprint Review · Entrées** : La Sprint Review inspecte les Increments, c'est-à-dire le travail qui répond à la Definition of Done ; aucune acceptation par le Product Owner n'est prévue.
+- Si placée en **Sprint Planning · Entrées** : Le Product Backlog entre au Sprint Planning ; la notion d'éléments « acceptés par le Product Owner » n'existe pas dans Scrum.
+- Si placée en **Sprint Retrospective · Entrées** : La Sprint Retrospective inspecte la Definition of Done elle-même ; c'est elle, et non le Product Owner, qui dit quand un travail est terminé.
+
+### pg-engagement · Un engagement à livrer tous les éléments sélectionnés
+
+**Explication** (Sprint, Engagement : Sprint Goal) : L'engagement du Sprint Backlog est le Sprint Goal. Les éléments sélectionnés forment un plan qui peut évoluer : si le travail s'avère différent de ce qui était prévu, les Developers renégocient le périmètre avec le Product Owner, sans remettre en cause le Sprint Goal.
+
+- Si placée en **Sprint Planning · Sorties** : Le Sprint Planning produit un Sprint Backlog dont l'engagement est le Sprint Goal ; le périmètre des éléments sélectionnés peut être renégocié pendant le Sprint.
+- Si placée en **Sprint · But** : Le but du Sprint est d'atteindre le Sprint Goal ; les éléments sélectionnés peuvent être renégociés avec le Product Owner.
+- Si placée en **Sprint Planning · But** : Le Sprint Planning définit pourquoi, quoi et comment, mais le seul engagement est le Sprint Goal, pas la livraison de tous les éléments.
+
+### pg-pp-planning · Les parties prenantes, pour choisir le travail du Sprint
+
+**Explication** (Sprint Planning) : Au Sprint Planning, ce sont les Developers qui sélectionnent les éléments du Product Backlog, en discutant avec le Product Owner. La Scrum Team peut inviter d'autres personnes pour donner des conseils, mais elles ne choisissent pas le travail.
+
+- Si placée en **Sprint Planning · Personnes requises** : Toute la Scrum Team est requise au Sprint Planning ; elle peut inviter d'autres personnes pour des conseils, mais elles ne choisissent pas le travail.
+- Si placée en **Sprint Review · Personnes requises** : Les principales parties prenantes sont attendues à la Sprint Review, pas obligatoirement au Sprint Planning.
+- Si placée en **Sprint Planning · Entrées** : Le Product Backlog et le Product Goal entrent au Sprint Planning, mais ce sont les Developers, avec le Product Owner, qui choisissent le travail du Sprint.
+
+### pg-3sprints · Les Sprint Backlogs des trois prochains Sprints, établis dès ce Sprint Planning
+
+**Explication** (Sprint Planning, Sprint Backlog) : Le Sprint Planning lance le Sprint en présentant le travail à effectuer durant ce Sprint. Il produit un seul Sprint Backlog, celui du Sprint en cours : son Sprint Goal, les éléments sélectionnés et le plan pour les livrer. Ce Sprint Backlog est mis à jour tout au long du Sprint selon ce qu'on en apprend.
+
+- Si placée en **Sprint Planning · Sorties** : Le Sprint Planning produit le Sprint Backlog du Sprint qui commence, et un seul : chaque Sprint a son propre Sprint Goal, défini lors de son Sprint Planning.
+- Si placée en **Sprint Planning · But** : Le Sprint Planning lance le Sprint en cours : pourquoi il est important, ce qui peut être fait et comment. Il n'établit pas le plan des Sprints suivants.
+- Si placée en **Sprint Review · Sorties** : La Sprint Review ajuste le Product Backlog et décide de la suite, sans établir le Sprint Backlog des Sprints suivants.

@@ -548,3 +548,8 @@ body.is-dragging .flip-card.is-draggable { opacity: 0.45; }
 .events-grid:not(.is-answers) .trap-list .cell-cards li { font-size: 0.78rem; }
 .events-grid:not(.is-answers) .trap-list .cell-cards li + li { border-top: 0; padding-top: 0; }
 @media (max-width: 699px) { .events-grid:not(.is-answers) .trap-list { display: none; } }
+
+/* Case à cocher « Tout le paquet » */
+.check { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; line-height: 1.35; padding: 4px 0; }
+.check input { width: 20px; height: 20px; margin: 1px 0 0; flex: none; accent-color: var(--accent); }
+.field input:disabled, .stepper-value:disabled { opacity: 0.5; }

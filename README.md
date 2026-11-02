@@ -9,6 +9,7 @@ Jeu de formation PSM / PSPO sur les événements Scrum, en temps réel et sans p
 - Le **formateur** crée une partie sur l'écran projeté : un **code de salle** à 4 lettres et un **QR code** s'affichent. Il anime, il ne joue pas.
 - Les **participants** (10 au maximum) rejoignent depuis leur téléphone, avec le QR code ou le code, et saisissent un prénom unique dans la salle. Pas de compte.
 - Avant de lancer, le formateur règle le **nombre de cartes par personne** (5 par défaut, dans la limite du maximum possible) et un **chrono** facultatif (30, 45 ou 60 secondes).
+- Option **« Tout le paquet »** pour voir ensemble toutes les notions : les 22 cartes de grille sont toutes distribuées, complétées par des pièges pour que chacun ait le même nombre de cartes, avec 1 à 2 pièges par personne (par exemple 7 cartes chacun à 4 participants, 4 à 10).
 - Au lancement, chaque participant reçoit **sa propre main** : dès 2 cartes, exactement **un piège par main**, à une position tirée au hasard. Cette règle n'est volontairement affichée nulle part dans le jeu.
 - **Tour par tour**, le joueur actif retourne la carte suivante de sa main et la glisse dans la **grille** (la bonne colonne suffit, la carte rejoint sa case ; on peut aussi toucher une case puis valider) : une colonne par événement (Sprint, Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective), une ligne par catégorie (Timebox, Personnes requises, But, Entrées, Sorties). Les cases Sprint × Personnes, Entrées et Sorties sont grisées. Sous la grille, la zone **Piège** accueille ce qui n'existe pas dans Scrum. Tout le monde voit son hésitation en direct.
 - **Une carte, une case** : verdict juste ou faux. Une même réalité présente à plusieurs endroits (« Toute la Scrum Team », « La Definition of Done »…) existe en plusieurs exemplaires ; chaque exemplaire est juste dans l'une de ces cases.
@@ -20,7 +21,7 @@ Jeu de formation PSM / PSPO sur les événements Scrum, en temps réel et sans p
 
 ## Entraînement seul
 
-Depuis l'accueil, « S'entraîner seul » lance une partie sans formateur ni code : 10 cartes par défaut (au moins un piège), même déroulé sans chrono, puis score, erreurs, grille complète et **« Rejouer mes erreurs »**. Tout se passe dans le navigateur, sans Firebase.
+Depuis l'accueil, « S'entraîner seul » lance une partie sans formateur ni code : 10 cartes par défaut (au moins un piège), ou « Tout le paquet » (les 22 notions et 1 piège), même déroulé sans chrono, puis score, erreurs, grille complète et **« Rejouer mes erreurs »**. Tout se passe dans le navigateur, sans Firebase.
 
 ## Paquet de cartes
 

@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import {
-  validateDeck, expandDeck, maxCardsPerPlayer, deckStats, MAX_PLAYERS, CELLS, TRAP, answersOf,
+  validateDeck, expandDeck, maxCardsPerPlayer, deckStats, MAX_PLAYERS, CELLS, TRAP, answersOf, fullDeckPlan,
 } from '../site/js/game-core.js';
 
 const deck = JSON.parse(await readFile(new URL('../site/data/cards.json', import.meta.url), 'utf8'));
@@ -26,9 +26,9 @@ test('le paquet permet un piège par participant, salle pleine, et 5 cartes chac
   assert.ok(maxCardsPerPlayer(stats, 6) >= 4);
 });
 
-test('les pièges représentent au plus un tiers des exemplaires', () => {
-  const share = deckStats(copies).traps / copies.length;
-  assert.ok(share >= 0.2 && share <= 0.34, `part des pièges : ${Math.round(share * 100)} %`);
+test('assez de pièges pour le mode « tout le paquet », de 1 à 10 participants', () => {
+  const stats = deckStats(copies);
+  for (let n = 1; n <= MAX_PLAYERS; n += 1) assert.ok(fullDeckPlan(stats, n), `${n} participants`);
 });
 
 test('les identifiants des exemplaires sont acceptés par les règles de sécurité', () => {

@@ -6,7 +6,7 @@ import {
   MAX_PLAYERS, ROOM_TTL_MS, TIMER_CHOICES, TIMER_GRACE_MS, generateCode, isValidCode, normalizeCode, normalizeName,
   validateName, nameKey, shuffle, asList, nextPlayer, lateQuota, maxCardsPerPlayer, clampCardsPerPlayer, verdict,
   dealHands, undealtCards, playedCounts,
-  resultList, isCell, deckStats, occupiedBefore, resolvePlacement,
+  resultList, isCell, deckStats, occupiedBefore, resolvePlacement, fullDeckPlan, dealFullDeck, undealtGridCards,
 } from './game-core.js?v=__VERSION__';
 
 export const ROOT = 'eventsGame';
@@ -92,16 +92,23 @@ export function createGameStore(db, { random = cryptoRandom } = {}) {
       return db.set(`${roomPath(code)}/meta/timerSeconds`, seconds);
     },
 
-    /** Lance la partie : ordre de passage tiré au sort, une main d'exemplaires par participant (1 piège par main), premier tour. */
-    async launch(code, room, cards) {
+    /**
+     * Lance la partie : ordre de passage tiré au sort, une main d'exemplaires par participant, premier tour.
+     * Partie normale : le nombre de cartes réglé, 1 piège par main. Mode « tout le paquet » (`fullDeck`) : toutes
+     * les cartes de grille, complétées par des pièges pour des mains égales, 1 à 2 pièges par personne.
+     */
+    async launch(code, room, cards, { fullDeck = false } = {}) {
       const players = activePlayers(room).map(([uid]) => uid);
       if (!players.length) return false;
-      const perPlayer = effectiveCardsPerPlayer(room, deckStats(cards));
       const order = shuffle(players, random);
+      const plan = fullDeck ? fullDeckPlan(deckStats(cards), order.length) : null;
+      if (fullDeck && !plan) return false;
+      const perPlayer = plan ? plan.perPlayer : effectiveCardsPerPlayer(room, deckStats(cards));
+      const hands = plan ? dealFullDeck(cards, order, random) : dealHands(cards, order, perPlayer, random);
       const patch = {
         'meta/status': 'playing',
         'meta/cardsPerPlayer': perPlayer,
-        'meta/hands': dealHands(cards, order, perPlayer, random),
+        'meta/hands': hands,
         'meta/playerOrder': order,
         'meta/startedAt': db.TIMESTAMP,
         turn: { seq: 0, playerUid: order[0], deckIndex: '0' },
@@ -113,7 +120,8 @@ export function createGameStore(db, { random = cryptoRandom } = {}) {
 
     /** Donne une main au retardataire (1 piège dès 2 cartes) et l'ajoute à la fin de l'ordre de passage. */
     async admitLatePlayer(code, room, uid, cards) {
-      const available = undealtCards(cards, room.meta.hands);
+      // Plus aucune carte de grille à distribuer (mode « tout le paquet », ou paquet épuisé) : spectateur.
+      const available = undealtGridCards(cards, room.meta.hands).length ? undealtCards(cards, room.meta.hands) : [];
       const wanted = lateQuota({
         players: room.players, results: room.results, available: available.length, cardsPerPlayer: room.meta.cardsPerPlayer,
       });
