@@ -1,7 +1,7 @@
 # Site Publication Specification
 
 ## Purpose
-Publication sur GitHub Pages, interface (langue, appareils, thème), connexion au service temps réel, mode démo et règles de sécurité partagées.
+Publication sur GitHub Pages, interface (langue, appareils, thème), connexion au service temps réel, mode démo, projet Firebase dédié et règles de sécurité déployées automatiquement.
 
 ## Requirements
 
