@@ -37,8 +37,16 @@ Avec `?demo` dans l'adresse, le site SHALL fonctionner sans Firebase : les ongle
 - **WHEN** le formateur lance la partie
 - **THEN** les trois onglets suivent la même partie
 
-### Requirement: Règles de sécurité partagées
-Les règles de sécurité SHALL être versionnées dans `database.rules.json` et identiques dans les six dépôts qui partagent la base (`scrum-events`, `roles-responsabilites`, `poker-planning`, `matrice-competences`, `wheel-of-chance`, `moving-motivators`). Ce jeu MUST n'écrire et ne lire que sous la branche `eventsGame`, et l'ajout de cette branche MUST NOT modifier les règles des autres outils. Les règles MUST imposer : seul le formateur d'une salle modifie ses réglages, lance la partie, fait avancer les tours, écrit les résultats et retire des participants ; un participant n'écrit que sa propre fiche ; seul le joueur actif pioche la carte suivante de sa main, puis sélectionne et place sa carte, dans une case active ou la zone Piège, avant la fin du chrono ; une salle n'est supprimée que par son formateur, ou par n'importe qui au-delà de 24 heures.
+### Requirement: Projet Firebase dédié
+Le jeu SHALL utiliser un projet Firebase qui lui est propre, qu'aucun autre outil n'utilise. `database.rules.json` SHALL ne contenir que la branche `eventsGame`, et tout le reste de la base SHALL être fermé en lecture comme en écriture.
+
+#### Scenario: Fichier commun recopié par erreur
+- **GIVEN** un `database.rules.json` qui contient aussi la branche d'un autre outil
+- **WHEN** les tests s'exécutent
+- **THEN** un test échoue et ni les règles ni le site ne sont publiés
+
+### Requirement: Règles de sécurité du jeu
+Les règles de la branche `eventsGame` MUST imposer : seul le formateur d'une salle modifie ses réglages, lance la partie, fait avancer les tours, écrit les résultats et retire des participants ; un participant n'écrit que sa propre fiche ; seul le joueur actif pioche la carte suivante de sa main, puis sélectionne et place sa carte, dans une case active ou la zone Piège, avant la fin du chrono ; une salle n'est supprimée que par son formateur, ou par n'importe qui au-delà de 24 heures.
 
 #### Scenario: Écriture hors de sa salle
 - **GIVEN** Marc, participant de la salle « KZTR »
@@ -49,3 +57,16 @@ Les règles de sécurité SHALL être versionnées dans `database.rules.json` et
 - **GIVEN** Julie, joueuse active
 - **WHEN** son navigateur tente d'écrire le placement `sprint-outputs`
 - **THEN** la base refuse l'écriture
+
+### Requirement: Déploiement automatique des règles
+À chaque push sur `main`, après la réussite des tests, GitHub Actions SHALL publier `database.rules.json` dans le projet Firebase du jeu, avec un compte de service gardé en secret (`FIREBASE_SERVICE_ACCOUNT`), puis seulement publier le site. Si un test échoue, les règles MUST NOT être publiées. Sans secret, le déploiement des règles SHALL être sauté avec un avertissement, sans empêcher la publication du site.
+
+#### Scenario: Règles modifiées
+- **GIVEN** un push sur `main` qui modifie `database.rules.json` et dont les tests réussissent
+- **WHEN** le workflow s'exécute
+- **THEN** les nouvelles règles sont actives dans le projet du jeu, sans action dans la console
+
+#### Scenario: Secret absent
+- **GIVEN** un dépôt sans secret `FIREBASE_SERVICE_ACCOUNT`
+- **WHEN** le workflow s'exécute sur `main`
+- **THEN** le job des règles signale qu'il est sauté et le site est publié quand même
